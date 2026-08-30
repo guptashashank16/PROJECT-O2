@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: hybrid-quantum-backend
+    ports:
+      - "8000:8000"
+    environment:
+      - BACKEND_HOST=0.0.0.0
+      - BACKEND_PORT=8000
+      - FRONTEND_URL=http://localhost:5173
+      - FAST_DEMO_MODE=true
+      - DEFAULT_QUANTUM_QUBITS=6
+      - DEFAULT_VQC_LAYERS=2
+      - DEFAULT_VQC_MAX_ITER=25
+      - RANDOM_SEED=42
+    volumes:
+      - ./backend/artifacts:/app/artifacts
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: hybrid-quantum-frontend
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_API_BASE_URL=http://localhost:8000/api
+    depends_on:
+      - backend
+    restart: unless-stopped
