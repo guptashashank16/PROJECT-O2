@@ -69,6 +69,8 @@ flowchart TD
     INF --> PREP["Preprocessing Pipeline - Reused Fitted Transformers"]
     PREP --> PRED["Dynamic Patient Prediction and Risk Stratification"]
 
+ ---   
+
 ## 3. Key Platform Features
 
 - **True Dataset Generalization**: Not hard-coded for one dataset. Works seamlessly with any tabular binary classification dataset (e.g. Wisconsin Breast Cancer, Cleveland Heart Disease, Pima Diabetes, Liver Disease).
