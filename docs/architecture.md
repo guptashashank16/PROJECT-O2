@@ -6,48 +6,48 @@ The **Hybrid Quantum-Classical Disease Detection Platform** (`hybrid-quantum-med
 
 ```mermaid
 flowchart TD
-    A[Raw Clinical Dataset CSV] --> B[Dataset Profiler & Ingestion]
-    B --> C[User Configuration: Target, Positive Class, Identifiers]
-    C --> D[Stratified Train/Test Split S=42]
-    
-    subgraph PreprocessingPipeline [Leakage-Free Preprocessing Pipeline (Fitted on Train Only)]
-        D --> E[Missing Value Imputation]
-        E --> F[Categorical One-Hot Encoding]
-        F --> G[StandardScaler / MinMaxScaler]
-        G --> H[ANOVA F-test Feature Selection]
-        H --> I[PCA Dimensionality Reduction to N Qubits]
-        I --> J[Quantum Angle Normalization [0, π]]
+    A["Raw Clinical Dataset CSV"] --> B["Dataset Profiler & Ingestion"]
+    B --> C["User Configuration: Target, Positive Class, Identifiers"]
+    C --> D["Stratified Train/Test Split S=42"]
+
+    subgraph PreprocessingPipeline ["Leakage-Free Preprocessing Pipeline (Fitted on Train Only)"]
+        D --> E["Missing Value Imputation"]
+        E --> F["Categorical One-Hot Encoding"]
+        F --> G["StandardScaler / MinMaxScaler"]
+        G --> H["ANOVA F-test Feature Selection"]
+        H --> I["PCA Dimensionality Reduction to N Qubits"]
+        I --> J["Quantum Angle Normalization [0, pi]"]
     end
-    
-    J --> K[Processed Training Split]
-    J --> L[Processed Test Split]
-    
-    subgraph ClassicalBaselines [Classical Model Zoo]
-        K --> M1[Logistic Regression]
-        K --> M2[Random Forest]
-        K --> M3[Support Vector Machine]
+
+    J --> K["Processed Training Split"]
+    J --> L["Processed Test Split"]
+
+    subgraph ClassicalBaselines ["Classical Model Zoo"]
+        K --> M1["Logistic Regression"]
+        K --> M2["Random Forest"]
+        K --> M3["Support Vector Machine"]
     end
-    
-    subgraph QuantumPipeline [Variational Quantum Classifier]
-        K --> Q1[Feature Map: ZZFeatureMap]
-        Q1 --> Q2[Variational Ansatz: RealAmplitudes]
-        Q2 --> Q3[Statevector Simulation & <Z0> Measurement]
-        Q3 --> Q4[Loss Calculation & Classical Optimizer: COBYLA]
-        Q4 -.->|Parameter Update ↺| Q2
+
+    subgraph QuantumPipeline ["Variational Quantum Classifier"]
+        K --> Q1["Feature Map: ZZFeatureMap"]
+        Q1 --> Q2["Variational Ansatz: RealAmplitudes"]
+        Q2 --> Q3["Statevector Simulation and Z Measurement"]
+        Q3 --> Q4["Loss Calculation and Classical Optimizer: COBYLA"]
+        Q4 -.->|Parameter Update| Q2
     end
-    
-    L --> EV[Medical Evaluation Engine]
+
+    L --> EV["Medical Evaluation Engine"]
     M1 --> EV
     M2 --> EV
     M3 --> EV
     Q3 --> EV
-    
-    EV --> RES[Benchmark Summary: Sensitivity, Specificity, AUC, ROC, Confusion Matrix]
-    EV --> EXP[Explainability: Permutation Importance & Quantum Sensitivity Analysis]
-    
-    NP[New Patient Observation] --> INF[Inference Engine]
-    PreprocessingPipeline -.->|Reuse Fitted Transformers| INF
-    INF --> PRED[Dynamic Patient Prediction & Risk Stratification]
+
+    EV --> RES["Benchmark Summary: Sensitivity, Specificity, AUC, ROC, Confusion Matrix"]
+    EV --> EXP["Explainability: Permutation Importance and Quantum Sensitivity Analysis"]
+
+    NP["New Patient Observation"] --> INF["Inference Engine"]
+    J -->|Reuse fitted transformers| INF
+    INF --> PRED["Dynamic Patient Prediction and Risk Stratification"]
 ```
 
 ---

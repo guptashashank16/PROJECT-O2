@@ -24,9 +24,8 @@ This platform implements a generic, dataset-agnostic pipeline combining leakage-
 ## 2. System Architecture
 ```mermaid
 flowchart TD
-
     A["Raw Clinical Dataset CSV"] --> B["Dataset Profiler & Ingestion"]
-    B --> C["User Configuration: Target, Positive class, Identifiers"]
+    B --> C["User Configuration: Target, Positive Class, Identifiers"]
     C --> D["Stratified Train/Test Split"]
 
     subgraph PreprocessingPipeline["Leakage-Free Preprocessing Pipeline - Fitted on Train Only"]
@@ -56,7 +55,6 @@ flowchart TD
     end
 
     L --> EV["Medical Evaluation Engine"]
-
     M1 --> EV
     M2 --> EV
     M3 --> EV
@@ -68,11 +66,8 @@ flowchart TD
     NP["New Patient Observation"] --> INF["Inference Engine"]
     INF --> PREP["Preprocessing Pipeline - Reused Fitted Transformers"]
     PREP --> PRED["Dynamic Patient Prediction and Risk Stratification"]
-
-    end
 ```
 
-**```**  
 
 ## 3. Key Platform Features
 
