@@ -69,7 +69,10 @@ flowchart TD
     INF --> PREP["Preprocessing Pipeline - Reused Fitted Transformers"]
     PREP --> PRED["Dynamic Patient Prediction and Risk Stratification"]
 
- ---   
+    end
+```
+
+**```**  
 
 ## 3. Key Platform Features
 
