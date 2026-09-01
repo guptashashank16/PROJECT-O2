@@ -22,7 +22,7 @@ This platform implements a generic, dataset-agnostic pipeline combining leakage-
 ---
 
 ## 2. System Architecture
-
+```mermaid
 flowchart TD
 
     A["Raw Clinical Dataset CSV"] --> B["Dataset Profiler & Ingestion"]
@@ -98,6 +98,8 @@ flowchart TD
 git clone https://github.com/your-username/hybrid-quantum-medical-ai.git
 cd hybrid-quantum-medical-ai
 ```
+
+---
 
 #### 2. Windows Setup:
 ```powershell
