@@ -30,7 +30,7 @@ The platform outputs exactly one evidence-based verdict:
 
 ```mermaid
 flowchart TD
-    UI["White + Pink Glassmorphic React Dashboard"] --> Auth["Argon2id + JWT Security Layer"]
+    UI["React Dashboard"] --> Auth["Argon2id + JWT Security Layer"]
     Auth --> API["FastAPI Backend Services"]
     API --> Profiler["Dataset Profiler & Heuristic Identifier Detector"]
     Profiler --> Config["Target & Feature Configuration"]
