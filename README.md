@@ -90,6 +90,7 @@ flowchart TD
 
 ### Backend Setup
 ```bash
+# First change directory to the location where you have cloned the repo. 
 cd backend
 python -m venv venv
 # On Windows:
