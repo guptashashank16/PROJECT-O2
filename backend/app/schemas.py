@@ -155,6 +155,17 @@ class ConfusionMatrixData(BaseModel):
     labels: List[str]  # [negative_label, positive_label]
 
 
+class PrPoint(BaseModel):
+    precision: float
+    recall: float
+    threshold: float
+
+
+class CalibrationPoint(BaseModel):
+    mean_predicted_value: float
+    fraction_of_positives: float
+
+
 class EvaluationMetrics(BaseModel):
     accuracy: float
     precision: float
@@ -162,6 +173,8 @@ class EvaluationMetrics(BaseModel):
     specificity: float  # true negative rate
     f1_score: float
     roc_auc: float
+    pr_auc: float = 0.0
+    brier_score: float = 0.0
     training_time_seconds: float
     inference_time_ms: float
 
@@ -171,8 +184,12 @@ class ModelEvaluationResult(BaseModel):
     model_name: str
     model_type: str  # "classical" | "quantum"
     metrics: EvaluationMetrics
+    mean_metrics: Optional[EvaluationMetrics] = None
+    std_metrics: Optional[EvaluationMetrics] = None
     confusion_matrix: ConfusionMatrixData
-    roc_curve: List[RocPoint]
+    roc_curve: List[RocPoint] = []
+    pr_curve: List[PrPoint] = []
+    calibration_curve: List[CalibrationPoint] = []
     parameters: Dict[str, Any] = {}
 
 
@@ -181,10 +198,14 @@ class BenchmarkSummary(BaseModel):
     target_column: str
     positive_class: str
     test_samples_count: int
+    evaluation_mode: str = "5-fold_cross_validation"
     results: Dict[str, ModelEvaluationResult]
+    noisy_vqc_result: Optional[ModelEvaluationResult] = None
+    evidence: Optional[Dict[str, Any]] = None
     best_accuracy_model: str
     best_sensitivity_model: str
     best_auc_model: str
+
 
 
 # --- Explainability ---

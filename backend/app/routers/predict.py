@@ -75,6 +75,9 @@ async def predict_new_patient(request: PatientPredictionRequest):
 
         q_state = [float(round(v, 4)) for v in quantum_ready_vec[0].tolist()]
 
+        from app.security.audit import audit_logger
+        audit_logger.log("system", "CLINICIAN", "PREDICT", "SUCCESS", f"Inference with {model.model_id}: {risk_level} ({p_pos:.2f})")
+
         return PatientPredictionResponse(
             model_id=model.model_id,
             model_name=model.model_name,
@@ -90,4 +93,7 @@ async def predict_new_patient(request: PatientPredictionRequest):
             patient_id=str(request.features.get("patient_id") or request.features.get("id") or "New Patient"),
         )
     except Exception as e:
+        from app.security.audit import audit_logger
+        audit_logger.log("system", "CLINICIAN", "PREDICT", "FAILED", str(e))
         raise HTTPException(status_code=400, detail=f"Prediction pipeline failed: {str(e)}")
+

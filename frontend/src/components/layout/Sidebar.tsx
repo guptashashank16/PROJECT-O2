@@ -92,7 +92,7 @@ export const Sidebar: React.FC = () => {
               disabled={!isEnabled}
               className={`w-full text-left px-3 py-2.5 rounded-xl flex items-center justify-between transition-all duration-150 group ${
                 isActive
-                  ? 'bg-cyan-500/15 border border-cyan-500/30 text-white shadow-sm shadow-cyan-500/10'
+                  ? 'bg-pink-500/15 border border-pink-500/40 text-white shadow-sm shadow-pink-500/10'
                   : isEnabled
                   ? 'text-slate-300 hover:bg-slate-800/60 hover:text-white border border-transparent'
                   : 'text-slate-600 cursor-not-allowed border border-transparent'
@@ -102,9 +102,9 @@ export const Sidebar: React.FC = () => {
                 <div
                   className={`w-8 h-8 rounded-lg flex items-center justify-center transition ${
                     isActive
-                      ? 'bg-cyan-500 text-slate-950 shadow-md shadow-cyan-500/30'
+                      ? 'bg-gradient-to-br from-pink-500 to-rose-600 text-white shadow-md shadow-pink-500/30'
                       : isEnabled
-                      ? 'bg-slate-800 text-slate-400 group-hover:text-cyan-400'
+                      ? 'bg-slate-800 text-slate-400 group-hover:text-pink-400'
                       : 'bg-slate-900 text-slate-700'
                   }`}
                 >
@@ -120,7 +120,7 @@ export const Sidebar: React.FC = () => {
                 <span
                   className={`text-[9px] font-semibold px-1.5 py-0.5 rounded-md uppercase tracking-wider ${
                     isActive
-                      ? 'bg-cyan-400/20 text-cyan-300'
+                      ? 'bg-pink-500/20 text-pink-300'
                       : 'bg-slate-800 text-slate-400'
                   }`}
                 >
@@ -134,16 +134,17 @@ export const Sidebar: React.FC = () => {
 
       {/* Footer Info Box */}
       <div className="pt-4 border-t border-slate-800/80 space-y-2">
-        <div className="px-3 py-2.5 rounded-xl bg-slate-900/60 border border-slate-800 text-[11px] text-slate-400 space-y-1">
+        <div className="px-3 py-2.5 rounded-xl bg-slate-900/60 border border-pink-500/20 text-[11px] text-slate-400 space-y-1">
           <div className="flex items-center justify-between text-slate-300 font-medium">
-            <span>Quantum Backend</span>
-            <span className="text-cyan-400 font-mono text-[10px]">Qiskit 1.0</span>
+            <span>Quantum Engine</span>
+            <span className="text-pink-400 font-mono text-[10px]">Qiskit Aer</span>
           </div>
-          <p className="text-[10px] text-slate-500 leading-tight">
-            Simulated statevectors on local CPU. Zero data leakage enforced.
+          <p className="text-[10px] text-slate-400 leading-tight">
+            Stratified 5-Fold CV & Ideal + Noisy Quantum Benchmark active.
           </p>
         </div>
       </div>
     </aside>
   );
 };
+

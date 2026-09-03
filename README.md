@@ -1,188 +1,130 @@
-# Hybrid Quantum-Classical Clinical Disease Detection Platform
+# Q-CARE — HYBRID QUANTUM-CLASSICAL CLINICAL AI PLATFORM
 
-[![Python](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
+[![Python](https://img.shields.io/badge/Python-3.11%2B-blue.svg)](https://www.python.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.110%2B-teal.svg)](https://fastapi.tiangolo.com/)
 [![Qiskit](https://img.shields.io/badge/Qiskit-1.0%2B-6929C4.svg)](https://www.ibm.com/quantum/qiskit)
+[![Qiskit Aer](https://img.shields.io/badge/Qiskit_Aer-0.13%2B-purple.svg)](https://qiskit.org/aer)
 [![React](https://img.shields.io/badge/React-18-61DAFB.svg)](https://react.dev/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.2-blue.svg)](https://www.typescriptlang.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-A production-style research prototype for benchmarking **Variational Quantum Classifiers (VQC)** against standard classical machine learning models (Logistic Regression, Random Forest, SVM) on clinical and biomedical tabular datasets.
+A general-purpose, evidence-driven hybrid quantum-classical machine learning platform for clinical and biomedical tabular data benchmarking.
 
 ---
 
-## 1. Executive Summary
+## 1. Core Research Purpose & Central Philosophy
 
-### 1.1 The Problem
-Early and accurate detection of complex diseases (such as breast malignancies, cardiovascular dysfunction, and metabolic disorders) requires identifying subtle non-linear multi-feature interactions in high-dimensional biomedical tabular data. While deep classical ensembles excel at pattern recognition, near-term quantum algorithms offer alternative representation spaces via quantum entanglement and Hilbert space state embeddings.
+> **"Quantum ko prove nahi karna hai — quantum ki usefulness measure karni hai."**
 
-### 1.2 The Solution
-This platform implements a generic, dataset-agnostic pipeline combining leakage-free classical preprocessing with genuine parameterized quantum circuit simulation. It directly benchmarks whether a Variational Quantum Classifier (VQC) provides competitive diagnostic utility against conventional baselines under clinical evaluation metrics (Sensitivity, Specificity, ROC-AUC, F1-Score).
+The platform evaluates whether a **Variational Quantum Classifier (VQC)** provides genuine clinical utility compared to strong classical baselines (Logistic Regression, Random Forest, SVM) under leakage-safe, realistic evaluation conditions.
+
+The platform outputs exactly one evidence-based verdict:
+- `QUANTUM_PREFERRED`: Quantum model shows statistically significant ROC-AUC advantage and noise robustness.
+- `QUANTUM_COMPETITIVE`: Quantum model achieves diagnostic parity with strong classical baselines.
+- `CLASSICAL_PREFERRED`: Classical baselines exceed quantum performance with lower computational cost.
+- `INSUFFICIENT_EVIDENCE`: Fold variance or sample size is insufficient to make a scientific recommendation.
 
 ---
 
-## 2. System Architecture
+## 2. Architecture & Data Flow
+
 ```mermaid
 flowchart TD
-    A["Raw Clinical Dataset CSV"] --> B["Dataset Profiler & Ingestion"]
-    B --> C["User Configuration: Target, Positive Class, Identifiers"]
-    C --> D["Stratified Train/Test Split"]
+    UI["White + Pink Glassmorphic React Dashboard"] --> Auth["Argon2id + JWT Security Layer"]
+    Auth --> API["FastAPI Backend Services"]
+    API --> Profiler["Dataset Profiler & Heuristic Identifier Detector"]
+    Profiler --> Config["Target & Feature Configuration"]
 
-    subgraph PreprocessingPipeline["Leakage-Free Preprocessing Pipeline - Fitted on Train Only"]
-        D --> E["Missing Value Imputation"]
-        E --> F["Categorical One-Hot Encoding"]
-        F --> G["StandardScaler / MinMaxScaler"]
-        G --> H["ANOVA F-test Feature Selection"]
-        H --> I["PCA Dimensionality Reduction to N Qubits"]
-        I --> J["Quantum Angle Normalization [0, pi]"]
+    subgraph LeakageFreeCV["Stratified 5-Fold Cross-Validation - Executed Per Fold"]
+        Config --> FoldSplit["5-Fold Stratified Split"]
+        FoldSplit --> Impute["Median/Mode Imputation"]
+        Impute --> Encode["One-Hot Categorical Encoding"]
+        Encode --> Scale["Standard / MinMaxScaler"]
+        Scale --> Select["ANOVA F-test Feature Selection"]
+        Select --> PCA["PCA Reduction to N Qubits"]
+        PCA --> Angle["Quantum Feature Normalization [0, π]"]
     end
 
-    J --> K["Processed Training Split"]
-    J --> L["Processed Test Split"]
+    Angle --> ClassicalZoo["Classical Baselines: LR, RF, SVM"]
+    Angle --> QRegistry["Quantum Model Registry: VQC"]
 
-    subgraph ClassicalBaselines["Classical Model Zoo"]
-        K --> M1["Logistic Regression"]
-        K --> M2["Random Forest"]
-        K --> M3["Support Vector Machine"]
-    end
+    QRegistry --> IdealSim["Ideal Statevector Simulation"]
+    QRegistry --> NoisySim["Qiskit Aer Noise Model Simulation (Depolarizing + Readout)"]
 
-    subgraph QuantumPipeline["Variational Quantum Classifier"]
-        K --> Q1["Feature Map: ZZFeatureMap"]
-        Q1 --> Q2["Variational Ansatz: RealAmplitudes"]
-        Q2 --> Q3["Statevector Simulation and Z Measurement"]
-        Q3 --> Q4["Loss Calculation and Classical Optimizer: COBYLA"]
-        Q4 -->|Parameter Update| Q2
-    end
+    ClassicalZoo --> Eval["5-Fold CV Diagnostic Evaluator (ROC-AUC, PR-AUC, Sensitivity, Specificity, F1, Brier)"]
+    IdealSim --> Eval
+    NoisySim --> Eval
 
-    L --> EV["Medical Evaluation Engine"]
-    M1 --> EV
-    M2 --> EV
-    M3 --> EV
-    Q3 --> EV
-
-    EV --> RES["Benchmark Summary: Sensitivity, Specificity, AUC, ROC, F1-Score, Confusion Matrix"]
-    EV --> EXP["Explainability: Permutation Importance and Quantum Sensitivity Analysis"]
-
-    NP["New Patient Observation"] --> INF["Inference Engine"]
-    INF --> PREP["Preprocessing Pipeline - Reused Fitted Transformers"]
-    PREP --> PRED["Dynamic Patient Prediction and Risk Stratification"]
+    Eval --> Evidence["Quantum Evidence Engine (5 Dimensions: Performance, Generalization, Calibration, Robustness, Resource Cost)"]
+    Eval --> Expl["Explainability: Classical Feature Importance & Quantum Model Feature Sensitivity"]
+    
+    Evidence --> UI
+    Expl --> UI
 ```
 
+---
 
 ## 3. Key Platform Features
 
-- **True Dataset Generalization**: Not hard-coded for one dataset. Works seamlessly with any tabular binary classification dataset (e.g. Wisconsin Breast Cancer, Cleveland Heart Disease, Pima Diabetes, Liver Disease).
-- **Strict Data Leakage Prevention**: Split-first pipeline ensures imputation, one-hot encoding, scaling, ANOVA feature selection, and PCA are fitted strictly on the training partition.
-- **Genuine Quantum Simulation**: Real Variational Quantum Classifier (VQC) implemented using Qiskit 1.0 Statevector simulation with parameterized circuits and classical optimizers. Zero fake results.
-- **Fast Demo Mode (`FAST_DEMO_MODE=True`)**: Configurable concise batch and iteration ceilings to execute real quantum simulations in under 10 seconds for live demonstrations.
-- **Comprehensive Medical Metrics**: Accuracy, Precision, Sensitivity/Recall ($TP / (TP+FN)$), Specificity ($TN / (TN+FP)$), F1-Score, and ROC-AUC with zero-division safety.
-- **Quantum Feature Sensitivity Analysis**: Evaluates finite-difference output gradient shifts under systematic quantum feature perturbations and projects sensitivities back to original clinical features.
-- **Dynamic Patient Prediction**: Generates real-time patient inference forms dynamically tailored to active dataset column schemas.
+- **Full UCI WDBC Benchmark & Generic CSV Support**: Pre-configured with the full 569-sample, 30-feature UCI Breast Cancer Wisconsin Diagnostic benchmark and supports any compatible tabular biomedical CSV.
+- **Leakage-Safe Stratified 5-Fold Cross-Validation**: Imputation, scaling, encoding, feature selection, and PCA dimensionality reduction are fitted strictly inside each cross-validation fold.
+- **Ideal vs. Noisy Quantum Simulation**: Compares ideal Qiskit statevector execution against a Qiskit Aer noise model simulating gate depolarizing noise and readout error.
+- **Quantum Evidence Engine**: Combines evidence across 5 dimensions (Performance, Generalization, Calibration, Robustness, Resource Cost) to synthesize a transparent verdict.
+- **Argon2id & JWT Authentication + RBAC**: Secure password hashing with Argon2id, JWT tokens, and 4 role tiers (`ADMIN`, `RESEARCHER`, `CLINICIAN`, `VIEWER`). Self-registration defaults to `VIEWER`.
+- **Quantum Model Feature Sensitivity**: Perturbation-based gradient analysis measuring output probability deltas per quantum feature (not falsely called "Quantum SHAP").
+- **Dynamic Patient Inference Lab**: Form fields dynamically adapt to whichever clinical dataset is loaded.
+- **Rate Limiting & Audit Logging**: Operational audit trail and endpoint rate throttling for system security.
+- **White + Soft Pink Glassmorphism Aesthetic**: Modern clinical research visual design.
 
 ---
 
-## 4. Technology Stack
+## 4. Technology Stack & Python Compatibility
 
-- **Backend**: Python 3.10+, FastAPI, Pydantic v2, Scikit-Learn, Qiskit 1.0, NumPy, SciPy, Pandas.
-- **Frontend**: React 18, TypeScript, Vite, Tailwind CSS, Recharts, Lucide Icons.
-- **API & Docs**: OpenAPI 3.0, Swagger UI active at `http://localhost:8000/docs`.
+- **Python Version**: `3.11.x` (or 3.10+)
+- **Backend Stack**: FastAPI, Uvicorn, Pydantic v2, Scikit-Learn, Qiskit 1.0+, Qiskit Aer, Argon2-cffi, PyJWT, NumPy, SciPy, Pandas.
+- **Frontend Stack**: React 18, TypeScript, Vite, Tailwind CSS, Lucide Icons.
 
 ---
 
-## 5. Getting Started & Installation
+## 5. Quick Start & Setup
 
-### Option A: Native Setup (Recommended)
-
-#### 1. Clone the repository:
+### Backend Setup
 ```bash
-git clone https://github.com/your-username/hybrid-quantum-medical-ai.git
-cd hybrid-quantum-medical-ai
+cd backend
+python -m venv venv
+# On Windows:
+venv\Scripts\activate
+# On Linux/macOS:
+source venv/bin/activate
+
+pip install -r requirements.txt
+uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
 ```
 
----
-
-#### 2. Windows Setup:
-```powershell
-# Run the automated setup script
-powershell .\scripts\setup.ps1
-
-# Start backend (Terminal 1)
-powershell .\scripts\run-backend.ps1
-
-# Start frontend (Terminal 2)
-powershell .\scripts\run-frontend.ps1
-```
-
-#### 3. Linux / macOS Setup:
+### Frontend Setup
 ```bash
-# Run the automated setup script
-chmod +x scripts/*.sh
-./scripts/setup.sh
-
-# Start backend (Terminal 1)
-./scripts/run-backend.sh
-
-# Start frontend (Terminal 2)
-./scripts/run-frontend.sh
+cd frontend
+npm install
+npm run dev
 ```
 
-### Option B: Docker Compose Setup
+The application runs at `http://localhost:5173`.
+The backend Swagger documentation remains accessible directly at `http://localhost:8000/docs`.
+
+---
+
+## 6. Running Tests
+
+Run the full automated test suite:
 ```bash
-docker-compose up --build
+cd backend
+pytest -v
 ```
 
-Access the web platform at:
-- **Web Dashboard**: `http://localhost:5173`
-- **FastAPI Swagger API**: `http://localhost:8000/docs`
+Tests cover dataset profiling, leakage-free fold preprocessing, classical baselines, VQC SPSA optimization, ideal/noisy simulation, 5-fold CV metric aggregation, Quantum Evidence Engine verdicts, Argon2id security, JWT auth, RBAC permissions, and API endpoints.
 
 ---
 
-## 6. Demonstration Workflow
+## 7. Medical Disclaimer
 
-1. **Open Dashboard**: Navigate to `http://localhost:5173`.
-2. **Select Dataset**: Choose a bundled benchmark sample (e.g. *Breast Cancer Wisconsin*, *Cleveland Heart Disease*, *Pima Diabetes*) or upload a custom CSV.
-3. **Inspect Profile**: Review row counts, column types, missing values, and class balance distributions.
-4. **Configure Target**: Select target column, positive diagnostic class label, and identifier columns.
-5. **Run Preprocessing**: View the step-by-step pipeline, ANOVA feature selection, and PCA variance ratios.
-6. **Train Models**: Execute simultaneous training of Logistic Regression, Random Forest, SVM, and VQC.
-7. **Inspect Benchmarks**: Compare medical diagnostic metrics (Sensitivity, Specificity, AUC) across models.
-8. **Analyze ROC & Confusion Matrices**: Inspect model discrimination curves and false negative/positive rates.
-9. **Explore Explainability**: Review classical permutation importances and Quantum Feature Sensitivity perturbation rankings.
-10. **Predict New Patient**: Pre-fill sample values or enter custom clinical features in the dynamic patient lab to generate real-time risk predictions.
-
----
-
-## 7. Judge & Technical Q&A Reference
-
-### Why Quantum Machine Learning?
-QML investigates whether quantum Hilbert space state embeddings and entanglement can construct expressive decision surfaces for complex biological data that are non-trivial to capture with linear or low-degree classical kernels.
-
-### Why VQC (Variational Quantum Classifier)?
-VQC is an ideal near-term quantum algorithm for NISQ devices. It parameterizes shallow quantum circuits and uses classical optimization loops to update gate angles, minimizing circuit depth while maintaining trainability.
-
-### Why Classical Preprocessing & PCA?
-Near-term quantum simulators and physical quantum hardware have practical qubit limits (typically 4–8 qubits for fast local execution). PCA dimensionality reduction linearly compresses the feature space to $N$ orthogonal principal components before quantum angle encoding.
-
-### How are Clinical Features Encoded into Qubits?
-Continuous PCA components are bounded to $[0, \pi]$ and bound to $R_z$ rotations in a `ZZFeatureMap` or $R_y$ rotations in `AngleEncoding`. Two-qubit entangling gates ($R_{zz}$) generate non-local quantum correlations across feature pairs.
-
-### How Do You Prevent Data Leakage?
-The dataset is split first into train and held-out test splits. Imputers, scalers, encoders, ANOVA selectors, and PCA matrices are fitted **exclusively on the training split** and applied identically to test data and inference requests.
-
-### What Happens If VQC Performs Worse Than Classical ML?
-The platform reports results honestly. If Random Forest or Logistic Regression achieves superior sensitivity or AUC, the dashboard displays that exact empirical result. The platform is a scientific benchmarking system, not marketing for quantum supremacy.
-
-### How Is Explainability Handled for Quantum Models?
-Standard tree SHAP is mathematically invalid for parameterized quantum circuits. The platform implements **Quantum Model Feature Sensitivity Analysis**, measuring empirical output shifts $\Delta \hat{y}$ under systematic feature perturbations ($\pm \delta$), then projects sensitivities back through PCA loadings.
-
----
-
-## 8. Medical & Research Disclaimer
-
-> **IMPORTANT**: This prototype is developed for research, experimental benchmarking, and educational purposes only. It is **not** a clinically validated diagnostic tool and must not be used as a substitute for professional medical advice, clinical diagnosis, or patient care decisions.
-
----
-
-## 9. License
-
-This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
+> **This prototype is intended for research, experimentation, and demonstration purposes only. It is not a clinically validated diagnostic system and should not be used as a substitute for professional medical judgment.**

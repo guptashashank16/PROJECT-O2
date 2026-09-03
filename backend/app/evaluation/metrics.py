@@ -1,10 +1,29 @@
 import time
 from typing import List, Tuple
 import numpy as np
-from sklearn.metrics import accuracy_score, confusion_matrix, f1_score, precision_score, recall_score, roc_auc_score, roc_curve
+from sklearn.calibration import calibration_curve
+from sklearn.metrics import (
+    accuracy_score,
+    auc,
+    brier_score_loss,
+    confusion_matrix,
+    f1_score,
+    precision_recall_curve,
+    precision_score,
+    recall_score,
+    roc_auc_score,
+    roc_curve,
+)
 
 from app.models.base import BaseDiseaseClassifier
-from app.schemas import ConfusionMatrixData, EvaluationMetrics, ModelEvaluationResult, RocPoint
+from app.schemas import (
+    CalibrationPoint,
+    ConfusionMatrixData,
+    EvaluationMetrics,
+    ModelEvaluationResult,
+    PrPoint,
+    RocPoint,
+)
 
 
 def calculate_medical_metrics(
@@ -31,15 +50,16 @@ def calculate_medical_metrics(
     acc = float(accuracy_score(y_test, y_pred))
     prec = float(precision_score(y_test, y_pred, zero_division=0))
     sensitivity = float(recall_score(y_test, y_pred, zero_division=0))  # TP / (TP + FN)
-    
-    # Specificity = TN / (TN + FP)
     specificity = float(tn / (tn + fp)) if (tn + fp) > 0 else 0.0
     f1 = float(f1_score(y_test, y_pred, zero_division=0))
+
+    # Brier Score
+    brier = float(brier_score_loss(y_test, y_pos_prob))
 
     # 3. ROC-AUC and ROC Curve Points
     try:
         if len(np.unique(y_test)) > 1:
-            auc = float(roc_auc_score(y_test, y_pos_prob))
+            roc_auc_val = float(roc_auc_score(y_test, y_pos_prob))
             fpr_arr, tpr_arr, thresh_arr = roc_curve(y_test, y_pos_prob)
             
             # Subsample ROC points if too dense
@@ -59,17 +79,54 @@ def calculate_medical_metrics(
                 for fpr, tpr, thresh in zip(fpr_arr, tpr_arr, thresh_arr)
             ]
         else:
-            auc = 0.5
-            roc_points = [
-                RocPoint(fpr=0.0, tpr=0.0, threshold=1.0),
-                RocPoint(fpr=1.0, tpr=1.0, threshold=0.0),
-            ]
+            roc_auc_val = 0.5
+            roc_points = [RocPoint(fpr=0.0, tpr=0.0, threshold=1.0), RocPoint(fpr=1.0, tpr=1.0, threshold=0.0)]
     except Exception:
-        auc = 0.5
-        roc_points = [
-            RocPoint(fpr=0.0, tpr=0.0, threshold=1.0),
-            RocPoint(fpr=1.0, tpr=1.0, threshold=0.0),
-        ]
+        roc_auc_val = 0.5
+        roc_points = [RocPoint(fpr=0.0, tpr=0.0, threshold=1.0), RocPoint(fpr=1.0, tpr=1.0, threshold=0.0)]
+
+    # 4. Precision-Recall Curve & PR-AUC
+    try:
+        if len(np.unique(y_test)) > 1:
+            p_arr, r_arr, pr_thresh = precision_recall_curve(y_test, y_pos_prob)
+            pr_auc_val = float(auc(r_arr, p_arr))
+            
+            if len(p_arr) > 50:
+                indices = np.linspace(0, len(p_arr) - 1, 50, dtype=int)
+                p_arr = p_arr[indices]
+                r_arr = r_arr[indices]
+                pr_thresh = np.append(pr_thresh, 1.0)[indices]
+
+            pr_points = [
+                PrPoint(
+                    precision=float(round(p, 4)),
+                    recall=float(round(r, 4)),
+                    threshold=float(round(t, 4)) if i < len(pr_thresh) else 1.0,
+                )
+                for i, (p, r, t) in enumerate(zip(p_arr, r_arr, pr_thresh))
+            ]
+        else:
+            pr_auc_val = 0.5
+            pr_points = [PrPoint(precision=1.0, recall=0.0, threshold=1.0)]
+    except Exception:
+        pr_auc_val = 0.5
+        pr_points = []
+
+    # 5. Probability Calibration Curve Points
+    try:
+        if len(np.unique(y_test)) > 1:
+            prob_true, prob_pred = calibration_curve(y_test, y_pos_prob, n_bins=5, strategy="uniform")
+            cal_points = [
+                CalibrationPoint(
+                    mean_predicted_value=float(round(pred, 4)),
+                    fraction_of_positives=float(round(true_val, 4)),
+                )
+                for true_val, pred in zip(prob_true, prob_pred)
+            ]
+        else:
+            cal_points = []
+    except Exception:
+        cal_points = []
 
     metrics = EvaluationMetrics(
         accuracy=float(round(acc, 4)),
@@ -77,7 +134,9 @@ def calculate_medical_metrics(
         sensitivity=float(round(sensitivity, 4)),
         specificity=float(round(specificity, 4)),
         f1_score=float(round(f1, 4)),
-        roc_auc=float(round(auc, 4)),
+        roc_auc=float(round(roc_auc_val, 4)),
+        pr_auc=float(round(pr_auc_val, 4)),
+        brier_score=float(round(brier, 4)),
         training_time_seconds=float(round(model.training_time_seconds, 3)),
         inference_time_ms=infer_time_ms,
     )
@@ -97,5 +156,7 @@ def calculate_medical_metrics(
         metrics=metrics,
         confusion_matrix=cm_data,
         roc_curve=roc_points,
+        pr_curve=pr_points,
+        calibration_curve=cal_points,
         parameters=model.get_params(),
     )

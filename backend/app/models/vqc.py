@@ -193,12 +193,6 @@ class VariationalQuantumClassifier(BaseDiseaseClassifier):
             max_iter = min(self.max_iterations, 20)
 
         opt_method = self.optimizer_name.upper()
-        if opt_method not in ["COBYLA", "SLSQP", "BFGS"]:
-            opt_method = "COBYLA"
-
-        opt_options = {"maxiter": max_iter}
-        if opt_method == "COBYLA":
-            opt_options["rhobeg"] = 0.5
 
         def step_tracker(loss_val: float):
             if progress_callback:
@@ -206,18 +200,52 @@ class VariationalQuantumClassifier(BaseDiseaseClassifier):
                 pct = min(99, int((curr_iter / max_iter) * 100))
                 progress_callback(pct, loss_val)
 
-        res = minimize(
-            fun=self._cost_function,
-            x0=init_theta_and_bias,
-            args=(X_train_opt, y_train_opt, step_tracker),
-            method=opt_method,
-            options=opt_options,
-        )
+        if opt_method == "SPSA":
+            # Genuine SPSA optimizer implementation
+            a = 0.2
+            c = 0.1
+            A = max_iter * 0.1
+            alpha = 0.602
+            gamma = 0.101
+            theta = init_theta_and_bias.copy()
 
-        self.weights_ = res.x[:-1]
-        self.bias_ = float(res.x[-1])
+            for k in range(1, max_iter + 1):
+                ak = a / ((k + A) ** alpha)
+                ck = c / (k ** gamma)
+                delta = rng.choice([-1.0, 1.0], size=len(theta))
+                
+                theta_plus = theta + ck * delta
+                theta_minor = theta - ck * delta
+
+                loss_plus = self._cost_function(theta_plus, X_train_opt, y_train_opt, step_tracker)
+                loss_minor = self._cost_function(theta_minor, X_train_opt, y_train_opt, None)
+
+                ghat = (loss_plus - loss_minor) / (2.0 * ck * delta)
+                theta = theta - ak * ghat
+
+            self.weights_ = theta[:-1]
+            self.bias_ = float(theta[-1])
+        else:
+            if opt_method not in ["COBYLA", "SLSQP", "BFGS"]:
+                opt_method = "COBYLA"
+
+            opt_options = {"maxiter": max_iter}
+            if opt_method == "COBYLA":
+                opt_options["rhobeg"] = 0.5
+
+            res = minimize(
+                fun=self._cost_function,
+                x0=init_theta_and_bias,
+                args=(X_train_opt, y_train_opt, step_tracker),
+                method=opt_method,
+                options=opt_options,
+            )
+            self.weights_ = res.x[:-1]
+            self.bias_ = float(res.x[-1])
+
         self.training_time_seconds = float(time.perf_counter() - start_time)
         self.is_fitted = True
+
 
         return self
 
@@ -251,3 +279,18 @@ class VariationalQuantumClassifier(BaseDiseaseClassifier):
             "variational_parameter_count": len(self.ansatz_circuit.parameters) if self.ansatz_circuit else 0,
             "final_loss": float(self.cost_history_[-1]) if self.cost_history_ else None,
         }
+
+    def get_config(self) -> Dict[str, Any]:
+        return self.get_params()
+
+    def get_metrics(self) -> Dict[str, Any]:
+        return {"cost_history": self.cost_history_, "training_time_seconds": self.training_time_seconds}
+
+
+# Register model with QuantumModelRegistry
+try:
+    from app.quantum.registry import QuantumModelRegistry
+    QuantumModelRegistry.register("vqc", VariationalQuantumClassifier)
+except Exception:
+    pass
+

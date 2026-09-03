@@ -2,6 +2,9 @@ import React from 'react';
 import { Award, Table } from 'lucide-react';
 import { useAppState } from '../../context/AppStateContext';
 import { formatPercent, formatScore, formatTime } from '../../utils/formatters';
+import { EvidencePanel } from './EvidencePanel';
+import { NoisyComparisonCard } from './NoisyComparisonCard';
+import { CalibrationCurveView } from './CalibrationCurveView';
 
 export const MetricsComparisonTable: React.FC = () => {
   const { benchmarkSummary, selectedModelId, setSelectedModelId } = useAppState();
@@ -15,7 +18,6 @@ export const MetricsComparisonTable: React.FC = () => {
     return null;
   }
 
-  // Safe max calculations with fallbacks
   const accList = results.map((r) => r.metrics?.accuracy ?? 0);
   const sensList = results.map((r) => r.metrics?.sensitivity ?? 0);
   const aucList = results.map((r) => r.metrics?.roc_auc ?? 0);
@@ -25,122 +27,135 @@ export const MetricsComparisonTable: React.FC = () => {
   const maxAuc = aucList.length > 0 ? Math.max(...aucList) : 0;
 
   return (
-    <div className="glass-panel rounded-2xl overflow-hidden space-y-4 p-5">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-800 pb-3">
-        <div className="flex items-center gap-2 text-xs font-bold text-slate-200 uppercase tracking-wider">
-          <Table className="w-4 h-4 text-cyan-400" />
-          <span>Clinical Disease Detection Benchmark Results</span>
+    <div className="space-y-8">
+      {/* 1. Evidence Engine Summary Banner */}
+      <EvidencePanel />
+
+      {/* 2. Comparative Benchmark Table */}
+      <div className="glass-panel-pink rounded-3xl overflow-hidden space-y-4 p-6 border border-pink-500/30 shadow-xl">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-pink-500/20 pb-3">
+          <div className="flex items-center gap-2 text-xs font-bold text-white uppercase tracking-wider">
+            <Table className="w-4 h-4 text-pink-400" />
+            <span>Stratified 5-Fold Cross-Validation Benchmark</span>
+          </div>
+          <div className="text-xs text-pink-300/80 font-mono">
+            {benchmarkSummary.evaluation_mode} ({benchmarkSummary.test_samples_count ?? 0} samples/fold)
+          </div>
         </div>
-        <div className="text-xs text-slate-400 font-mono">
-          Evaluated on held-out test split ({benchmarkSummary.test_samples_count ?? 0} samples)
-        </div>
-      </div>
 
-      <div className="overflow-x-auto">
-        <table className="w-full text-left text-xs">
-          <thead className="bg-slate-900/90 text-slate-400 uppercase tracking-wider text-[11px] font-mono border-b border-slate-800">
-            <tr>
-              <th className="p-3.5">Model</th>
-              <th className="p-3.5">Architecture</th>
-              <th className="p-3.5">Accuracy</th>
-              <th className="p-3.5">Sensitivity (TPR)</th>
-              <th className="p-3.5">Specificity (TNR)</th>
-              <th className="p-3.5">F1-Score</th>
-              <th className="p-3.5">ROC-AUC</th>
-              <th className="p-3.5">Training Time</th>
-              <th className="p-3.5">Latency</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-slate-800/60 font-mono text-[11px]">
-            {results.map((r) => {
-              const isSelected = selectedModelId === r.model_id;
-              const isQuantum = r.model_type === 'quantum';
-              const accuracy = r.metrics?.accuracy ?? 0;
-              const sensitivity = r.metrics?.sensitivity ?? 0;
-              const specificity = r.metrics?.specificity ?? 0;
-              const f1 = r.metrics?.f1_score ?? 0;
-              const roc_auc = r.metrics?.roc_auc ?? 0;
-              const trainTime = r.metrics?.training_time_seconds ?? 0;
-              const inferTime = r.metrics?.inference_time_ms ?? 0;
+        <div className="overflow-x-auto">
+          <table className="w-full text-left text-xs">
+            <thead className="bg-slate-900/90 text-slate-400 uppercase tracking-wider text-[11px] font-mono border-b border-slate-800">
+              <tr>
+                <th className="p-3.5">Model</th>
+                <th className="p-3.5">Architecture</th>
+                <th className="p-3.5">ROC-AUC (Mean ± SD)</th>
+                <th className="p-3.5">PR-AUC</th>
+                <th className="p-3.5">Sensitivity</th>
+                <th className="p-3.5">Specificity</th>
+                <th className="p-3.5">F1-Score</th>
+                <th className="p-3.5">Brier Score</th>
+                <th className="p-3.5">Latency</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-800/60 font-mono text-[11px]">
+              {results.map((r) => {
+                const isSelected = selectedModelId === r.model_id;
+                const isQuantum = r.model_type === 'quantum';
+                
+                const meanMetrics = r.mean_metrics || r.metrics;
+                const stdMetrics = r.std_metrics;
 
-              const isBestAcc = accuracy === maxAcc && maxAcc > 0;
-              const isBestSens = sensitivity === maxSens && maxSens > 0;
-              const isBestAuc = roc_auc === maxAuc && maxAuc > 0;
+                const accuracy = meanMetrics?.accuracy ?? 0;
+                const sensitivity = meanMetrics?.sensitivity ?? 0;
+                const specificity = meanMetrics?.specificity ?? 0;
+                const f1 = meanMetrics?.f1_score ?? 0;
+                const roc_auc = meanMetrics?.roc_auc ?? 0;
+                const pr_auc = meanMetrics?.pr_auc ?? 0;
+                const brier = meanMetrics?.brier_score ?? 0;
+                const inferTime = meanMetrics?.inference_time_ms ?? 0;
 
-              return (
-                <tr
-                  key={r.model_id}
-                  onClick={() => setSelectedModelId(r.model_id)}
-                  className={`cursor-pointer transition ${
-                    isSelected
-                      ? 'bg-cyan-500/10 border-l-2 border-cyan-400'
-                      : 'hover:bg-slate-900/40'
-                  }`}
-                >
-                  <td className="p-3.5 font-bold text-white font-sans flex items-center gap-2">
-                    <span className="truncate">{r.model_name ?? r.model_id}</span>
-                    {isQuantum && (
-                      <span className="px-1.5 py-0.5 rounded text-[9px] bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">
-                        Quantum
+                const isBestAcc = accuracy === maxAcc && maxAcc > 0;
+                const isBestSens = sensitivity === maxSens && maxSens > 0;
+                const isBestAuc = roc_auc === maxAuc && maxAuc > 0;
+
+                return (
+                  <tr
+                    key={r.model_id}
+                    onClick={() => setSelectedModelId(r.model_id)}
+                    className={`cursor-pointer transition ${
+                      isSelected
+                        ? 'bg-pink-500/10 border-l-4 border-pink-400'
+                        : 'hover:bg-slate-900/50'
+                    }`}
+                  >
+                    <td className="p-3.5 font-bold text-white font-sans flex items-center gap-2">
+                      <span className="truncate">{r.model_name ?? r.model_id}</span>
+                      {isQuantum && (
+                        <span className="px-2 py-0.5 rounded text-[9px] bg-pink-500/20 text-pink-300 border border-pink-500/40">
+                          Quantum VQC
+                        </span>
+                      )}
+                    </td>
+                    <td className="p-3.5 text-slate-400 font-sans capitalize">{r.model_type ?? 'classical'}</td>
+
+                    {/* ROC-AUC */}
+                    <td className="p-3.5">
+                      <span className={`font-semibold ${isBestAuc ? 'text-pink-400' : 'text-slate-200'}`}>
+                        {formatScore(roc_auc)}
                       </span>
-                    )}
-                  </td>
-                  <td className="p-3.5 text-slate-400 font-sans capitalize">{r.model_type ?? 'classical'}</td>
+                      {stdMetrics && stdMetrics.roc_auc > 0 && (
+                        <span className="text-[10px] text-slate-400 ml-1">±{stdMetrics.roc_auc.toFixed(3)}</span>
+                      )}
+                      {isBestAuc && <Award className="w-3 h-3 text-pink-400 inline ml-1" />}
+                    </td>
 
-                  {/* Accuracy */}
-                  <td className="p-3.5">
-                    <span className={`font-semibold ${isBestAcc ? 'text-emerald-400' : 'text-slate-200'}`}>
-                      {formatPercent(accuracy)}
-                    </span>
-                    {isBestAcc && <Award className="w-3 h-3 text-emerald-400 inline ml-1" />}
-                  </td>
+                    {/* PR-AUC */}
+                    <td className="p-3.5 text-slate-300">{formatScore(pr_auc)}</td>
 
-                  {/* Sensitivity */}
-                  <td className="p-3.5">
-                    <span className={`font-semibold ${isBestSens ? 'text-cyan-400' : 'text-slate-200'}`}>
-                      {formatPercent(sensitivity)}
-                    </span>
-                    {isBestSens && <Award className="w-3 h-3 text-cyan-400 inline ml-1" />}
-                  </td>
+                    {/* Sensitivity */}
+                    <td className="p-3.5">
+                      <span className={`font-semibold ${isBestSens ? 'text-rose-400' : 'text-slate-200'}`}>
+                        {formatPercent(sensitivity)}
+                      </span>
+                      {stdMetrics && stdMetrics.sensitivity > 0 && (
+                        <span className="text-[10px] text-slate-400 ml-1">±{stdMetrics.sensitivity.toFixed(3)}</span>
+                      )}
+                    </td>
 
-                  {/* Specificity */}
-                  <td className="p-3.5">
-                    <span className="text-slate-300">{formatPercent(specificity)}</span>
-                  </td>
+                    {/* Specificity */}
+                    <td className="p-3.5 text-slate-300">{formatPercent(specificity)}</td>
 
-                  {/* F1 */}
-                  <td className="p-3.5">
-                    <span className="text-slate-300">{formatPercent(f1)}</span>
-                  </td>
+                    {/* F1 */}
+                    <td className="p-3.5 text-slate-300">{formatPercent(f1)}</td>
 
-                  {/* ROC-AUC */}
-                  <td className="p-3.5">
-                    <span className={`font-semibold ${isBestAuc ? 'text-indigo-400' : 'text-slate-200'}`}>
-                      {formatScore(roc_auc)}
-                    </span>
-                    {isBestAuc && <Award className="w-3 h-3 text-indigo-400 inline ml-1" />}
-                  </td>
+                    {/* Brier Score */}
+                    <td className="p-3.5 text-slate-300">{brier.toFixed(4)}</td>
 
-                  {/* Training Time */}
-                  <td className="p-3.5 text-slate-400">{formatTime(trainTime)}</td>
-
-                  {/* Inference Latency */}
-                  <td className="p-3.5 text-slate-400">{inferTime.toFixed(1)} ms/sample</td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
-
-      <div className="flex flex-wrap items-center justify-between text-[11px] text-slate-500 pt-2 border-t border-slate-800">
-        <div>
-          <strong>Medical Metric Definitions:</strong> Sensitivity = TP / (TP + FN) [Disease Detection Rate], Specificity = TN / (TN + FP) [Normal Identification Rate].
+                    {/* Inference Latency */}
+                    <td className="p-3.5 text-slate-400">{inferTime.toFixed(1)} ms</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
         </div>
-        <div className="text-slate-400">
-          Click any model row to inspect its individual Confusion Matrix & Explainability.
+
+        <div className="flex flex-wrap items-center justify-between text-[11px] text-slate-400 pt-2 border-t border-slate-800">
+          <div>
+            <strong>Evaluation Standards:</strong> Leakage-safe 5-Fold Stratified Cross-Validation. Metrics reported as Mean ± SD across folds.
+          </div>
+          <div className="text-pink-300/80">
+            Click any row to view model-specific Confusion Matrix & Explainability.
+          </div>
         </div>
       </div>
+
+      {/* 3. Ideal vs. Noisy VQC Stress Test */}
+      <NoisyComparisonCard />
+
+      {/* 4. Probability Calibration Analysis */}
+      <CalibrationCurveView />
     </div>
   );
 };

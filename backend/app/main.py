@@ -61,6 +61,7 @@ app.add_middleware(
 )
 
 # Mount API Routers
+app.include_router(auth.router, prefix="/api")
 app.include_router(dataset.router, prefix="/api")
 app.include_router(train.router, prefix="/api")
 app.include_router(results.router, prefix="/api")

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   BarChart3,
   Cpu,
@@ -26,10 +26,12 @@ import { ConfusionMatrixCard } from './components/benchmark/ConfusionMatrixCard'
 import { ExplainabilityView } from './components/explainability/ExplainabilityView';
 import { DynamicPatientForm } from './components/prediction/DynamicPatientForm';
 import { PredictionResultCard } from './components/prediction/PredictionResultCard';
+import { NotFoundPage } from './pages/NotFoundPage';
 import { ClassicalModelConfig, QuantumModelConfig } from './types';
 
 export const App: React.FC = () => {
-  const { activeTab, trainingStatus, benchmarkSummary } = useAppState();
+  const { activeTab, setActiveTab, trainingStatus, benchmarkSummary } = useAppState();
+  const [show404, setShow404] = useState(false);
 
   const [quantumConfig, setQuantumConfig] = useState<QuantumModelConfig>({
     n_qubits: 6,
@@ -46,6 +48,62 @@ export const App: React.FC = () => {
     random_forest: true,
     svm: true,
   });
+
+  // Dynamic SEO Meta & Title Manager per Section 56
+  useEffect(() => {
+    const metaTitles: Record<string, { title: string; desc: string }> = {
+      dataset: {
+        title: 'Q-CARE — Dataset Analysis',
+        desc: 'Biomedical tabular dataset profiling, quality audit, and target configuration.',
+      },
+      preprocessing: {
+        title: 'Q-CARE — Preprocessing & PCA',
+        desc: 'Leakage-free clinical preprocessing, feature selection, and PCA quantum compression.',
+      },
+      training: {
+        title: 'Q-CARE — Quantum & Classical Model Setup',
+        desc: 'Variational Quantum Classifier (VQC) circuit parameters and classical baselines.',
+      },
+      benchmark: {
+        title: 'Q-CARE — Model Benchmark & Evidence Engine',
+        desc: 'Stratified 5-fold cross-validation benchmark and 5-dimensional Quantum Evidence Engine verdict.',
+      },
+      explainability: {
+        title: 'Q-CARE — Model Explainability',
+        desc: 'Quantum Model Feature Sensitivity analysis and classical feature importances.',
+      },
+      prediction: {
+        title: 'Q-CARE — Disease Risk Prediction',
+        desc: 'Real-time clinical inference and estimated disease risk prediction.',
+      },
+    };
+
+    const currentMeta = metaTitles[activeTab] || {
+      title: 'Q-CARE — Hybrid Quantum-Classical Platform',
+      desc: 'Benchmarking Variational Quantum Classifiers against classical baselines on biomedical data.',
+    };
+
+    document.title = currentMeta.title;
+
+    let metaDesc = document.querySelector("meta[name='description']");
+    if (!metaDesc) {
+      metaDesc = document.createElement('meta');
+      metaDesc.setAttribute('name', 'description');
+      document.head.appendChild(metaDesc);
+    }
+    metaDesc.setAttribute('content', currentMeta.desc);
+  }, [activeTab]);
+
+  if (show404) {
+    return (
+      <NotFoundPage
+        onReturn={() => {
+          setShow404(false);
+          setActiveTab('dataset');
+        }}
+      />
+    );
+  }
 
   return (
     <div className="min-h-screen bg-slate-950 flex flex-col font-sans">
@@ -115,9 +173,9 @@ export const App: React.FC = () => {
           {activeTab === 'benchmark' && (
             <div className="space-y-8 animate-in fade-in duration-200">
               <div>
-                <h2 className="text-xl font-bold text-white tracking-tight">Comparative Benchmark & Diagnostic Metrics</h2>
+                <h2 className="text-xl font-bold text-white tracking-tight">Comparative Benchmark & Evidence Engine</h2>
                 <p className="text-xs text-slate-400">
-                  Honest evaluation comparing Variational Quantum Classifier (VQC) against Logistic Regression, Random Forest, and SVM
+                  Stratified 5-fold cross-validation benchmarking Variational Quantum Classifier (VQC) against classical baselines
                 </p>
               </div>
 
@@ -131,10 +189,10 @@ export const App: React.FC = () => {
                   <ConfusionMatrixCard />
                 </>
               ) : (
-                <div className="glass-panel rounded-2xl p-12 text-center space-y-3">
-                  <BarChart3 className="w-8 h-8 text-slate-600 mx-auto" />
-                  <p className="text-sm font-semibold text-slate-300">No Benchmark Results Available</p>
-                  <p className="text-xs text-slate-500 max-w-sm mx-auto">
+                <div className="glass-panel-pink rounded-3xl p-12 text-center space-y-3 border border-pink-500/20">
+                  <BarChart3 className="w-8 h-8 text-pink-400 mx-auto" />
+                  <p className="text-sm font-semibold text-slate-200">No Benchmark Results Available</p>
+                  <p className="text-xs text-slate-400 max-w-sm mx-auto">
                     Please configure models in the Quantum & ML Setup tab and run training to generate benchmark metrics.
                   </p>
                 </div>
@@ -155,10 +213,10 @@ export const App: React.FC = () => {
               {benchmarkSummary ? (
                 <ExplainabilityView />
               ) : (
-                <div className="glass-panel rounded-2xl p-12 text-center space-y-3">
-                  <Eye className="w-8 h-8 text-slate-600 mx-auto" />
-                  <p className="text-sm font-semibold text-slate-300">Models Not Yet Evaluated</p>
-                  <p className="text-xs text-slate-500">Train models to compute Quantum Feature Sensitivity analysis.</p>
+                <div className="glass-panel-pink rounded-3xl p-12 text-center space-y-3 border border-pink-500/20">
+                  <Eye className="w-8 h-8 text-pink-400 mx-auto" />
+                  <p className="text-sm font-semibold text-slate-200">Models Not Yet Evaluated</p>
+                  <p className="text-xs text-slate-400">Train models to compute Quantum Feature Sensitivity analysis.</p>
                 </div>
               )}
             </div>
@@ -180,10 +238,10 @@ export const App: React.FC = () => {
                   <PredictionResultCard />
                 </>
               ) : (
-                <div className="glass-panel rounded-2xl p-12 text-center space-y-3">
-                  <Stethoscope className="w-8 h-8 text-slate-600 mx-auto" />
-                  <p className="text-sm font-semibold text-slate-300">Inference Engine Not Ready</p>
-                  <p className="text-xs text-slate-500">Please train models before executing patient inference.</p>
+                <div className="glass-panel-pink rounded-3xl p-12 text-center space-y-3 border border-pink-500/20">
+                  <Stethoscope className="w-8 h-8 text-pink-400 mx-auto" />
+                  <p className="text-sm font-semibold text-slate-200">Inference Engine Not Ready</p>
+                  <p className="text-xs text-slate-400">Please train models before executing patient inference.</p>
                 </div>
               )}
             </div>

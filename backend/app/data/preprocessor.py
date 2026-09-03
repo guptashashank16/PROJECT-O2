@@ -256,6 +256,67 @@ class ClinicalPreprocessor:
 
         return X_train_q, X_test_q, y_train, y_test, summary
 
+    def fit_transform_fold(self, X_fold_train_df: pd.DataFrame, y_fold_train: np.ndarray) -> np.ndarray:
+        """Fit all preprocessing transformations strictly on fold training data and return scaled quantum features."""
+        self.numerical_cols, self.categorical_cols = self._determine_column_types(X_fold_train_df)
+        self.feature_names_in_ = self.numerical_cols + self.categorical_cols
+
+        transformers = []
+        if self.numerical_cols:
+            num_scaler = StandardScaler() if self.params.scaler_type == "standard" else MinMaxScaler()
+            num_pipe = Pipeline([
+                ("imputer", SimpleImputer(strategy="median")),
+                ("scaler", num_scaler),
+            ])
+            transformers.append(("num", num_pipe, self.numerical_cols))
+
+        if self.categorical_cols:
+            cat_pipe = Pipeline([
+                ("imputer", SimpleImputer(strategy="most_frequent")),
+                ("encoder", OneHotEncoder(handle_unknown="ignore", sparse_output=False)),
+            ])
+            transformers.append(("cat", cat_pipe, self.categorical_cols))
+
+        self.column_transformer = ColumnTransformer(transformers=transformers, remainder="drop")
+        X_enc = self.column_transformer.fit_transform(X_fold_train_df)
+
+        enc_dim = X_enc.shape[1]
+        k_best = self.params.feature_selection_k
+        if k_best is None or k_best > enc_dim or k_best <= 0:
+            k_best = min(enc_dim, max(self.params.n_quantum_features, min(enc_dim, 15)))
+
+        if enc_dim > k_best:
+            self.feature_selector = SelectKBest(score_func=f_classif, k=k_best)
+            X_sel = self.feature_selector.fit_transform(X_enc, y_fold_train)
+        else:
+            self.feature_selector = None
+            X_sel = X_enc
+
+        sel_dim = X_sel.shape[1]
+        n_q_features = min(self.params.n_quantum_features, sel_dim)
+        self.pca = PCA(n_components=n_q_features, random_state=self.random_state)
+        X_pca = self.pca.fit_transform(X_sel)
+
+        self.quantum_scaler = MinMaxScaler(feature_range=(0, np.pi))
+        X_q = self.quantum_scaler.fit_transform(X_pca)
+        return X_q
+
+    def transform_fold(self, X_fold_val_df: pd.DataFrame) -> np.ndarray:
+        """Transform fold validation data using fitted transforms without refitting."""
+        if not self.column_transformer or not self.pca or not self.quantum_scaler:
+            raise RuntimeError("Preprocessor fold transforms have not been fitted.")
+
+        X_enc = self.column_transformer.transform(X_fold_val_df)
+        if self.feature_selector is not None:
+            X_sel = self.feature_selector.transform(X_enc)
+        else:
+            X_sel = X_enc
+
+        X_pca = self.pca.transform(X_sel)
+        X_q = self.quantum_scaler.transform(X_pca)
+        return X_q
+
+
     def transform_single(self, patient_dict: Dict[str, Any]) -> Dict[str, Any]:
         """Transform a single raw patient input dictionary through the fitted pipeline without refitting."""
         if not self.column_transformer or not self.pca or not self.quantum_scaler:
