@@ -4,7 +4,7 @@
 
 @layer base {
   body {
-    @apply bg-slate-950 text-slate-100 antialiased selection:bg-pink-500 selection:text-white;
+    @apply bg-gradient-to-br from-rose-50 via-pink-50/40 to-slate-50 text-slate-800 antialiased min-h-screen selection:bg-pink-500 selection:text-white;
   }
 }
 
@@ -14,7 +14,7 @@
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #0f172a;
+  background: #fdf2f8;
 }
 ::-webkit-scrollbar-thumb {
   background: #f472b6;
@@ -26,32 +26,33 @@
 
 /* White + Pink Glassmorphic Card Utilities */
 .glass-panel {
-  background: rgba(15, 23, 42, 0.85);
+  background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid rgba(244, 114, 182, 0.25);
-  box-shadow: 0 8px 32px 0 rgba(236, 72, 153, 0.08);
+  box-shadow: 0 10px 30px -5px rgba(236, 72, 153, 0.08), 0 4px 12px 0 rgba(0, 0, 0, 0.03);
 }
 
 .glass-panel-pink {
-  background: linear-gradient(135deg, rgba(255, 241, 242, 0.05) 0%, rgba(253, 226, 236, 0.12) 100%);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(253, 242, 248, 0.85) 50%, rgba(255, 228, 230, 0.75) 100%);
   backdrop-filter: blur(16px);
-  border: 1px solid rgba(244, 114, 182, 0.35);
-  box-shadow: 0 10px 30px -5px rgba(244, 114, 182, 0.15);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(244, 114, 182, 0.4);
+  box-shadow: 0 12px 35px -5px rgba(244, 114, 182, 0.15), 0 4px 15px 0 rgba(236, 72, 153, 0.05);
 }
 
 .glass-card-hover {
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .glass-card-hover:hover {
-  border-color: rgba(244, 114, 182, 0.6);
-  box-shadow: 0 12px 35px -5px rgba(236, 72, 153, 0.25);
+  border-color: rgba(236, 72, 153, 0.6);
+  box-shadow: 0 16px 40px -5px rgba(236, 72, 153, 0.2);
   transform: translateY(-2px);
 }
 
 /* Glowing text gradients */
 .pink-gradient-text {
-  background: linear-gradient(135deg, #f472b6 0%, #fb7185 50%, #e11d48 100%);
+  background: linear-gradient(135deg, #db2777 0%, #e11d48 50%, #be123c 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }

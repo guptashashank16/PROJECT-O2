@@ -259,12 +259,13 @@ def execute_training_pipeline(request: TrainRequest):
             
             # Create dummy classifier wrapper returning noisy probabilities for evaluation
             class NoisyVQCWrapper:
-                def __init__(self, n_probs, orig):
+                def __init__(self, n_probs, orig_model):
                     self.n_probs = n_probs
+                    self.orig_model = orig_model
                     self.model_id = "vqc_noisy"
                     self.model_name = "Noisy VQC (Simulated Noise)"
                     self.model_type = "quantum"
-                    self.training_time_seconds = orig.training_time_seconds
+                    self.training_time_seconds = orig_model.training_time_seconds
 
                 def predict_proba(self, X):
                     return self.n_probs
@@ -273,10 +274,11 @@ def execute_training_pipeline(request: TrainRequest):
                     return (self.n_probs[:, 1] >= 0.5).astype(int)
 
                 def get_params(self):
-                    return {**orig.get_params(), "noisy_simulation": True, "noise_model": "Depolarizing + Readout"}
+                    return {**self.orig_model.get_params(), "noisy_simulation": True, "noise_model": "Depolarizing + Readout"}
 
             noisy_wrapper = NoisyVQCWrapper(noisy_probs, ideal_vqc)
             noisy_vqc_result = calculate_medical_metrics(noisy_wrapper, X_test, y_test, labels)
+
 
         # Quantum Evidence Engine Evaluation
         vqc_eval = eval_results.get("vqc")

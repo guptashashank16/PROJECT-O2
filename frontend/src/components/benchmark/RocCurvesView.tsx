@@ -12,7 +12,7 @@ import { TrendingUp } from 'lucide-react';
 import { useAppState } from '../../context/AppStateContext';
 
 const MODEL_COLORS: Record<string, string> = {
-  vqc: '#38bdf8',
+  vqc: '#ec4899',
   logistic_regression: '#10b981',
   random_forest: '#8b5cf6',
   svm: '#f59e0b',
@@ -53,19 +53,19 @@ export const RocCurvesView: React.FC = () => {
   });
 
   return (
-    <div className="glass-panel rounded-2xl p-5 space-y-3">
+    <div className="glass-panel-pink rounded-3xl p-5 space-y-3 border border-pink-300 shadow-xl">
       <div className="flex items-center justify-between">
-        <h3 className="text-xs font-bold text-slate-200 uppercase tracking-wider flex items-center gap-2">
-          <TrendingUp className="w-4 h-4 text-cyan-400" />
+        <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider flex items-center gap-2">
+          <TrendingUp className="w-4 h-4 text-pink-600" />
           Receiver Operating Characteristic (ROC) Curves
         </h3>
-        <span className="text-xs text-slate-400 font-mono">True Positive vs False Positive</span>
+        <span className="text-xs text-slate-500 font-mono font-medium">True Positive vs False Positive</span>
       </div>
 
       <div className="h-64 w-full min-h-[250px]">
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={chartData} margin={{ top: 10, right: 20, left: -20, bottom: 0 }}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
+            <CartesianGrid strokeDasharray="3 3" stroke="#fbcfe8" />
             <XAxis
               dataKey="fpr"
               stroke="#64748b"
@@ -81,7 +81,7 @@ export const RocCurvesView: React.FC = () => {
               label={{ value: 'True Positive Rate (Sensitivity)', angle: -90, position: 'insideLeft', offset: 25, fontSize: 10, fill: '#64748b' }}
             />
             <Tooltip
-              contentStyle={{ backgroundColor: '#0f172a', borderColor: '#334155', borderRadius: '8px', fontSize: '11px' }}
+              contentStyle={{ backgroundColor: '#ffffff', borderColor: '#f472b6', borderRadius: '12px', fontSize: '11px', color: '#0f172a' }}
               formatter={(val: any, name: string) => [
                 typeof val === 'number' ? val.toFixed(3) : val,
                 name === 'random' ? 'Random Chance' : name,
@@ -94,7 +94,7 @@ export const RocCurvesView: React.FC = () => {
               type="monotone"
               dataKey="random"
               name="Chance (AUC = 0.50)"
-              stroke="#475569"
+              stroke="#94a3b8"
               strokeDasharray="4 4"
               dot={false}
             />
@@ -105,7 +105,7 @@ export const RocCurvesView: React.FC = () => {
                 type="monotone"
                 dataKey={r.model_id}
                 name={`${r.model_name} (AUC: ${r.metrics?.roc_auc?.toFixed(3) ?? '0.500'})`}
-                stroke={MODEL_COLORS[r.model_id] || '#0ea5e9'}
+                stroke={MODEL_COLORS[r.model_id] || '#ec4899'}
                 strokeWidth={r.model_id === 'vqc' ? 2.5 : 1.8}
                 dot={false}
               />
@@ -116,13 +116,13 @@ export const RocCurvesView: React.FC = () => {
 
       <div className="flex flex-wrap items-center justify-center gap-4 text-xs pt-1">
         {results.map((r) => (
-          <div key={r.model_id} className="flex items-center gap-1.5 font-medium">
+          <div key={r.model_id} className="flex items-center gap-1.5 font-semibold">
             <span
               className="w-2.5 h-2.5 rounded-full"
-              style={{ backgroundColor: MODEL_COLORS[r.model_id] || '#0ea5e9' }}
+              style={{ backgroundColor: MODEL_COLORS[r.model_id] || '#ec4899' }}
             />
-            <span className="text-slate-300">
-              {r.model_name} <strong className="text-white font-mono">({r.metrics?.roc_auc?.toFixed(3) ?? '0.500'})</strong>
+            <span className="text-slate-700">
+              {r.model_name} <strong className="text-slate-900 font-mono">({r.metrics?.roc_auc?.toFixed(3) ?? '0.500'})</strong>
             </span>
           </div>
         ))}

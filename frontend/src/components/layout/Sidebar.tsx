@@ -1,16 +1,11 @@
 import React from 'react';
 import {
-  Activity,
   BarChart3,
-  Binary,
   Cpu,
   Database,
   Eye,
   GitBranch,
-  Layers,
-  Sparkles,
   Stethoscope,
-  UserCheck,
 } from 'lucide-react';
 import { TabType, useAppState } from '../../context/AppStateContext';
 
@@ -74,9 +69,9 @@ export const Sidebar: React.FC = () => {
   ];
 
   return (
-    <aside className="w-64 border-r border-slate-800 bg-slate-900/40 p-4 flex flex-col justify-between shrink-0">
+    <aside className="w-64 border-r border-pink-200/60 bg-white/70 backdrop-blur-md p-4 flex flex-col justify-between shrink-0">
       <div className="space-y-1.5">
-        <div className="px-3 py-2 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
+        <div className="px-3 py-2 text-[11px] font-bold text-slate-400 uppercase tracking-wider">
           Platform Navigation
         </div>
 
@@ -92,36 +87,36 @@ export const Sidebar: React.FC = () => {
               disabled={!isEnabled}
               className={`w-full text-left px-3 py-2.5 rounded-xl flex items-center justify-between transition-all duration-150 group ${
                 isActive
-                  ? 'bg-pink-500/15 border border-pink-500/40 text-white shadow-sm shadow-pink-500/10'
+                  ? 'bg-gradient-to-r from-pink-500/10 to-rose-500/10 border border-pink-300 text-pink-700 font-bold shadow-sm shadow-pink-500/5'
                   : isEnabled
-                  ? 'text-slate-300 hover:bg-slate-800/60 hover:text-white border border-transparent'
-                  : 'text-slate-600 cursor-not-allowed border border-transparent'
+                  ? 'text-slate-600 hover:bg-rose-50/60 hover:text-slate-900 border border-transparent'
+                  : 'text-slate-400 cursor-not-allowed border border-transparent opacity-60'
               }`}
             >
               <div className="flex items-center gap-3 min-w-0">
                 <div
                   className={`w-8 h-8 rounded-lg flex items-center justify-center transition ${
                     isActive
-                      ? 'bg-gradient-to-br from-pink-500 to-rose-600 text-white shadow-md shadow-pink-500/30'
+                      ? 'bg-gradient-to-br from-pink-500 to-rose-600 text-white shadow-md shadow-pink-500/25'
                       : isEnabled
-                      ? 'bg-slate-800 text-slate-400 group-hover:text-pink-400'
-                      : 'bg-slate-900 text-slate-700'
+                      ? 'bg-pink-50 text-pink-600 group-hover:bg-pink-100'
+                      : 'bg-slate-100 text-slate-400'
                   }`}
                 >
                   <Icon className="w-4 h-4" />
                 </div>
                 <div className="truncate">
                   <div className="text-xs font-semibold tracking-tight truncate">{item.label}</div>
-                  <div className="text-[10px] text-slate-400 truncate">{item.sublabel}</div>
+                  <div className="text-[10px] text-slate-500 truncate">{item.sublabel}</div>
                 </div>
               </div>
 
               {item.badge && (
                 <span
-                  className={`text-[9px] font-semibold px-1.5 py-0.5 rounded-md uppercase tracking-wider ${
+                  className={`text-[9px] font-bold px-1.5 py-0.5 rounded-md uppercase tracking-wider ${
                     isActive
-                      ? 'bg-pink-500/20 text-pink-300'
-                      : 'bg-slate-800 text-slate-400'
+                      ? 'bg-pink-100 text-pink-700'
+                      : 'bg-slate-100 text-slate-500'
                   }`}
                 >
                   {item.badge}
@@ -133,13 +128,13 @@ export const Sidebar: React.FC = () => {
       </div>
 
       {/* Footer Info Box */}
-      <div className="pt-4 border-t border-slate-800/80 space-y-2">
-        <div className="px-3 py-2.5 rounded-xl bg-slate-900/60 border border-pink-500/20 text-[11px] text-slate-400 space-y-1">
-          <div className="flex items-center justify-between text-slate-300 font-medium">
+      <div className="pt-4 border-t border-pink-200/60 space-y-2">
+        <div className="px-3 py-2.5 rounded-xl bg-pink-50/60 border border-pink-200/80 text-[11px] text-slate-600 space-y-1">
+          <div className="flex items-center justify-between text-slate-900 font-semibold">
             <span>Quantum Engine</span>
-            <span className="text-pink-400 font-mono text-[10px]">Qiskit Aer</span>
+            <span className="text-pink-600 font-mono text-[10px]">Qiskit Aer</span>
           </div>
-          <p className="text-[10px] text-slate-400 leading-tight">
+          <p className="text-[10px] text-slate-500 leading-tight">
             Stratified 5-Fold CV & Ideal + Noisy Quantum Benchmark active.
           </p>
         </div>
@@ -147,4 +142,3 @@ export const Sidebar: React.FC = () => {
     </aside>
   );
 };
-

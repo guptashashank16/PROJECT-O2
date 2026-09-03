@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import {
-  FileText,
   Loader2,
   Play,
-  RotateCcw,
   Sparkles,
   Stethoscope,
-  UserCheck,
 } from 'lucide-react';
 import { useAppState } from '../../context/AppStateContext';
 
@@ -69,16 +66,16 @@ export const DynamicPatientForm: React.FC = () => {
   };
 
   return (
-    <div className="glass-panel rounded-2xl p-6 space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-4">
+    <div className="glass-panel-pink rounded-3xl p-6 space-y-6 border border-pink-300 shadow-xl">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-pink-200 pb-4">
         <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-lg bg-cyan-500/10 text-cyan-400 flex items-center justify-center border border-cyan-500/20">
+          <div className="w-8 h-8 rounded-lg bg-pink-500 text-white flex items-center justify-center shadow-md shadow-pink-500/20">
             <Stethoscope className="w-4 h-4" />
           </div>
           <div>
-            <h2 className="text-sm font-bold text-white">Dynamic Patient Inference Lab</h2>
-            <p className="text-xs text-slate-400">
-              Input form automatically generated from <strong className="text-slate-200">{profile.dataset_name}</strong> schema
+            <h2 className="text-sm font-bold text-slate-900">Dynamic Patient Inference Lab</h2>
+            <p className="text-xs text-slate-500">
+              Input form automatically generated from <strong className="text-slate-800">{profile.dataset_name}</strong> schema
             </p>
           </div>
         </div>
@@ -88,14 +85,14 @@ export const DynamicPatientForm: React.FC = () => {
           <button
             type="button"
             onClick={() => handlePrefillSample(0)}
-            className="px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs text-slate-300 transition"
+            className="px-3 py-1.5 rounded-xl bg-white hover:bg-rose-50 border border-pink-200 text-xs text-slate-700 font-bold transition shadow-sm"
           >
             Prefill Sample 1
           </button>
           <button
             type="button"
             onClick={() => handlePrefillSample(1)}
-            className="px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 border border-slate-700 text-xs text-slate-300 transition"
+            className="px-3 py-1.5 rounded-xl bg-white hover:bg-rose-50 border border-pink-200 text-xs text-slate-700 font-bold transition shadow-sm"
           >
             Prefill Sample 2
           </button>
@@ -104,9 +101,9 @@ export const DynamicPatientForm: React.FC = () => {
 
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Model Selection Banner */}
-        <div className="flex flex-col sm:flex-row items-center justify-between p-3.5 bg-slate-900/80 rounded-xl border border-slate-800 gap-3">
-          <div className="flex items-center gap-2 text-xs font-semibold text-slate-300">
-            <Sparkles className="w-4 h-4 text-cyan-400" />
+        <div className="flex flex-col sm:flex-row items-center justify-between p-3.5 bg-white/90 rounded-2xl border border-pink-200 gap-3">
+          <div className="flex items-center gap-2 text-xs font-bold text-slate-800">
+            <Sparkles className="w-4 h-4 text-pink-600" />
             <span>Target Diagnostic Model:</span>
           </div>
 
@@ -114,7 +111,7 @@ export const DynamicPatientForm: React.FC = () => {
             <select
               value={selectedModelId}
               onChange={(e) => setSelectedModelId(e.target.value)}
-              className="w-full sm:w-64 bg-slate-950 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-cyan-300 font-semibold focus:outline-none focus:border-cyan-500"
+              className="w-full sm:w-64 bg-white border border-pink-200 rounded-xl px-3 py-1.5 text-xs text-pink-700 font-bold focus:outline-none focus:border-pink-500"
             >
               {benchmarkSummary ? (
                 Object.values(benchmarkSummary.results).map((r) => (
@@ -136,12 +133,12 @@ export const DynamicPatientForm: React.FC = () => {
             const value = formData[col.name] !== undefined ? formData[col.name] : '';
 
             return (
-              <div key={col.name} className="space-y-1 p-2.5 rounded-xl bg-slate-900/40 border border-slate-800/80">
+              <div key={col.name} className="space-y-1 p-3 rounded-2xl bg-white/80 border border-pink-200">
                 <div className="flex justify-between items-center text-xs">
-                  <label className="font-medium text-slate-300 truncate max-w-[150px]" title={col.name}>
+                  <label className="font-bold text-slate-800 truncate max-w-[150px]" title={col.name}>
                     {col.name}
                   </label>
-                  <span className="text-[10px] text-slate-500 font-mono">
+                  <span className="text-[10px] text-slate-500 font-mono font-medium">
                     {isNumerical ? 'numeric' : 'categorical'}
                   </span>
                 </div>
@@ -153,13 +150,13 @@ export const DynamicPatientForm: React.FC = () => {
                     value={value}
                     onChange={(e) => handleInputChange(col.name, parseFloat(e.target.value) || 0)}
                     placeholder={`e.g. ${col.median_value ?? 0}`}
-                    className="w-full bg-slate-950 border border-slate-800 focus:border-cyan-500 rounded-lg px-3 py-1.5 text-xs text-white font-mono focus:outline-none transition"
+                    className="w-full bg-white border border-pink-200 focus:border-pink-500 rounded-xl px-3 py-1.5 text-xs text-slate-900 font-mono focus:outline-none transition font-semibold"
                   />
                 ) : col.categories && col.categories.length > 0 ? (
                   <select
                     value={value}
                     onChange={(e) => handleInputChange(col.name, e.target.value)}
-                    className="w-full bg-slate-950 border border-slate-800 focus:border-cyan-500 rounded-lg px-3 py-1.5 text-xs text-white font-mono focus:outline-none transition"
+                    className="w-full bg-white border border-pink-200 focus:border-pink-500 rounded-xl px-3 py-1.5 text-xs text-slate-900 font-mono focus:outline-none transition font-semibold"
                   >
                     {col.categories.map((cat) => (
                       <option key={cat} value={cat}>
@@ -172,7 +169,7 @@ export const DynamicPatientForm: React.FC = () => {
                     type="text"
                     value={value}
                     onChange={(e) => handleInputChange(col.name, e.target.value)}
-                    className="w-full bg-slate-950 border border-slate-800 focus:border-cyan-500 rounded-lg px-3 py-1.5 text-xs text-white font-mono focus:outline-none transition"
+                    className="w-full bg-white border border-pink-200 focus:border-pink-500 rounded-xl px-3 py-1.5 text-xs text-slate-900 font-mono focus:outline-none transition font-semibold"
                   />
                 )}
               </div>
@@ -181,13 +178,13 @@ export const DynamicPatientForm: React.FC = () => {
         </div>
 
         {/* Submit Prediction Button */}
-        <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-800">
+        <div className="flex items-center justify-end gap-3 pt-4 border-t border-pink-200">
           <button
             type="submit"
             disabled={isLoading}
-            className="px-6 py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs transition flex items-center gap-2 shadow-lg shadow-cyan-500/20 disabled:opacity-50"
+            className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-pink-500 to-rose-600 hover:from-pink-600 hover:to-rose-700 text-white font-bold text-xs transition flex items-center gap-2 shadow-lg shadow-pink-500/25 disabled:opacity-50"
           >
-            {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Play className="w-4 h-4 fill-current" />}
+            {isLoading ? <Loader2 className="w-4 h-4 animate-spin text-white" /> : <Play className="w-4 h-4 fill-current" />}
             <span>RUN CLINICAL INFERENCE</span>
           </button>
         </div>

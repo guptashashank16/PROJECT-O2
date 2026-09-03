@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Activity, CheckCircle2, ChevronDown, ChevronUp, Cpu, Gauge, Layers, ShieldCheck, Zap } from 'lucide-react';
+import { Activity, ChevronDown, ChevronUp, Cpu, Gauge, Layers, ShieldCheck, Zap } from 'lucide-react';
 import { useAppState } from '../../context/AppStateContext';
 
 export const EvidencePanel: React.FC = () => {
@@ -17,26 +17,26 @@ export const EvidencePanel: React.FC = () => {
     QUANTUM_PREFERRED: {
       label: 'QUANTUM PREFERRED',
       bg: 'bg-emerald-500/10',
-      text: 'text-emerald-400',
-      border: 'border-emerald-500/30',
+      text: 'text-emerald-700',
+      border: 'border-emerald-300',
     },
     QUANTUM_COMPETITIVE: {
       label: 'QUANTUM COMPETITIVE',
       bg: 'bg-pink-500/10',
-      text: 'text-pink-400',
-      border: 'border-pink-500/30',
+      text: 'text-pink-700',
+      border: 'border-pink-300',
     },
     CLASSICAL_PREFERRED: {
       label: 'CLASSICAL PREFERRED',
       bg: 'bg-amber-500/10',
-      text: 'text-amber-400',
-      border: 'border-amber-500/30',
+      text: 'text-amber-800',
+      border: 'border-amber-300',
     },
     INSUFFICIENT_EVIDENCE: {
       label: 'INSUFFICIENT EVIDENCE',
       bg: 'bg-slate-500/10',
-      text: 'text-slate-400',
-      border: 'border-slate-500/30',
+      text: 'text-slate-700',
+      border: 'border-slate-300',
     },
   };
 
@@ -51,15 +51,15 @@ export const EvidencePanel: React.FC = () => {
   ];
 
   return (
-    <div className="glass-panel-pink rounded-3xl p-6 space-y-6 border border-pink-500/30 shadow-xl">
+    <div className="glass-panel-pink rounded-3xl p-6 space-y-6 border border-pink-300 shadow-xl">
       <div className="flex items-center justify-between cursor-pointer" onClick={() => setExpanded(!expanded)}>
         <div className="flex items-center gap-3">
           <div className="p-2.5 rounded-2xl bg-gradient-to-br from-pink-500 to-rose-600 shadow-md shadow-pink-500/20">
             <Activity className="w-5 h-5 text-white" />
           </div>
           <div>
-            <h3 className="text-base font-bold text-white tracking-tight">Quantum Evidence Engine</h3>
-            <p className="text-xs text-slate-400">5-Dimensional Clinical Utility Verdict</p>
+            <h3 className="text-base font-bold text-slate-900 tracking-tight">Quantum Evidence Engine</h3>
+            <p className="text-xs text-slate-500">5-Dimensional Clinical Utility Verdict</p>
           </div>
         </div>
 
@@ -67,17 +67,17 @@ export const EvidencePanel: React.FC = () => {
           <div className={`px-3.5 py-1.5 rounded-full border text-xs font-bold tracking-wider ${currentStyle.bg} ${currentStyle.text} ${currentStyle.border}`}>
             {currentStyle.label}
           </div>
-          <button className="text-slate-400 hover:text-white">
+          <button className="text-slate-400 hover:text-slate-700">
             {expanded ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
           </button>
         </div>
       </div>
 
       {expanded && (
-        <div className="space-y-6 pt-4 border-t border-pink-500/20 animate-in fade-in duration-200">
-          <div className="p-4 rounded-2xl bg-slate-900/60 border border-pink-500/20 space-y-2">
-            <h4 className="text-xs font-semibold text-pink-300">Verdict Rationale</h4>
-            <p className="text-xs text-slate-200 leading-relaxed">{evidence.verdict_explanation}</p>
+        <div className="space-y-6 pt-4 border-t border-pink-200/80 animate-in fade-in duration-200">
+          <div className="p-4 rounded-2xl bg-white/90 border border-pink-200/80 space-y-1.5 shadow-sm">
+            <h4 className="text-xs font-bold text-pink-700">Verdict Rationale</h4>
+            <p className="text-xs text-slate-700 leading-relaxed font-medium">{evidence.verdict_explanation}</p>
           </div>
 
           {/* 5 Dimensions Grid */}
@@ -92,29 +92,29 @@ export const EvidencePanel: React.FC = () => {
                   key={key}
                   className={`p-4 rounded-2xl border transition-all ${
                     isPassed
-                      ? 'bg-emerald-500/5 border-emerald-500/20'
+                      ? 'bg-emerald-50/70 border-emerald-200'
                       : isWarning
-                      ? 'bg-amber-500/5 border-amber-500/20'
-                      : 'bg-slate-900/60 border-slate-800'
+                      ? 'bg-amber-50/70 border-amber-200'
+                      : 'bg-white/80 border-slate-200'
                   }`}
                 >
                   <div className="flex items-center justify-between mb-2">
-                    <Icon className="w-4 h-4 text-pink-400" />
+                    <Icon className="w-4 h-4 text-pink-600" />
                     <span
                       className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
                         isPassed
-                          ? 'bg-emerald-500/20 text-emerald-400'
+                          ? 'bg-emerald-100 text-emerald-800'
                           : isWarning
-                          ? 'bg-amber-500/20 text-amber-400'
-                          : 'bg-slate-800 text-slate-400'
+                          ? 'bg-amber-100 text-amber-800'
+                          : 'bg-slate-100 text-slate-600'
                       }`}
                     >
                       {isPassed ? '✓ Passed' : isWarning ? '⚠️ Alert' : '• Neutral'}
                     </span>
                   </div>
 
-                  <h5 className="text-xs font-bold text-white mb-1">{key}</h5>
-                  <p className="text-[11px] text-slate-400 leading-snug">{data.description}</p>
+                  <h5 className="text-xs font-bold text-slate-900 mb-1">{key}</h5>
+                  <p className="text-[11px] text-slate-600 leading-snug">{data.description}</p>
                 </div>
               );
             })}
@@ -122,11 +122,11 @@ export const EvidencePanel: React.FC = () => {
 
           {/* Transparent Rules Breakdown */}
           {evidence.rule_breakdown && evidence.rule_breakdown.length > 0 && (
-            <div className="p-4 rounded-2xl bg-slate-900/40 border border-slate-800 space-y-2">
-              <h5 className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Evaluation Rules Applied</h5>
+            <div className="p-4 rounded-2xl bg-white/70 border border-pink-200/60 space-y-2">
+              <h5 className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Evaluation Rules Applied</h5>
               <div className="flex flex-wrap gap-2">
                 {evidence.rule_breakdown.map((rule: string, i: number) => (
-                  <span key={i} className="text-[10px] bg-slate-800/80 text-pink-300 px-2.5 py-1 rounded-lg border border-pink-500/10">
+                  <span key={i} className="text-[10px] bg-pink-50 text-pink-700 font-semibold px-2.5 py-1 rounded-lg border border-pink-200">
                     • {rule}
                   </span>
                 ))}

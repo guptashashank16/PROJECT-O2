@@ -106,7 +106,7 @@ export const App: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-slate-950 flex flex-col font-sans">
+    <div className="min-h-screen bg-gradient-to-br from-rose-50 via-pink-50/40 to-slate-50 flex flex-col font-sans text-slate-800">
       <Header />
       <StatusBanner />
 
@@ -118,8 +118,8 @@ export const App: React.FC = () => {
           {activeTab === 'dataset' && (
             <div className="space-y-8 animate-in fade-in duration-200">
               <div>
-                <h2 className="text-xl font-bold text-white tracking-tight">Dataset Profiling & Ingestion</h2>
-                <p className="text-xs text-slate-400">
+                <h2 className="text-xl font-bold text-slate-900 tracking-tight">Dataset Profiling & Ingestion</h2>
+                <p className="text-xs text-slate-500">
                   Select a clinical benchmark sample or upload an arbitrary tabular biomedical CSV dataset
                 </p>
               </div>
@@ -134,8 +134,8 @@ export const App: React.FC = () => {
           {activeTab === 'preprocessing' && (
             <div className="space-y-8 animate-in fade-in duration-200">
               <div>
-                <h2 className="text-xl font-bold text-white tracking-tight">Preprocessing & Feature Transformation</h2>
-                <p className="text-xs text-slate-400">
+                <h2 className="text-xl font-bold text-slate-900 tracking-tight">Preprocessing & Feature Transformation</h2>
+                <p className="text-xs text-slate-500">
                   Leakage-free imputation, categorical encoding, feature selection, and PCA quantum compression
                 </p>
               </div>
@@ -148,8 +148,8 @@ export const App: React.FC = () => {
           {activeTab === 'training' && (
             <div className="space-y-8 animate-in fade-in duration-200">
               <div>
-                <h2 className="text-xl font-bold text-white tracking-tight">Quantum & Classical Model Architecture</h2>
-                <p className="text-xs text-slate-400">
+                <h2 className="text-xl font-bold text-slate-900 tracking-tight">Quantum & Classical Model Architecture</h2>
+                <p className="text-xs text-slate-500">
                   Configure Variational Quantum Classifier (VQC) parameterized circuits and classical baseline models
                 </p>
               </div>
@@ -173,8 +173,8 @@ export const App: React.FC = () => {
           {activeTab === 'benchmark' && (
             <div className="space-y-8 animate-in fade-in duration-200">
               <div>
-                <h2 className="text-xl font-bold text-white tracking-tight">Comparative Benchmark & Evidence Engine</h2>
-                <p className="text-xs text-slate-400">
+                <h2 className="text-xl font-bold text-slate-900 tracking-tight">Comparative Benchmark & Evidence Engine</h2>
+                <p className="text-xs text-slate-500">
                   Stratified 5-fold cross-validation benchmarking Variational Quantum Classifier (VQC) against classical baselines
                 </p>
               </div>
@@ -189,10 +189,10 @@ export const App: React.FC = () => {
                   <ConfusionMatrixCard />
                 </>
               ) : (
-                <div className="glass-panel-pink rounded-3xl p-12 text-center space-y-3 border border-pink-500/20">
-                  <BarChart3 className="w-8 h-8 text-pink-400 mx-auto" />
-                  <p className="text-sm font-semibold text-slate-200">No Benchmark Results Available</p>
-                  <p className="text-xs text-slate-400 max-w-sm mx-auto">
+                <div className="glass-panel-pink rounded-3xl p-12 text-center space-y-3 border border-pink-200">
+                  <BarChart3 className="w-8 h-8 text-pink-500 mx-auto" />
+                  <p className="text-sm font-bold text-slate-800">No Benchmark Results Available</p>
+                  <p className="text-xs text-slate-500 max-w-sm mx-auto">
                     Please configure models in the Quantum & ML Setup tab and run training to generate benchmark metrics.
                   </p>
                 </div>
@@ -204,8 +204,8 @@ export const App: React.FC = () => {
           {activeTab === 'explainability' && (
             <div className="space-y-8 animate-in fade-in duration-200">
               <div>
-                <h2 className="text-xl font-bold text-white tracking-tight">Explainability & Feature Sensitivity</h2>
-                <p className="text-xs text-slate-400">
+                <h2 className="text-xl font-bold text-slate-900 tracking-tight">Explainability & Feature Sensitivity</h2>
+                <p className="text-xs text-slate-500">
                   Quantum Model Feature Sensitivity Analysis via finite difference perturbation and classical feature importances
                 </p>
               </div>
@@ -213,10 +213,10 @@ export const App: React.FC = () => {
               {benchmarkSummary ? (
                 <ExplainabilityView />
               ) : (
-                <div className="glass-panel-pink rounded-3xl p-12 text-center space-y-3 border border-pink-500/20">
-                  <Eye className="w-8 h-8 text-pink-400 mx-auto" />
-                  <p className="text-sm font-semibold text-slate-200">Models Not Yet Evaluated</p>
-                  <p className="text-xs text-slate-400">Train models to compute Quantum Feature Sensitivity analysis.</p>
+                <div className="glass-panel-pink rounded-3xl p-12 text-center space-y-3 border border-pink-200">
+                  <Eye className="w-8 h-8 text-pink-500 mx-auto" />
+                  <p className="text-sm font-bold text-slate-800">Models Not Yet Evaluated</p>
+                  <p className="text-xs text-slate-500">Train models to compute Quantum Feature Sensitivity analysis.</p>
                 </div>
               )}
             </div>
@@ -226,8 +226,8 @@ export const App: React.FC = () => {
           {activeTab === 'prediction' && (
             <div className="space-y-8 animate-in fade-in duration-200">
               <div>
-                <h2 className="text-xl font-bold text-white tracking-tight">Dynamic Patient Inference Lab</h2>
-                <p className="text-xs text-slate-400">
+                <h2 className="text-xl font-bold text-slate-900 tracking-tight">Dynamic Patient Inference Lab</h2>
+                <p className="text-xs text-slate-500">
                   Real-time clinical inference through fitted preprocessing, PCA projection, and model prediction
                 </p>
               </div>
@@ -238,10 +238,10 @@ export const App: React.FC = () => {
                   <PredictionResultCard />
                 </>
               ) : (
-                <div className="glass-panel-pink rounded-3xl p-12 text-center space-y-3 border border-pink-500/20">
-                  <Stethoscope className="w-8 h-8 text-pink-400 mx-auto" />
-                  <p className="text-sm font-semibold text-slate-200">Inference Engine Not Ready</p>
-                  <p className="text-xs text-slate-400">Please train models before executing patient inference.</p>
+                <div className="glass-panel-pink rounded-3xl p-12 text-center space-y-3 border border-pink-200">
+                  <Stethoscope className="w-8 h-8 text-pink-500 mx-auto" />
+                  <p className="text-sm font-bold text-slate-800">Inference Engine Not Ready</p>
+                  <p className="text-xs text-slate-500">Please train models before executing patient inference.</p>
                 </div>
               )}
             </div>
@@ -256,3 +256,4 @@ export const App: React.FC = () => {
     </div>
   );
 };
+

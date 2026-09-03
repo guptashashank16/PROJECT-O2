@@ -1,5 +1,5 @@
 import React from 'react';
-import { Binary, Cpu, Layers, Sliders, Sparkles, Zap } from 'lucide-react';
+import { Cpu, Zap } from 'lucide-react';
 import { ClassicalModelConfig, QuantumModelConfig } from '../../types';
 
 interface ModelConfigCardProps {
@@ -20,15 +20,15 @@ export const ModelConfigCard: React.FC<ModelConfigCardProps> = ({
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
       {/* Quantum VQC Architecture Configuration */}
-      <div className="lg:col-span-2 glass-panel rounded-2xl p-6 space-y-5">
-        <div className="flex items-center justify-between border-b border-slate-800 pb-3.5">
+      <div className="lg:col-span-2 glass-panel-pink rounded-3xl p-6 space-y-5 border border-pink-300 shadow-xl">
+        <div className="flex items-center justify-between border-b border-pink-200 pb-3.5">
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-cyan-500/10 text-cyan-400 flex items-center justify-center border border-cyan-500/20">
+            <div className="w-8 h-8 rounded-lg bg-pink-500 text-white flex items-center justify-center shadow-md shadow-pink-500/20">
               <Cpu className="w-4 h-4" />
             </div>
             <div>
-              <h2 className="text-sm font-bold text-white">Variational Quantum Classifier (VQC)</h2>
-              <p className="text-xs text-slate-400">Parameterized Quantum Circuit (PQC) & Ansatz</p>
+              <h2 className="text-sm font-bold text-slate-900">Variational Quantum Classifier (VQC)</h2>
+              <p className="text-xs text-slate-500">Parameterized Quantum Circuit (PQC) & Ansatz</p>
             </div>
           </div>
 
@@ -39,10 +39,10 @@ export const ModelConfigCard: React.FC<ModelConfigCardProps> = ({
             onClick={() =>
               setQuantumConfig((prev) => ({ ...prev, fast_demo_mode: !prev.fast_demo_mode }))
             }
-            className={`px-3 py-1.5 rounded-xl border text-xs font-semibold flex items-center gap-2 transition ${
+            className={`px-3 py-1.5 rounded-xl border text-xs font-bold flex items-center gap-2 transition ${
               quantumConfig.fast_demo_mode
-                ? 'bg-amber-500/15 border-amber-500/40 text-amber-300'
-                : 'bg-slate-900 border-slate-800 text-slate-400'
+                ? 'bg-amber-100 border-amber-300 text-amber-800'
+                : 'bg-white border-pink-200 text-slate-500'
             }`}
           >
             <Zap className="w-3.5 h-3.5" />
@@ -54,8 +54,8 @@ export const ModelConfigCard: React.FC<ModelConfigCardProps> = ({
           {/* Qubits */}
           <div className="space-y-1.5">
             <div className="flex justify-between text-xs">
-              <span className="text-slate-300 font-medium">Qubit Count ($N$)</span>
-              <span className="font-mono text-cyan-400 font-bold">{quantumConfig.n_qubits} Qubits</span>
+              <span className="text-slate-700 font-bold">Qubit Count ($N$)</span>
+              <span className="font-mono text-pink-700 font-bold">{quantumConfig.n_qubits} Qubits</span>
             </div>
             <select
               disabled={disabled}
@@ -63,7 +63,7 @@ export const ModelConfigCard: React.FC<ModelConfigCardProps> = ({
               onChange={(e) =>
                 setQuantumConfig((prev) => ({ ...prev, n_qubits: parseInt(e.target.value, 10) }))
               }
-              className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-cyan-500 font-mono"
+              className="w-full bg-white border border-pink-200 rounded-xl px-3 py-2 text-xs text-slate-900 font-bold focus:outline-none focus:border-pink-500 font-mono"
             >
               {[4, 5, 6, 7, 8].map((n) => (
                 <option key={n} value={n}>
@@ -75,14 +75,14 @@ export const ModelConfigCard: React.FC<ModelConfigCardProps> = ({
 
           {/* Feature Map */}
           <div className="space-y-1.5">
-            <span className="text-slate-300 font-medium text-xs block">Quantum Feature Map</span>
+            <span className="text-slate-700 font-bold text-xs block">Quantum Feature Map</span>
             <select
               disabled={disabled}
               value={quantumConfig.feature_map}
               onChange={(e) =>
                 setQuantumConfig((prev) => ({ ...prev, feature_map: e.target.value }))
               }
-              className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-cyan-500 font-mono"
+              className="w-full bg-white border border-pink-200 rounded-xl px-3 py-2 text-xs text-slate-900 font-bold focus:outline-none focus:border-pink-500 font-mono"
             >
               <option value="ZZFeatureMap">ZZFeatureMap (Entangled 2-Qubit Interactions)</option>
               <option value="AngleEncoding">AngleEncoding (Single-Qubit Ry Rotations)</option>
@@ -91,14 +91,14 @@ export const ModelConfigCard: React.FC<ModelConfigCardProps> = ({
 
           {/* Variational Ansatz */}
           <div className="space-y-1.5">
-            <span className="text-slate-300 font-medium text-xs block">Variational Ansatz</span>
+            <span className="text-slate-700 font-bold text-xs block">Variational Ansatz</span>
             <select
               disabled={disabled}
               value={quantumConfig.ansatz}
               onChange={(e) =>
                 setQuantumConfig((prev) => ({ ...prev, ansatz: e.target.value }))
               }
-              className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-cyan-500 font-mono"
+              className="w-full bg-white border border-pink-200 rounded-xl px-3 py-2 text-xs text-slate-900 font-bold focus:outline-none focus:border-pink-500 font-mono"
             >
               <option value="RealAmplitudes">RealAmplitudes (Ry + Linear Entanglement)</option>
               <option value="EfficientSU2">EfficientSU2 (Ry + Rz + Linear Entanglement)</option>
@@ -108,8 +108,8 @@ export const ModelConfigCard: React.FC<ModelConfigCardProps> = ({
           {/* Ansatz Repetitions / Layers */}
           <div className="space-y-1.5">
             <div className="flex justify-between text-xs">
-              <span className="text-slate-300 font-medium">Ansatz Layers ($L$)</span>
-              <span className="font-mono text-cyan-400 font-bold">{quantumConfig.ansatz_layers} Layers</span>
+              <span className="text-slate-700 font-bold">Ansatz Layers ($L$)</span>
+              <span className="font-mono text-pink-700 font-bold">{quantumConfig.ansatz_layers} Layers</span>
             </div>
             <select
               disabled={disabled}
@@ -117,7 +117,7 @@ export const ModelConfigCard: React.FC<ModelConfigCardProps> = ({
               onChange={(e) =>
                 setQuantumConfig((prev) => ({ ...prev, ansatz_layers: parseInt(e.target.value, 10) }))
               }
-              className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-cyan-500 font-mono"
+              className="w-full bg-white border border-pink-200 rounded-xl px-3 py-2 text-xs text-slate-900 font-bold focus:outline-none focus:border-pink-500 font-mono"
             >
               {[1, 2, 3, 4].map((l) => (
                 <option key={l} value={l}>
@@ -129,14 +129,14 @@ export const ModelConfigCard: React.FC<ModelConfigCardProps> = ({
 
           {/* Classical Optimizer */}
           <div className="space-y-1.5">
-            <span className="text-slate-300 font-medium text-xs block">Classical Optimizer</span>
+            <span className="text-slate-700 font-bold text-xs block">Classical Optimizer</span>
             <select
               disabled={disabled}
               value={quantumConfig.optimizer}
               onChange={(e) =>
                 setQuantumConfig((prev) => ({ ...prev, optimizer: e.target.value }))
               }
-              className="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-cyan-500 font-mono"
+              className="w-full bg-white border border-pink-200 rounded-xl px-3 py-2 text-xs text-slate-900 font-bold focus:outline-none focus:border-pink-500 font-mono"
             >
               <option value="COBYLA">COBYLA (Derivative-Free Trust Region)</option>
               <option value="SLSQP">SLSQP (Sequential Least Squares)</option>
@@ -147,8 +147,8 @@ export const ModelConfigCard: React.FC<ModelConfigCardProps> = ({
           {/* Max Iterations */}
           <div className="space-y-1.5">
             <div className="flex justify-between text-xs">
-              <span className="text-slate-300 font-medium">Max Optimization Iterations</span>
-              <span className="font-mono text-cyan-400 font-bold">{quantumConfig.max_iterations} Iterations</span>
+              <span className="text-slate-700 font-bold">Max Optimization Iterations</span>
+              <span className="font-mono text-pink-700 font-bold">{quantumConfig.max_iterations} Iterations</span>
             </div>
             <input
               type="range"
@@ -160,30 +160,30 @@ export const ModelConfigCard: React.FC<ModelConfigCardProps> = ({
               onChange={(e) =>
                 setQuantumConfig((prev) => ({ ...prev, max_iterations: parseInt(e.target.value, 10) }))
               }
-              className="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-cyan-400"
+              className="w-full h-2 bg-pink-100 rounded-lg appearance-none cursor-pointer accent-pink-600"
             />
           </div>
         </div>
 
-        <div className="p-3 bg-slate-900/60 rounded-xl border border-slate-800 text-[11px] text-slate-400 leading-relaxed">
+        <div className="p-3 bg-white/80 rounded-xl border border-pink-200 text-[11px] text-slate-600 leading-relaxed font-medium">
           <strong>Quantum Simulation Guarantee:</strong> Fast Demo Mode runs actual statevector evaluations on local CPU. It optimizes iteration budgets without replacing execution with precomputed or fake metrics.
         </div>
       </div>
 
       {/* Classical Baselines Panel */}
-      <div className="glass-panel rounded-2xl p-6 space-y-4 flex flex-col justify-between">
+      <div className="glass-panel-pink rounded-3xl p-6 space-y-4 flex flex-col justify-between border border-pink-300 shadow-xl">
         <div className="space-y-4">
-          <div className="border-b border-slate-800 pb-3.5">
-            <h2 className="text-sm font-bold text-white">Classical Baselines</h2>
-            <p className="text-xs text-slate-400">Benchmark models trained on identical split</p>
+          <div className="border-b border-pink-200 pb-3.5">
+            <h2 className="text-sm font-bold text-slate-900">Classical Baselines</h2>
+            <p className="text-xs text-slate-500">Benchmark models trained on identical split</p>
           </div>
 
           <div className="space-y-3">
             {/* Logistic Regression */}
-            <label className="flex items-center justify-between p-3 rounded-xl bg-slate-900/80 border border-slate-800 cursor-pointer hover:border-slate-700 transition">
+            <label className="flex items-center justify-between p-3 rounded-xl bg-white border border-pink-200 cursor-pointer hover:border-pink-400 transition">
               <div className="space-y-0.5">
-                <span className="text-xs font-semibold text-white block">Logistic Regression</span>
-                <span className="text-[10px] text-slate-400">Linear L2 baseline with balanced class weights</span>
+                <span className="text-xs font-bold text-slate-900 block">Logistic Regression</span>
+                <span className="text-[10px] text-slate-500 font-medium">Linear L2 baseline with balanced class weights</span>
               </div>
               <input
                 type="checkbox"
@@ -192,15 +192,15 @@ export const ModelConfigCard: React.FC<ModelConfigCardProps> = ({
                 onChange={(e) =>
                   setClassicalConfig((prev) => ({ ...prev, logistic_regression: e.target.checked }))
                 }
-                className="w-4 h-4 text-cyan-500 bg-slate-950 border-slate-700 rounded focus:ring-cyan-500"
+                className="w-4 h-4 text-pink-600 bg-white border-pink-300 rounded focus:ring-pink-500"
               />
             </label>
 
             {/* Random Forest */}
-            <label className="flex items-center justify-between p-3 rounded-xl bg-slate-900/80 border border-slate-800 cursor-pointer hover:border-slate-700 transition">
+            <label className="flex items-center justify-between p-3 rounded-xl bg-white border border-pink-200 cursor-pointer hover:border-pink-400 transition">
               <div className="space-y-0.5">
-                <span className="text-xs font-semibold text-white block">Random Forest</span>
-                <span className="text-[10px] text-slate-400">Non-linear ensemble (100 decision trees)</span>
+                <span className="text-xs font-bold text-slate-900 block">Random Forest</span>
+                <span className="text-[10px] text-slate-500 font-medium">Non-linear ensemble (100 decision trees)</span>
               </div>
               <input
                 type="checkbox"
@@ -209,15 +209,15 @@ export const ModelConfigCard: React.FC<ModelConfigCardProps> = ({
                 onChange={(e) =>
                   setClassicalConfig((prev) => ({ ...prev, random_forest: e.target.checked }))
                 }
-                className="w-4 h-4 text-cyan-500 bg-slate-950 border-slate-700 rounded focus:ring-cyan-500"
+                className="w-4 h-4 text-pink-600 bg-white border-pink-300 rounded focus:ring-pink-500"
               />
             </label>
 
             {/* SVM */}
-            <label className="flex items-center justify-between p-3 rounded-xl bg-slate-900/80 border border-slate-800 cursor-pointer hover:border-slate-700 transition">
+            <label className="flex items-center justify-between p-3 rounded-xl bg-white border border-pink-200 cursor-pointer hover:border-pink-400 transition">
               <div className="space-y-0.5">
-                <span className="text-xs font-semibold text-white block">Support Vector Machine (SVM)</span>
-                <span className="text-[10px] text-slate-400">RBF kernel with Platt probability calibration</span>
+                <span className="text-xs font-bold text-slate-900 block">Support Vector Machine (SVM)</span>
+                <span className="text-[10px] text-slate-500 font-medium">RBF kernel with Platt probability calibration</span>
               </div>
               <input
                 type="checkbox"
@@ -226,13 +226,13 @@ export const ModelConfigCard: React.FC<ModelConfigCardProps> = ({
                 onChange={(e) =>
                   setClassicalConfig((prev) => ({ ...prev, svm: e.target.checked }))
                 }
-                className="w-4 h-4 text-cyan-500 bg-slate-950 border-slate-700 rounded focus:ring-cyan-500"
+                className="w-4 h-4 text-pink-600 bg-white border-pink-300 rounded focus:ring-pink-500"
               />
             </label>
           </div>
         </div>
 
-        <div className="text-[10px] text-slate-500 font-mono">
+        <div className="text-[10px] text-slate-500 font-mono font-medium">
           All models share identical random seed ($S=42$) and evaluated on held-out test split.
         </div>
       </div>
