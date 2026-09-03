@@ -149,4 +149,34 @@ export const api = {
     }
     return res.json();
   },
+
+  // Auth Operations
+  async login(username_or_email: string, password: string) {
+    const res = await fetch(`${API_BASE}/auth/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username_or_email, password }),
+    });
+    if (!res.ok) {
+      const err = await res.json();
+      throw new Error(err.detail || 'Invalid username or password');
+    }
+    return res.json();
+  },
+
+  async register(username: string, email: string, password: string, full_name?: string) {
+    const res = await fetch(`${API_BASE}/auth/register`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, email, password, full_name }),
+    });
+    if (!res.ok) {
+      const err = await res.json();
+      throw new Error(err.detail || 'Registration failed');
+    }
+    return res.json();
+  },
 };
+
+export const apiService = api;
+

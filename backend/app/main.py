@@ -6,7 +6,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.config import settings
 from app.data.profiler import DatasetProfiler
 from app.data.sample_loader import load_sample_dataset
-from app.routers import dataset, predict, results, train
+from app.routers import auth, dataset, predict, results, train
+
 from app.schemas import DatasetConfigRequest, HealthResponse
 from app.state import app_state
 
