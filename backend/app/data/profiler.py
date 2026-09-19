@@ -47,7 +47,11 @@ class DatasetProfiler:
             
             # Identifier Detection Heuristics
             is_id_keyword = col_lower in self.IDENTIFIER_KEYWORDS or col_lower.endswith("_id") or col_lower.startswith("id_")
-            is_high_unique_seq = (unique_count == total_rows) and (pd.api.types.is_integer_dtype(series) or pd.api.types.is_string_dtype(series))
+            is_high_unique_seq = (
+                unique_count == total_rows
+                and pd.api.types.is_string_dtype(series)
+                and not pd.api.types.is_numeric_dtype(series)
+            )
             is_candidate_identifier = (is_id_keyword or is_high_unique_seq) and not is_const
 
             if is_candidate_identifier:

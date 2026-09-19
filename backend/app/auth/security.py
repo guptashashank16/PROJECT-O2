@@ -7,10 +7,11 @@ import jwt
 try:
     from argon2 import PasswordHasher
     from argon2.exceptions import VerifyMismatchError
-    HAS_ARGON2 = True
     ph = PasswordHasher()
-except ImportError:
+    HAS_ARGON2 = True
+except Exception:
     HAS_ARGON2 = False
+    ph = None
 
 logger = logging.getLogger("hybrid-quantum-medical-ai")
 
@@ -22,12 +23,14 @@ DEFAULT_TOKEN_EXPIRE_MINUTES = 480  # 8 hours
 
 def hash_password(password: str) -> str:
     """Hash a plaintext password using Argon2id with standard fallback."""
-    if HAS_ARGON2:
-        return ph.hash(password)
-    else:
-        # Fallback to salted SHA256 if argon2 package is loading in lightweight environment
-        salt = "qcare_argon2_fallback_salt_"
-        return "sha256$" + hashlib.sha256((salt + password).encode("utf-8")).hexdigest()
+    if HAS_ARGON2 and ph is not None:
+        try:
+            return ph.hash(password)
+        except Exception as e:
+            logger.warning(f"Argon2 hashing error: {e}")
+    # Fallback to salted SHA256 if argon2 package is loading in lightweight environment
+    salt = "qcare_argon2_fallback_salt_"
+    return "sha256$" + hashlib.sha256((salt + password).encode("utf-8")).hexdigest()
 
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:

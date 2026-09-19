@@ -1,6 +1,6 @@
 from typing import Any, Dict, List, Optional
 from fastapi import APIRouter, Depends, HTTPException, Request, status
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel
 
 from app.auth.rbac import UserRecord, UserRole, get_current_user, require_permission, user_store
 from app.auth.security import create_access_token, hash_password, verify_password

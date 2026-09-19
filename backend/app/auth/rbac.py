@@ -89,22 +89,24 @@ class UserStore:
             except Exception as e:
                 logger.warning(f"Could not load users.json, re-seeding: {e}")
 
-        # Seed initial system users for hackathon demo
-        admin_pass = hash_password("Admin@QCare2026")
-        researcher_pass = hash_password("Research@QCare2026")
-        clinician_pass = hash_password("Doctor@QCare2026")
-        viewer_pass = hash_password("Viewer@QCare2026")
+        try:
+            admin_pass = hash_password("Admin@QCare2026")
+            researcher_pass = hash_password("Research@QCare2026")
+            clinician_pass = hash_password("Doctor@QCare2026")
+            viewer_pass = hash_password("Viewer@QCare2026")
 
-        seeds = [
-            UserRecord("admin", "admin@qcare.ai", admin_pass, UserRole.ADMIN, "System Administrator"),
-            UserRecord("researcher", "researcher@qcare.ai", researcher_pass, UserRole.RESEARCHER, "Lead Quantum AI Researcher"),
-            UserRecord("clinician", "doctor@qcare.ai", clinician_pass, UserRole.CLINICIAN, "Dr. Sarah Lin (Cardiology)"),
-            UserRecord("viewer", "viewer@qcare.ai", viewer_pass, UserRole.VIEWER, "Clinical Auditor"),
-        ]
+            seeds = [
+                UserRecord("admin", "admin@qcare.ai", admin_pass, UserRole.ADMIN, "System Administrator"),
+                UserRecord("researcher", "researcher@qcare.ai", researcher_pass, UserRole.RESEARCHER, "Lead Quantum AI Researcher"),
+                UserRecord("clinician", "doctor@qcare.ai", clinician_pass, UserRole.CLINICIAN, "Dr. Sarah Lin (Cardiology)"),
+                UserRecord("viewer", "viewer@qcare.ai", viewer_pass, UserRole.VIEWER, "Clinical Auditor"),
+            ]
 
-        for s in seeds:
-            self._users[s.username.lower()] = s
-        self._save()
+            for s in seeds:
+                self._users[s.username.lower()] = s
+            self._save()
+        except Exception as e:
+            logger.error(f"Error seeding default users: {e}")
 
     def _save(self) -> None:
         try:

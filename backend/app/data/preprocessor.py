@@ -170,13 +170,13 @@ class ClinicalPreprocessor:
             ),
         ]
 
-        # 2. Feature Selection (SelectKBest) fitted exclusively on train
+        # 2. Optional feature selection (only when explicitly configured)
         k_best = self.params.feature_selection_k
-        if k_best is None or k_best > enc_dim or k_best <= 0:
-            k_best = min(enc_dim, max(self.params.n_quantum_features, min(enc_dim, 15)))
+        if k_best is not None and (k_best > enc_dim or k_best <= 0):
+            k_best = min(enc_dim, max(2, min(enc_dim, 15)))
 
-        if enc_dim > k_best:
-            self.feature_selector = SelectKBest(score_func=f_classif, k=k_best)
+        if k_best is not None:
+            self.feature_selector = SelectKBest(score_func=f_classif, k=min(k_best, enc_dim))
             X_train_sel = self.feature_selector.fit_transform(X_train_enc, y_train)
             X_test_sel = self.feature_selector.transform(X_test_enc)
 
@@ -184,22 +184,22 @@ class ClinicalPreprocessor:
             self.selected_feature_names_ = [
                 self.encoded_feature_names_[i] for i, val in enumerate(selected_mask) if val
             ]
+            sel_dim = X_train_sel.shape[1]
+            self.pipeline_steps.append(
+                FeaturePipelineStep(
+                    step_name="Feature Selection",
+                    description=f"ANOVA F-value feature scoring selecting top {sel_dim} predictive features.",
+                    input_dimension=enc_dim,
+                    output_dimension=sel_dim,
+                    details={"selected_k": sel_dim},
+                )
+            )
         else:
             self.feature_selector = None
             X_train_sel = X_train_enc
             X_test_sel = X_test_enc
             self.selected_feature_names_ = list(self.encoded_feature_names_)
-
-        sel_dim = X_train_sel.shape[1]
-        self.pipeline_steps.append(
-            FeaturePipelineStep(
-                step_name="Feature Selection",
-                description=f"ANOVA F-value feature scoring selecting top {sel_dim} predictive features.",
-                input_dimension=enc_dim,
-                output_dimension=sel_dim,
-                details={"selected_k": sel_dim},
-            )
-        )
+            sel_dim = X_train_sel.shape[1]
 
         # 3. PCA Dimensionality Reduction fitted exclusively on train
         n_q_features = min(self.params.n_quantum_features, sel_dim)
@@ -209,8 +209,8 @@ class ClinicalPreprocessor:
 
         # 4. Quantum Normalization ([0, pi] scaling for Pauli/ZZ feature maps)
         self.quantum_scaler = MinMaxScaler(feature_range=(0, np.pi))
-        X_train_q = self.quantum_scaler.fit_transform(X_train_pca)
-        X_test_q = self.quantum_scaler.transform(X_test_pca)
+        X_train_q = np.clip(self.quantum_scaler.fit_transform(X_train_pca), 0, np.pi)
+        X_test_q = np.clip(self.quantum_scaler.transform(X_test_pca), 0, np.pi)
 
         exp_var = [float(round(v, 4)) for v in self.pca.explained_variance_ratio_]
         cum_var = float(round(float(np.sum(self.pca.explained_variance_ratio_)), 4))
@@ -282,11 +282,11 @@ class ClinicalPreprocessor:
 
         enc_dim = X_enc.shape[1]
         k_best = self.params.feature_selection_k
-        if k_best is None or k_best > enc_dim or k_best <= 0:
-            k_best = min(enc_dim, max(self.params.n_quantum_features, min(enc_dim, 15)))
+        if k_best is not None and (k_best > enc_dim or k_best <= 0):
+            k_best = min(enc_dim, max(2, min(enc_dim, 15)))
 
-        if enc_dim > k_best:
-            self.feature_selector = SelectKBest(score_func=f_classif, k=k_best)
+        if k_best is not None:
+            self.feature_selector = SelectKBest(score_func=f_classif, k=min(k_best, enc_dim))
             X_sel = self.feature_selector.fit_transform(X_enc, y_fold_train)
         else:
             self.feature_selector = None
