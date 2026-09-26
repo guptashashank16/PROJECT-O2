@@ -1,5 +1,6 @@
 import json
 import logging
+import os
 from enum import Enum
 from pathlib import Path
 from typing import Any, Dict, List, Optional
@@ -13,10 +14,9 @@ security_bearer = HTTPBearer(auto_error=False)
 
 
 class UserRole(str, Enum):
-    ADMIN = "ADMIN"
     RESEARCHER = "RESEARCHER"
-    CLINICIAN = "CLINICIAN"
     VIEWER = "VIEWER"
+    ADMIN = "ADMIN"
 
 
 # Role-Permissions Mapping
@@ -25,19 +25,18 @@ ROLE_PERMISSIONS: Dict[UserRole, List[str]] = {
         "dataset:view", "dataset:upload", "dataset:configure",
         "model:view", "model:train", "model:configure",
         "prediction:run", "explainability:view", "evidence:view",
+        "experiment:view", "experiment:create", "experiment:manage",
         "users:view", "users:manage", "audit:view"
     ],
     UserRole.RESEARCHER: [
         "dataset:view", "dataset:upload", "dataset:configure",
         "model:view", "model:train", "model:configure",
         "prediction:run", "explainability:view", "evidence:view",
-    ],
-    UserRole.CLINICIAN: [
-        "dataset:view", "model:view",
-        "prediction:run", "explainability:view", "evidence:view",
+        "experiment:view", "experiment:create",
     ],
     UserRole.VIEWER: [
         "dataset:view", "model:view", "explainability:view", "evidence:view",
+        "experiment:view",
     ]
 }
 
@@ -61,7 +60,7 @@ class UserRecord:
 
 
 class UserStore:
-    """Thread-safe persistent JSON user repository with seeded default admin and clinician accounts."""
+    """Thread-safe persistent JSON user repository with seeded development accounts."""
 
     def __init__(self, storage_path: Optional[Path] = None):
         if storage_path is None:
@@ -77,29 +76,39 @@ class UserStore:
                 with open(self.storage_path, "r", encoding="utf-8") as f:
                     data = json.load(f)
                     for u in data:
+                        # Handle legacy CLINICIAN role if present in existing file
+                        raw_role = u.get("role", "VIEWER")
+                        if raw_role == "CLINICIAN":
+                            role = UserRole.RESEARCHER
+                        else:
+                            try:
+                                role = UserRole(raw_role)
+                            except ValueError:
+                                role = UserRole.VIEWER
+
                         rec = UserRecord(
                             username=u["username"],
                             email=u.get("email", u["username"]),
                             hashed_password=u["hashed_password"],
-                            role=UserRole(u["role"]),
+                            role=role,
                             full_name=u.get("full_name", ""),
                         )
                         self._users[rec.username.lower()] = rec
+                self._ensure_default_credentials()
                 return
             except Exception as e:
                 logger.warning(f"Could not load users.json, re-seeding: {e}")
 
         try:
-            admin_pass = hash_password("Admin@QCare2026")
-            researcher_pass = hash_password("Research@QCare2026")
-            clinician_pass = hash_password("Doctor@QCare2026")
-            viewer_pass = hash_password("Viewer@QCare2026")
+            # Development seeds: default local researcher & viewer
+            researcher_pass = hash_password("Researcher123!")
+            viewer_pass = hash_password("Viewer123!")
+            admin_pass = hash_password("Admin123!")
 
             seeds = [
-                UserRecord("admin", "admin@qcare.ai", admin_pass, UserRole.ADMIN, "System Administrator"),
-                UserRecord("researcher", "researcher@qcare.ai", researcher_pass, UserRole.RESEARCHER, "Lead Quantum AI Researcher"),
-                UserRecord("clinician", "doctor@qcare.ai", clinician_pass, UserRole.CLINICIAN, "Dr. Sarah Lin (Cardiology)"),
-                UserRecord("viewer", "viewer@qcare.ai", viewer_pass, UserRole.VIEWER, "Clinical Auditor"),
+                UserRecord("researcher", "researcher@qcare.local", researcher_pass, UserRole.RESEARCHER, "Lead QML Researcher"),
+                UserRecord("viewer", "viewer@qcare.local", viewer_pass, UserRole.VIEWER, "Research Auditor"),
+                UserRecord("admin", "admin@qcare.local", admin_pass, UserRole.ADMIN, "System Administrator"),
             ]
 
             for s in seeds:
@@ -107,6 +116,34 @@ class UserStore:
             self._save()
         except Exception as e:
             logger.error(f"Error seeding default users: {e}")
+
+    def _ensure_default_credentials(self) -> None:
+        """Compatible migration for legacy user files so the shared demo credentials remain valid."""
+        defaults = {
+            "admin": {"password": "Admin123!", "email": "admin@qcare.local", "role": UserRole.ADMIN, "full_name": "System Administrator"},
+            "researcher": {"password": "Researcher123!", "email": "researcher@qcare.local", "role": UserRole.RESEARCHER, "full_name": "Lead QML Researcher"},
+            "viewer": {"password": "Viewer123!", "email": "viewer@qcare.local", "role": UserRole.VIEWER, "full_name": "Research Auditor"},
+        }
+
+        for username, data in defaults.items():
+            record = self._users.get(username.lower())
+            if record is None:
+                record = UserRecord(
+                    username=username,
+                    email=data["email"],
+                    hashed_password=hash_password(data["password"]),
+                    role=data["role"],
+                    full_name=data["full_name"],
+                )
+                self._users[username.lower()] = record
+                continue
+
+            record.email = data["email"]
+            record.role = data["role"]
+            record.full_name = data["full_name"]
+            record.hashed_password = hash_password(data["password"])
+
+        self._save()
 
     def _save(self) -> None:
         try:
@@ -121,7 +158,6 @@ class UserStore:
         user = self._users.get(key)
         if user:
             return user
-        # Check by email
         for u in self._users.values():
             if u.email.lower().strip() == key:
                 return u
@@ -173,8 +209,20 @@ def require_auth(user: Optional[UserRecord] = Depends(get_current_user)) -> User
 
 
 def require_permission(permission: str):
-    """Dependency factory generating a permission check for endpoints."""
-    def permission_checker(user: UserRecord = Depends(require_auth)) -> UserRecord:
+    """Dependency factory generating a permission check for endpoints with optional guest fallback."""
+    def permission_checker(user: Optional[UserRecord] = Depends(get_current_user)) -> UserRecord:
+        # If unauthenticated, check if VIEWER permission allows read-only operation
+        if user is None:
+            viewer_permissions = ROLE_PERMISSIONS.get(UserRole.VIEWER, [])
+            if permission in viewer_permissions:
+                # Provide guest viewer principal for research transparency
+                return UserRecord("guest", "guest@qcare.local", "", UserRole.VIEWER, "Guest Researcher")
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail=f"Authentication required for '{permission}'. Please log in.",
+                headers={"WWW-Authenticate": "Bearer"},
+            )
+
         allowed = ROLE_PERMISSIONS.get(user.role, [])
         if permission not in allowed:
             raise HTTPException(

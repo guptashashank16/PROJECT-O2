@@ -1,26 +1,47 @@
+"""
+Patient Inference Router — Q-CARE Platform
+==========================================
+Provides real-time inference for a single patient observation through
+the fitted preprocessing + PCA + model pipeline.
+
+IMPORTANT: Feature Values displayed are TRANSFORMED MODEL INPUTS,
+NOT attribution scores or causal contributions.
+"""
 from typing import Any, Dict, List
 import numpy as np
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
 
+from app.auth.rbac import UserRecord, require_permission
 from app.schemas import (
-    PatientFeatureAttribution,
+    PatientFeatureValue,
     PatientPredictionRequest,
     PatientPredictionResponse,
 )
+from app.security.audit import audit_logger
 from app.state import app_state
 
 router = APIRouter(tags=["Patient Inference"])
 
 
 @router.post("/predict", response_model=PatientPredictionResponse)
-async def predict_new_patient(request: PatientPredictionRequest):
-    """Run real-time inference for a new patient observation using the selected model."""
+async def predict_new_patient(
+    request: PatientPredictionRequest,
+    user: UserRecord = Depends(require_permission("prediction:run")),
+):
+    """
+    Run real-time inference for a new patient observation using the selected model.
+
+    The feature_values field contains TRANSFORMED/NORMALIZED model inputs,
+    NOT attribution scores.
+    """
     if app_state.preprocessor is None or not app_state.preprocessor.column_transformer:
-        raise HTTPException(status_code=400, detail="Preprocessing pipeline is not fitted. Please train models first.")
+        raise HTTPException(
+            status_code=400,
+            detail="Preprocessing pipeline is not fitted. Please train models first.",
+        )
 
     model_id = request.model_id
     if model_id not in app_state.models:
-        # Fallback to first available model
         if not app_state.models:
             raise HTTPException(status_code=400, detail="No trained models available for inference.")
         model_id = list(app_state.models.keys())[0]
@@ -36,7 +57,7 @@ async def predict_new_patient(request: PatientPredictionRequest):
         probs = model.predict_proba(quantum_ready_vec)[0]
         p_neg = float(round(probs[0], 4))
         p_pos = float(round(probs[1], 4))
-        
+
         predicted_idx = 1 if p_pos >= 0.5 else 0
         predicted_class_label = (
             app_state.preprocessor.positive_class_label
@@ -54,29 +75,36 @@ async def predict_new_patient(request: PatientPredictionRequest):
 
         confidence = float(round(max(p_pos, p_neg) * 100, 1))
 
-        # Generate feature attributions
-        attributions: List[PatientFeatureAttribution] = []
+        # ---------------------------------------------------------------
+        # Feature Values — TRANSFORMED MODEL INPUTS, not attributions
+        # ---------------------------------------------------------------
+        feature_values: List[PatientFeatureValue] = []
         selected_names = app_state.preprocessor.selected_feature_names_
         raw_encoded = transformed["encoded"][0]
 
-        # Top 5 most prominent features
         for i, feat_name in enumerate(selected_names[:6]):
-            val = request.features.get(feat_name, "N/A")
-            # Calculate standard deviation shift or normalized impact
-            feat_score = float(round(float(raw_encoded[i]) if i < len(raw_encoded) else 0.0, 3))
-            attributions.append(
-                PatientFeatureAttribution(
+            raw_val = request.features.get(feat_name, "N/A")
+            transformed_val = float(raw_encoded[i]) if i < len(raw_encoded) else 0.0
+            feature_values.append(
+                PatientFeatureValue(
                     feature_name=feat_name,
-                    input_value=val,
-                    attribution_score=feat_score,
-                    description=f"Standardized normalized value: {feat_score:+.2f}",
+                    raw_input_value=raw_val,
+                    raw_value=raw_val,
+                    transformed_value=round(transformed_val, 3),
+                    description=(
+                        f"Standardized model input value: {transformed_val:+.3f} "
+                        "(mean-centred, unit-variance after preprocessing). "
+                        "This is NOT an attribution score."
+                    ),
                 )
             )
 
         q_state = [float(round(v, 4)) for v in quantum_ready_vec[0].tolist()]
 
-        from app.security.audit import audit_logger
-        audit_logger.log("system", "CLINICIAN", "PREDICT", "SUCCESS", f"Inference with {model.model_id}: {risk_level} ({p_pos:.2f})")
+        audit_logger.log(
+            user.username, user.role.value, "PREDICT", "SUCCESS",
+            f"Inference with {model.model_id}: {risk_level} ({p_pos:.2f})",
+        )
 
         return PatientPredictionResponse(
             model_id=model.model_id,
@@ -89,11 +117,15 @@ async def predict_new_patient(request: PatientPredictionRequest):
             risk_level=risk_level,
             confidence=confidence,
             quantum_features_state=q_state,
-            feature_attributions=attributions,
-            patient_id=str(request.features.get("patient_id") or request.features.get("id") or "New Patient"),
+            feature_values=feature_values,
+            feature_attributions=[],
+            patient_id=str(
+                request.features.get("patient_id")
+                or request.features.get("id")
+                or "New Patient"
+            ),
         )
-    except Exception as e:
-        from app.security.audit import audit_logger
-        audit_logger.log("system", "CLINICIAN", "PREDICT", "FAILED", str(e))
-        raise HTTPException(status_code=400, detail=f"Prediction pipeline failed: {str(e)}")
 
+    except Exception as e:
+        audit_logger.log(user.username, user.role.value, "PREDICT", "FAILED", str(e))
+        raise HTTPException(status_code=400, detail=f"Prediction pipeline failed: {str(e)}")

@@ -54,15 +54,9 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onClose }) => {
     }
   };
 
-  const handleQuickDemoUser = (demoUser: 'admin' | 'researcher' | 'clinician' | 'viewer') => {
-    const passwords = {
-      admin: 'Admin@QCare2026',
-      researcher: 'Research@QCare2026',
-      clinician: 'Doctor@QCare2026',
-      viewer: 'Viewer@QCare2026',
-    };
-    setUsername(demoUser);
-    setPassword(passwords[demoUser]);
+  const handleFillDemoUser = (role: 'researcher' | 'viewer') => {
+    setUsername(role);
+    setPassword(role === 'researcher' ? 'Researcher123!' : 'Viewer123!');
   };
 
   return (
@@ -83,7 +77,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onClose }) => {
             {isRegistering ? 'Create Q-CARE Account' : 'Authenticate Session'}
           </h2>
           <p className="text-xs text-slate-600">
-            {isRegistering ? 'Register for research & clinical inference access' : 'Enter your credentials to unlock role-based platform controls'}
+            {isRegistering ? 'Register for research & quantum benchmarking access' : 'Enter your credentials to unlock role-based research platform controls'}
           </p>
         </div>
 
@@ -121,7 +115,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onClose }) => {
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    placeholder="user@institution.org"
+                    placeholder="researcher@institution.org"
                     className="w-full pl-10 pr-4 py-2.5 bg-white border border-pink-200 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-pink-500 focus:ring-1 focus:ring-pink-500 transition-all"
                   />
                 </div>
@@ -164,7 +158,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onClose }) => {
 
           {isRegistering && (
             <p className="text-[10px] text-pink-800 bg-pink-50 p-2.5 rounded-lg border border-pink-200">
-              ℹ️ Public self-registration assigns the <strong>VIEWER</strong> role by default. Higher roles (ADMIN, RESEARCHER, CLINICIAN) must be assigned by system administrators.
+              ℹ️ Public self-registration assigns the <strong>VIEWER</strong> role by default. Researcher privileges can be granted by project managers.
             </p>
           )}
 
@@ -177,36 +171,22 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onClose }) => {
           </button>
         </form>
 
-        {/* Quick Hackathon Seed Selection */}
+        {/* Development Quick Role Fill (Researcher / Viewer only) */}
         {!isRegistering && (
           <div className="pt-2 border-t border-slate-200 space-y-2">
-            <p className="text-[11px] text-slate-500 font-semibold">Quick Demo Preset Login:</p>
+            <p className="text-[11px] text-slate-500 font-semibold">Development Preset Profiles:</p>
             <div className="grid grid-cols-2 gap-2">
               <button
                 type="button"
-                onClick={() => handleQuickDemoUser('admin')}
-                className="py-1.5 px-2 bg-pink-50/70 hover:bg-pink-100/70 text-[11px] text-pink-700 font-semibold rounded-lg border border-pink-200 text-left"
-              >
-                👑 Admin
-              </button>
-              <button
-                type="button"
-                onClick={() => handleQuickDemoUser('researcher')}
-                className="py-1.5 px-2 bg-pink-50/70 hover:bg-pink-100/70 text-[11px] text-pink-700 font-semibold rounded-lg border border-pink-200 text-left"
+                onClick={() => handleFillDemoUser('researcher')}
+                className="py-1.5 px-3 bg-pink-50/70 hover:bg-pink-100/70 text-[11px] text-pink-700 font-semibold rounded-lg border border-pink-200 text-center transition"
               >
                 🔬 Researcher
               </button>
               <button
                 type="button"
-                onClick={() => handleQuickDemoUser('clinician')}
-                className="py-1.5 px-2 bg-pink-50/70 hover:bg-pink-100/70 text-[11px] text-pink-700 font-semibold rounded-lg border border-pink-200 text-left"
-              >
-                🩺 Clinician
-              </button>
-              <button
-                type="button"
-                onClick={() => handleQuickDemoUser('viewer')}
-                className="py-1.5 px-2 bg-pink-50/70 hover:bg-pink-100/70 text-[11px] text-pink-700 font-semibold rounded-lg border border-pink-200 text-left"
+                onClick={() => handleFillDemoUser('viewer')}
+                className="py-1.5 px-3 bg-pink-50/70 hover:bg-pink-100/70 text-[11px] text-pink-700 font-semibold rounded-lg border border-pink-200 text-center transition"
               >
                 👁️ Viewer
               </button>

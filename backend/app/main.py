@@ -6,8 +6,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.config import settings
 from app.data.profiler import DatasetProfiler
 from app.data.sample_loader import load_sample_dataset
-from app.routers import auth, dataset, predict, results, train
-
+from app.experiments.service import experiment_service
+from app.routers import auth, dataset, disagreement, experiments, predict, quantum, report, results, train
 from app.schemas import DatasetConfigRequest, HealthResponse
 from app.state import app_state
 
@@ -17,10 +17,9 @@ logger = logging.getLogger("hybrid-quantum-medical-ai")
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    """Application lifespan context for pre-loading initial demonstration dataset."""
+    """Application lifespan context for pre-loading initial demonstration dataset and experiment."""
     logger.info("Initializing Hybrid Quantum-Classical Medical Platform Backend...")
     try:
-        # Pre-load initial sample dataset
         df, meta = load_sample_dataset("breast_cancer_wisconsin")
         app_state.reset_for_new_dataset(df, dataset_name=meta["name"])
         
@@ -46,16 +45,16 @@ async def lifespan(app: FastAPI):
 app = FastAPI(
     title="Hybrid Quantum-Classical Disease Detection API",
     description="Research prototype API for benchmarking Variational Quantum Classifiers (VQC) against Classical ML on clinical tabular data.",
-    version="1.0.0",
+    version="1.2.0",
     docs_url="/docs",
     redoc_url="/redoc",
     lifespan=lifespan,
 )
 
-# CORS Configuration
+# CORS Configuration (Restricted from settings.ALLOWED_ORIGINS)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=settings.ALLOWED_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -67,6 +66,10 @@ app.include_router(dataset.router, prefix="/api")
 app.include_router(train.router, prefix="/api")
 app.include_router(results.router, prefix="/api")
 app.include_router(predict.router, prefix="/api")
+app.include_router(disagreement.router, prefix="/api")
+app.include_router(report.router, prefix="/api")
+app.include_router(experiments.router, prefix="/api")
+app.include_router(quantum.router, prefix="/api")
 
 
 @app.get("/api/health", response_model=HealthResponse, tags=["System Health"])
@@ -74,7 +77,7 @@ async def health_check():
     """System health check and quantum backend status."""
     return HealthResponse(
         status="healthy",
-        version="1.0.0",
+        version="1.2.0",
         fast_demo_mode=settings.FAST_DEMO_MODE,
         quantum_simulator="Qiskit Statevector Local Simulator",
     )
@@ -90,6 +93,7 @@ async def get_system_config():
         "default_max_iter": settings.DEFAULT_VQC_MAX_ITER,
         "random_seed": settings.RANDOM_SEED,
         "max_upload_size_mb": settings.MAX_UPLOAD_SIZE_MB,
+        "allowed_origins": settings.ALLOWED_ORIGINS,
     }
 
 

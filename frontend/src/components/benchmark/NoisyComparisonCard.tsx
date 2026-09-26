@@ -1,5 +1,5 @@
 import React from 'react';
-import { Cpu } from 'lucide-react';
+import { AlertCircle, CheckCircle2, Cpu, HelpCircle } from 'lucide-react';
 import { useAppState } from '../../context/AppStateContext';
 
 export const NoisyComparisonCard: React.FC = () => {
@@ -9,21 +9,44 @@ export const NoisyComparisonCard: React.FC = () => {
     return null;
   }
 
-  const ideal = benchmarkSummary.results.vqc.metrics;
-  const noisy = benchmarkSummary.noisy_vqc_result.metrics;
+  const ideal = benchmarkSummary.results.vqc.mean_metrics || benchmarkSummary.results.vqc.metrics;
+  const noisy = benchmarkSummary.noisy_vqc_result.mean_metrics || benchmarkSummary.noisy_vqc_result.metrics;
+  const noiseInfo = benchmarkSummary.noisy_vqc_result.noise_info;
 
   const retentionAuc = ((noisy.roc_auc / Math.max(0.01, ideal.roc_auc)) * 100).toFixed(1);
   const retentionF1 = ((noisy.f1_score / Math.max(0.01, ideal.f1_score)) * 100).toFixed(1);
 
+  const isRealAer = noiseInfo?.is_real_aer ?? true;
+
   return (
     <div className="glass-panel-pink rounded-3xl p-6 space-y-4 border border-pink-300 shadow-xl">
-      <div className="flex items-center gap-3">
-        <div className="p-2.5 rounded-2xl bg-gradient-to-br from-pink-500 to-rose-600 shadow-md shadow-pink-500/20">
-          <Cpu className="w-5 h-5 text-white" />
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div className="flex items-center gap-3">
+          <div className="p-2.5 rounded-2xl bg-gradient-to-br from-pink-500 to-rose-600 shadow-md shadow-pink-500/20">
+            <Cpu className="w-5 h-5 text-white" />
+          </div>
+          <div>
+            <h3 className="text-base font-bold text-slate-900 tracking-tight">Ideal vs. Noisy Quantum Stress Test</h3>
+            <p className="text-xs text-slate-500">
+              {isRealAer
+                ? 'Simulated Qiskit Aer Depolarizing & Readout Noise Model'
+                : 'Analytical Mathematical Fallback Simulation'}
+            </p>
+          </div>
         </div>
-        <div>
-          <h3 className="text-base font-bold text-slate-900 tracking-tight">Ideal vs. Noisy Quantum Stress Test</h3>
-          <p className="text-xs text-slate-500">Simulated Qiskit Aer Depolarizing & Readout Noise Model</p>
+
+        <div className="flex items-center gap-2">
+          {isRealAer ? (
+            <span className="px-3 py-1 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800 border border-emerald-300 flex items-center gap-1.5">
+              <CheckCircle2 className="w-3.5 h-3.5" />
+              Aer Circuit Noise Model
+            </span>
+          ) : (
+            <span className="px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-800 border border-amber-300 flex items-center gap-1.5">
+              <AlertCircle className="w-3.5 h-3.5" />
+              Mathematical Fallback
+            </span>
+          )}
         </div>
       </div>
 
@@ -67,29 +90,36 @@ export const NoisyComparisonCard: React.FC = () => {
               <th className="p-3">Brier Score</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-pink-100 text-slate-800 font-medium">
+          <tbody className="divide-y divide-pink-100 text-slate-800 font-medium font-mono">
             <tr className="bg-white">
-              <td className="p-3 font-bold text-pink-700">Ideal VQC (Statevector)</td>
-              <td className="p-3 font-mono">{ideal.roc_auc.toFixed(4)}</td>
-              <td className="p-3 font-mono">{ideal.pr_auc ? ideal.pr_auc.toFixed(4) : 'N/A'}</td>
-              <td className="p-3 font-mono">{ideal.sensitivity.toFixed(4)}</td>
-              <td className="p-3 font-mono">{ideal.f1_score.toFixed(4)}</td>
-              <td className="p-3 font-mono">{ideal.brier_score ? ideal.brier_score.toFixed(4) : 'N/A'}</td>
+              <td className="p-3 font-bold text-pink-700 font-sans">Ideal VQC (Statevector / Shot-Noise Free)</td>
+              <td className="p-3">{ideal.roc_auc.toFixed(4)}</td>
+              <td className="p-3">{ideal.pr_auc ? ideal.pr_auc.toFixed(4) : 'N/A'}</td>
+              <td className="p-3">{ideal.sensitivity.toFixed(4)}</td>
+              <td className="p-3">{ideal.f1_score.toFixed(4)}</td>
+              <td className="p-3">{ideal.brier_score !== undefined ? ideal.brier_score.toFixed(4) : 'N/A'}</td>
             </tr>
             <tr className="bg-rose-50/50">
-              <td className="p-3 font-bold text-rose-700">Noisy VQC (Simulated Noise)</td>
-              <td className="p-3 font-mono">{noisy.roc_auc.toFixed(4)}</td>
-              <td className="p-3 font-mono">{noisy.pr_auc ? noisy.pr_auc.toFixed(4) : 'N/A'}</td>
-              <td className="p-3 font-mono">{noisy.sensitivity.toFixed(4)}</td>
-              <td className="p-3 font-mono">{noisy.f1_score.toFixed(4)}</td>
-              <td className="p-3 font-mono">{noisy.brier_score ? noisy.brier_score.toFixed(4) : 'N/A'}</td>
+              <td className="p-3 font-bold text-rose-700 font-sans">
+                {isRealAer ? 'Noisy VQC (Aer Depolarizing + Readout)' : 'Noisy VQC (Mathematical Fallback)'}
+              </td>
+              <td className="p-3">{noisy.roc_auc.toFixed(4)}</td>
+              <td className="p-3">{noisy.pr_auc ? noisy.pr_auc.toFixed(4) : 'N/A'}</td>
+              <td className="p-3">{noisy.sensitivity.toFixed(4)}</td>
+              <td className="p-3">{noisy.f1_score.toFixed(4)}</td>
+              <td className="p-3">{noisy.brier_score !== undefined ? noisy.brier_score.toFixed(4) : 'N/A'}</td>
             </tr>
           </tbody>
         </table>
       </div>
-      <p className="text-[10px] text-slate-500 italic">
-        ℹ️ Note: This stress test models Qiskit Aer gate depolarizing error (1% 1q, 3% 2q) and readout error (2%). This is a simulated noise stress test, not real-hardware validation.
-      </p>
+
+      <div className="p-3.5 rounded-2xl bg-white/80 border border-pink-200 text-[11px] text-slate-600 flex items-start gap-2">
+        <HelpCircle className="w-4 h-4 text-pink-600 shrink-0 mt-0.5" />
+        <p className="leading-relaxed">
+          {noiseInfo?.methodology_disclaimer ||
+            'Noise modeling simulates gate depolarizing error (1% 1q, 3% 2q) and readout error (2%) in Qiskit Aer. This is a simulated noise benchmark, not physical quantum processor execution.'}
+        </p>
+      </div>
     </div>
   );
 };

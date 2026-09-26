@@ -8,7 +8,7 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
-import { Eye } from 'lucide-react';
+import { Eye, HelpCircle, Info } from 'lucide-react';
 import { useAppState } from '../../context/AppStateContext';
 import { QuantumSensitivityChart } from './QuantumSensitivityChart';
 
@@ -57,16 +57,18 @@ export const ExplainabilityView: React.FC = () => {
         </div>
 
         {/* Explainability Mode Indicator */}
-        <div className="flex items-center justify-between text-xs text-slate-600">
-          <div>
-            Active Method:{' '}
-            <strong className="text-slate-900">
-              {isQuantum ? 'Quantum Model Feature Sensitivity Analysis' : 'Feature Importance / Permutation Weights'}
-            </strong>
+        <div className="p-3.5 rounded-2xl bg-white/90 border border-pink-200 space-y-1.5">
+          <div className="flex items-center justify-between text-xs">
+            <span className="font-bold text-slate-900">
+              Method: {explainability?.method_name || (isQuantum ? 'Quantum Feature Sensitivity Analysis' : 'Feature Importance')}
+            </span>
+            <span className="text-[10px] text-pink-700 font-mono font-bold bg-pink-50 px-2 py-0.5 rounded border border-pink-200">
+              {explainability?.model_type ? explainability.model_type.toUpperCase() : 'MODEL'}
+            </span>
           </div>
-          {explainability?.interpretation_note && (
-            <span className="text-[11px] font-mono text-pink-700 font-semibold">{explainability.interpretation_note}</span>
-          )}
+          <p className="text-[11px] text-slate-600 leading-relaxed font-sans">
+            {explainability?.method_description || (isQuantum ? 'Finite difference perturbation on VQC quantum state expectation values.' : 'Model-specific feature ranking.')}
+          </p>
         </div>
       </div>
 
@@ -108,6 +110,16 @@ export const ExplainabilityView: React.FC = () => {
       ) : (
         <div className="glass-panel-pink rounded-3xl p-8 text-center text-xs text-slate-500 border border-pink-300 font-medium">
           Loading feature importance data...
+        </div>
+      )}
+
+      {/* Methodological Limitations Banner */}
+      {explainability?.limitations && (
+        <div className="p-4 rounded-2xl bg-white/80 border border-pink-200 text-xs text-slate-600 flex items-start gap-2.5">
+          <HelpCircle className="w-4 h-4 text-pink-600 shrink-0 mt-0.5" />
+          <p className="leading-relaxed">
+            <strong>Methodology Note:</strong> {explainability.limitations}
+          </p>
         </div>
       )}
     </div>

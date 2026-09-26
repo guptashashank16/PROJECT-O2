@@ -5,6 +5,9 @@ import { formatPercent, formatScore } from '../../utils/formatters';
 import { EvidencePanel } from './EvidencePanel';
 import { NoisyComparisonCard } from './NoisyComparisonCard';
 import { CalibrationCurveView } from './CalibrationCurveView';
+import { ModelDisagreementCard } from './ModelDisagreementCard';
+import { QuantumUtilityReportCard } from './QuantumUtilityReportCard';
+import { ExperimentMetadataCard } from './ExperimentMetadataCard';
 
 export const MetricsComparisonTable: React.FC = () => {
   const { benchmarkSummary, selectedModelId, setSelectedModelId } = useAppState();
@@ -18,9 +21,9 @@ export const MetricsComparisonTable: React.FC = () => {
     return null;
   }
 
-  const accList = results.map((r) => r.metrics?.accuracy ?? 0);
-  const sensList = results.map((r) => r.metrics?.sensitivity ?? 0);
-  const aucList = results.map((r) => r.metrics?.roc_auc ?? 0);
+  const accList = results.map((r) => (r.mean_metrics?.accuracy ?? r.metrics?.accuracy ?? 0));
+  const sensList = results.map((r) => (r.mean_metrics?.sensitivity ?? r.metrics?.sensitivity ?? 0));
+  const aucList = results.map((r) => (r.mean_metrics?.roc_auc ?? r.metrics?.roc_auc ?? 0));
 
   const maxAcc = accList.length > 0 ? Math.max(...accList) : 0;
   const maxSens = sensList.length > 0 ? Math.max(...sensList) : 0;
@@ -62,7 +65,7 @@ export const MetricsComparisonTable: React.FC = () => {
               {results.map((r) => {
                 const isSelected = selectedModelId === r.model_id;
                 const isQuantum = r.model_type === 'quantum';
-                
+
                 const meanMetrics = r.mean_metrics || r.metrics;
                 const stdMetrics = r.std_metrics;
 
@@ -145,7 +148,7 @@ export const MetricsComparisonTable: React.FC = () => {
             <strong>Evaluation Standards:</strong> Leakage-safe 5-Fold Stratified Cross-Validation. Metrics reported as Mean ± SD across folds.
           </div>
           <div className="text-pink-700 font-bold">
-            Click any row to view model-specific Confusion Matrix & Explainability.
+            Click any row to inspect model-specific ROC curves & explainability.
           </div>
         </div>
       </div>
@@ -155,6 +158,15 @@ export const MetricsComparisonTable: React.FC = () => {
 
       {/* 4. Probability Calibration Analysis */}
       <CalibrationCurveView />
+
+      {/* 5. Quantum-Classical Model Disagreement Lab */}
+      <ModelDisagreementCard />
+
+      {/* 6. Quantum Utility Report & JSON/CSV Export */}
+      <QuantumUtilityReportCard />
+
+      {/* 7. Experiment & Reproducibility Metadata */}
+      <ExperimentMetadataCard />
     </div>
   );
 };

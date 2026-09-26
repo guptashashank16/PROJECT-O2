@@ -1,0 +1,2322 @@
+{
+  "experiment_id": "exp-e61168bd",
+  "experiment_name": "Benchmark (Breast Cancer Wisconsin (Diagnostic))",
+  "created_at_utc": "2026-09-26T19:08:04.226647+00:00",
+  "updated_at_utc": "2026-09-26T19:08:04.226647+00:00",
+  "user_id": "researcher",
+  "description": "Loaded from bundled sample breast_cancer_wisconsin",
+  "dataset_name": "Breast Cancer Wisconsin (Diagnostic)",
+  "dataset_fingerprint": "556281f114fce27e",
+  "dataset_rows": 137,
+  "dataset_columns": 32,
+  "target_column": "diagnosis",
+  "positive_class": "M",
+  "dataset_config": {
+    "target_column": "diagnosis",
+    "positive_class": "M",
+    "identifier_columns": [
+      "id"
+    ],
+    "excluded_features": [],
+    "problem_type": "binary_classification"
+  },
+  "preprocessing_config": {
+    "test_split_ratio": 0.2,
+    "feature_selection_k": null,
+    "n_quantum_features": 6,
+    "scaler_type": "standard"
+  },
+  "preprocessing_summary": {
+    "raw_feature_count": 30,
+    "encoded_feature_count": 30,
+    "selected_feature_count": 30,
+    "quantum_feature_count": 6,
+    "train_samples": 109,
+    "test_samples": 28,
+    "positive_class": "M",
+    "negative_class": "B",
+    "target_column": "diagnosis",
+    "excluded_identifiers": [
+      "id"
+    ],
+    "pipeline_steps": [
+      {
+        "step_name": "Data Cleaning & Imputation",
+        "description": "Median imputation for numerical features; mode imputation for categorical features.",
+        "input_dimension": 30,
+        "output_dimension": 30,
+        "details": {
+          "numerical_count": 30,
+          "categorical_count": 0
+        }
+      },
+      {
+        "step_name": "Encoding & Feature Scaling",
+        "description": "OneHotEncoding for categorical; StandardScaler for numerical.",
+        "input_dimension": 30,
+        "output_dimension": 30,
+        "details": {
+          "encoded_features": 30
+        }
+      },
+      {
+        "step_name": "Principal Component Analysis (PCA)",
+        "description": "Linear dimensionality reduction to 6 orthogonal components.",
+        "input_dimension": 30,
+        "output_dimension": 6,
+        "details": {
+          "explained_variance_ratio": [
+            0.4649,
+            0.1934,
+            0.0799,
+            0.0743,
+            0.0402,
+            0.0341
+          ],
+          "cumulative_variance": 0.8869
+        }
+      },
+      {
+        "step_name": "Quantum State Normalization",
+        "description": "Feature bounding into [0, \u03c0] domain for angle and ZZFeatureMap parameter binding.",
+        "input_dimension": 6,
+        "output_dimension": 6,
+        "details": {
+          "target_range": "[0, \u03c0]"
+        }
+      }
+    ],
+    "pca_explained_variance_ratio": [
+      0.4649,
+      0.1934,
+      0.0799,
+      0.0743,
+      0.0402,
+      0.0341
+    ],
+    "pca_cumulative_variance": 0.8869,
+    "selected_feature_names": [
+      "radius_mean",
+      "texture_mean",
+      "perimeter_mean",
+      "area_mean",
+      "smoothness_mean",
+      "compactness_mean",
+      "concavity_mean",
+      "concave_points_mean",
+      "symmetry_mean",
+      "fractal_dimension_mean",
+      "radius_se",
+      "texture_se",
+      "perimeter_se",
+      "area_se",
+      "smoothness_se",
+      "compactness_se",
+      "concavity_se",
+      "concave_points_se",
+      "symmetry_se",
+      "fractal_dimension_se",
+      "radius_worst",
+      "texture_worst",
+      "perimeter_worst",
+      "area_worst",
+      "smoothness_worst",
+      "compactness_worst",
+      "concavity_worst",
+      "concave_points_worst",
+      "symmetry_worst",
+      "fractal_dimension_worst"
+    ]
+  },
+  "quantum_config": {
+    "n_qubits": 6,
+    "feature_map": "ZZFeatureMap",
+    "ansatz": "RealAmplitudes",
+    "ansatz_layers": 2,
+    "optimizer": "COBYLA",
+    "max_iterations": 25,
+    "fast_demo_mode": false
+  },
+  "classical_config": {
+    "logistic_regression": true,
+    "random_forest": true,
+    "svm": true
+  },
+  "status": "COMPLETED",
+  "progress_percent": 100,
+  "current_stage": "Completed",
+  "steps": [],
+  "job_start_time": null,
+  "job_end_time": "2026-09-26T19:10:40.555014+00:00",
+  "error_message": null,
+  "benchmark_summary": {
+    "dataset_name": "Breast Cancer Wisconsin (Diagnostic)",
+    "target_column": "diagnosis",
+    "positive_class": "M",
+    "test_samples_count": 28,
+    "evaluation_mode": "Stratified 5-Fold Cross-Validation (Held-out Test Evaluated)",
+    "training_mode": "DEMO_MODE",
+    "random_seed": 42,
+    "results": {
+      "logistic_regression": {
+        "model_id": "logistic_regression",
+        "model_name": "Logistic Regression",
+        "model_type": "classical",
+        "metrics": {
+          "accuracy": 0.9643,
+          "precision": 0.9333,
+          "sensitivity": 1.0,
+          "specificity": 0.9286,
+          "f1_score": 0.9655,
+          "roc_auc": 1.0,
+          "pr_auc": 1.0,
+          "brier_score": 0.0248,
+          "training_time_seconds": 0.049,
+          "inference_time_ms": 0.079
+        },
+        "mean_metrics": {
+          "accuracy": 0.9643,
+          "precision": 0.9333,
+          "sensitivity": 1.0,
+          "specificity": 0.9286,
+          "f1_score": 0.9655,
+          "roc_auc": 1.0,
+          "pr_auc": 1.0,
+          "brier_score": 0.0248,
+          "training_time_seconds": 0.049,
+          "inference_time_ms": 0.079
+        },
+        "std_metrics": {
+          "accuracy": 0.04983558567931151,
+          "precision": 0.0,
+          "sensitivity": 0.0721773759567359,
+          "specificity": 0.08906344704759633,
+          "f1_score": 0.04860783475942946,
+          "roc_auc": 0.025036852837367573,
+          "pr_auc": 0.0,
+          "brier_score": 0.021348629932620967,
+          "training_time_seconds": 0.0,
+          "inference_time_ms": 0.0
+        },
+        "fold_metrics": [
+          {
+            "fold_index": 1,
+            "train_samples": 87,
+            "val_samples": 22,
+            "metrics": {
+              "accuracy": 0.9091,
+              "precision": 1.0,
+              "sensitivity": 0.8182,
+              "specificity": 1.0,
+              "f1_score": 0.9,
+              "roc_auc": 1.0,
+              "pr_auc": 1.0,
+              "brier_score": 0.0697,
+              "training_time_seconds": 0.032,
+              "inference_time_ms": 0.219
+            }
+          },
+          {
+            "fold_index": 2,
+            "train_samples": 87,
+            "val_samples": 22,
+            "metrics": {
+              "accuracy": 0.8636,
+              "precision": 0.8333,
+              "sensitivity": 0.9091,
+              "specificity": 0.8182,
+              "f1_score": 0.8696,
+              "roc_auc": 0.9835,
+              "pr_auc": 0.9854,
+              "brier_score": 0.0868,
+              "training_time_seconds": 0.02,
+              "inference_time_ms": 0.061
+            }
+          },
+          {
+            "fold_index": 3,
+            "train_samples": 87,
+            "val_samples": 22,
+            "metrics": {
+              "accuracy": 0.8636,
+              "precision": 0.8333,
+              "sensitivity": 0.9091,
+              "specificity": 0.8182,
+              "f1_score": 0.8696,
+              "roc_auc": 0.9339,
+              "pr_auc": 0.9135,
+              "brier_score": 0.1099,
+              "training_time_seconds": 0.017,
+              "inference_time_ms": 0.072
+            }
+          },
+          {
+            "fold_index": 4,
+            "train_samples": 87,
+            "val_samples": 22,
+            "metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "sensitivity": 1.0,
+              "specificity": 1.0,
+              "f1_score": 1.0,
+              "roc_auc": 1.0,
+              "pr_auc": 1.0,
+              "brier_score": 0.0448,
+              "training_time_seconds": 0.034,
+              "inference_time_ms": 0.116
+            }
+          },
+          {
+            "fold_index": 5,
+            "train_samples": 88,
+            "val_samples": 21,
+            "metrics": {
+              "accuracy": 0.9048,
+              "precision": 1.0,
+              "sensitivity": 0.8,
+              "specificity": 1.0,
+              "f1_score": 0.8889,
+              "roc_auc": 0.9636,
+              "pr_auc": 0.9703,
+              "brier_score": 0.0818,
+              "training_time_seconds": 0.028,
+              "inference_time_ms": 0.087
+            }
+          }
+        ],
+        "confusion_matrix": {
+          "true_positive": 14,
+          "false_positive": 1,
+          "true_negative": 13,
+          "false_negative": 0,
+          "labels": [
+            "0",
+            "1"
+          ]
+        },
+        "roc_curve": [
+          {
+            "fpr": 0.0,
+            "tpr": 0.0,
+            "threshold": 1.0
+          },
+          {
+            "fpr": 0.0,
+            "tpr": 0.0714,
+            "threshold": 0.9918
+          },
+          {
+            "fpr": 0.0,
+            "tpr": 1.0,
+            "threshold": 0.6337
+          },
+          {
+            "fpr": 1.0,
+            "tpr": 1.0,
+            "threshold": 0.0283
+          }
+        ],
+        "pr_curve": [
+          {
+            "precision": 0.5,
+            "recall": 1.0,
+            "threshold": 0.0283
+          },
+          {
+            "precision": 0.5185,
+            "recall": 1.0,
+            "threshold": 0.0421
+          },
+          {
+            "precision": 0.5385,
+            "recall": 1.0,
+            "threshold": 0.0648
+          },
+          {
+            "precision": 0.56,
+            "recall": 1.0,
+            "threshold": 0.0747
+          },
+          {
+            "precision": 0.5833,
+            "recall": 1.0,
+            "threshold": 0.0993
+          },
+          {
+            "precision": 0.6087,
+            "recall": 1.0,
+            "threshold": 0.0999
+          },
+          {
+            "precision": 0.6364,
+            "recall": 1.0,
+            "threshold": 0.1043
+          },
+          {
+            "precision": 0.6667,
+            "recall": 1.0,
+            "threshold": 0.1287
+          },
+          {
+            "precision": 0.7,
+            "recall": 1.0,
+            "threshold": 0.1696
+          },
+          {
+            "precision": 0.7368,
+            "recall": 1.0,
+            "threshold": 0.1782
+          },
+          {
+            "precision": 0.7778,
+            "recall": 1.0,
+            "threshold": 0.1849
+          },
+          {
+            "precision": 0.8235,
+            "recall": 1.0,
+            "threshold": 0.2008
+          },
+          {
+            "precision": 0.875,
+            "recall": 1.0,
+            "threshold": 0.2144
+          },
+          {
+            "precision": 0.9333,
+            "recall": 1.0,
+            "threshold": 0.5066
+          },
+          {
+            "precision": 1.0,
+            "recall": 1.0,
+            "threshold": 0.6337
+          },
+          {
+            "precision": 1.0,
+            "recall": 0.9286,
+            "threshold": 0.8669
+          },
+          {
+            "precision": 1.0,
+            "recall": 0.8571,
+            "threshold": 0.8858
+          },
+          {
+            "precision": 1.0,
+            "recall": 0.7857,
+            "threshold": 0.892
+          },
+          {
+            "precision": 1.0,
+            "recall": 0.7143,
+            "threshold": 0.9105
+          },
+          {
+            "precision": 1.0,
+            "recall": 0.6429,
+            "threshold": 0.9312
+          },
+          {
+            "precision": 1.0,
+            "recall": 0.5714,
+            "threshold": 0.9319
+          },
+          {
+            "precision": 1.0,
+            "recall": 0.5,
+            "threshold": 0.9622
+          },
+          {
+            "precision": 1.0,
+            "recall": 0.4286,
+            "threshold": 0.9682
+          },
+          {
+            "precision": 1.0,
+            "recall": 0.3571,
+            "threshold": 0.9844
+          },
+          {
+            "precision": 1.0,
+            "recall": 0.2857,
+            "threshold": 0.9856
+          },
+          {
+            "precision": 1.0,
+            "recall": 0.2143,
+            "threshold": 0.9861
+          },
+          {
+            "precision": 1.0,
+            "recall": 0.1429,
+            "threshold": 0.9899
+          },
+          {
+            "precision": 1.0,
+            "recall": 0.0714,
+            "threshold": 0.9918
+          }
+        ],
+        "calibration_curve": [
+          {
+            "mean_predicted_value": 0.1068,
+            "fraction_of_positives": 0.0
+          },
+          {
+            "mean_predicted_value": 0.2076,
+            "fraction_of_positives": 0.0
+          },
+          {
+            "mean_predicted_value": 0.5066,
+            "fraction_of_positives": 0.0
+          },
+          {
+            "mean_predicted_value": 0.6337,
+            "fraction_of_positives": 1.0
+          },
+          {
+            "mean_predicted_value": 0.9451,
+            "fraction_of_positives": 1.0
+          }
+        ],
+        "parameters": {
+          "solver": "lbfgs",
+          "C": 1.0,
+          "max_iter": 500,
+          "class_weight": "balanced",
+          "random_state": 42
+        }
+      },
+      "random_forest": {
+        "model_id": "random_forest",
+        "model_name": "Random Forest",
+        "model_type": "classical",
+        "metrics": {
+          "accuracy": 0.9643,
+          "precision": 0.9333,
+          "sensitivity": 1.0,
+          "specificity": 0.9286,
+          "f1_score": 0.9655,
+          "roc_auc": 0.9847,
+          "pr_auc": 0.984,
+          "brier_score": 0.0417,
+          "training_time_seconds": 0.705,
+          "inference_time_ms": 3.01
+        },
+        "mean_metrics": {
+          "accuracy": 0.9643,
+          "precision": 0.9333,
+          "sensitivity": 1.0,
+          "specificity": 0.9286,
+          "f1_score": 0.9655,
+          "roc_auc": 0.9847,
+          "pr_auc": 0.984,
+          "brier_score": 0.0417,
+          "training_time_seconds": 0.705,
+          "inference_time_ms": 3.01
+        },
+        "std_metrics": {
+          "accuracy": 0.0445439737787279,
+          "precision": 0.0,
+          "sensitivity": 0.04453172352379817,
+          "specificity": 0.10600670544828757,
+          "f1_score": 0.03857105650614201,
+          "roc_auc": 0.029760000000000005,
+          "pr_auc": 0.0,
+          "brier_score": 0.02904516482996783,
+          "training_time_seconds": 0.0,
+          "inference_time_ms": 0.0
+        },
+        "fold_metrics": [
+          {
+            "fold_index": 1,
+            "train_samples": 87,
+            "val_samples": 22,
+            "metrics": {
+              "accuracy": 0.9545,
+              "precision": 1.0,
+              "sensitivity": 0.9091,
+              "specificity": 1.0,
+              "f1_score": 0.9524,
+              "roc_auc": 1.0,
+              "pr_auc": 1.0,
+              "brier_score": 0.0473,
+              "training_time_seconds": 0.685,
+              "inference_time_ms": 3.98
+            }
+          },
+          {
+            "fold_index": 2,
+            "train_samples": 87,
+            "val_samples": 22,
+            "metrics": {
+              "accuracy": 0.9545,
+              "precision": 1.0,
+              "sensitivity": 0.9091,
+              "specificity": 1.0,
+              "f1_score": 0.9524,
+              "roc_auc": 1.0,
+              "pr_auc": 1.0,
+              "brier_score": 0.0439,
+              "training_time_seconds": 0.413,
+              "inference_time_ms": 1.896
+            }
+          },
+          {
+            "fold_index": 3,
+            "train_samples": 87,
+            "val_samples": 22,
+            "metrics": {
+              "accuracy": 0.8636,
+              "precision": 0.7857,
+              "sensitivity": 1.0,
+              "specificity": 0.7273,
+              "f1_score": 0.88,
+              "roc_auc": 0.9256,
+              "pr_auc": 0.9298,
+              "brier_score": 0.1184,
+              "training_time_seconds": 0.392,
+              "inference_time_ms": 1.943
+            }
+          },
+          {
+            "fold_index": 4,
+            "train_samples": 87,
+            "val_samples": 22,
+            "metrics": {
+              "accuracy": 0.9545,
+              "precision": 0.9167,
+              "sensitivity": 1.0,
+              "specificity": 0.9091,
+              "f1_score": 0.9565,
+              "roc_auc": 1.0,
+              "pr_auc": 1.0,
+              "brier_score": 0.0424,
+              "training_time_seconds": 0.737,
+              "inference_time_ms": 3.322
+            }
+          },
+          {
+            "fold_index": 5,
+            "train_samples": 88,
+            "val_samples": 21,
+            "metrics": {
+              "accuracy": 1.0,
+              "precision": 1.0,
+              "sensitivity": 1.0,
+              "specificity": 1.0,
+              "f1_score": 1.0,
+              "roc_auc": 1.0,
+              "pr_auc": 1.0,
+              "brier_score": 0.0511,
+              "training_time_seconds": 0.812,
+              "inference_time_ms": 3.993
+            }
+          }
+        ],
+        "confusion_matrix": {
+          "true_positive": 14,
+          "false_positive": 1,
+          "true_negative": 13,
+          "false_negative": 0,
+          "labels": [
+            "0",
+            "1"
+          ]
+        },
+        "roc_curve": [
+          {
+            "fpr": 0.0,
+            "tpr": 0.0,
+            "threshold": 1.0
+          },
+          {
+            "fpr": 0.0,
+            "tpr": 0.0714,
+            "threshold": 0.99
+          },
+          {
+            "fpr": 0.0,
+            "tpr": 0.2857,
+            "threshold": 0.97
+          },
+          {
+            "fpr": 0.0,
+            "tpr": 0.7857,
+            "threshold": 0.89
+          },
+          {
+            "fpr": 0.0714,
+            "tpr": 0.7857,
+            "threshold": 0.8779
+          },
+          {
+            "fpr": 0.0714,
+            "tpr": 1.0,
+            "threshold": 0.5564
+          },
+          {
+            "fpr": 1.0,
+            "tpr": 1.0,
+            "threshold": 0.0041
+          }
+        ],
+        "pr_curve": [
+          {
+            "precision": 0.5,
+            "recall": 1.0,
+            "threshold": 0.0041
+          },
+          {
+            "precision": 0.5185,
+            "recall": 1.0,
+            "threshold": 0.0048
+          },
+          {
+            "precision": 0.5385,
+            "recall": 1.0,
+            "threshold": 0.0137
+          },
+          {
+            "precision": 0.56,
+            "recall": 1.0,
+            "threshold": 0.016
+          },
+          {
+            "precision": 0.5833,
+            "recall": 1.0,
+            "threshold": 0.0289
+          },
+          {
+            "precision": 0.6087,
+            "recall": 1.0,
+            "threshold": 0.033
+          },
+          {
+            "precision": 0.6364,
+            "recall": 1.0,
+            "threshold": 0.0491
+          },
+          {
+            "precision": 0.6667,
+            "recall": 1.0,
+            "threshold": 0.0595
+          },
+          {
+            "precision": 0.7,
+            "recall": 1.0,
+            "threshold": 0.0647
+          },
+          {
+            "precision": 0.7368,
+            "recall": 1.0,
+            "threshold": 0.1127
+          },
+          {
+            "precision": 0.7778,
+            "recall": 1.0,
+            "threshold": 0.1225
+          },
+          {
+            "precision": 0.8235,
+            "recall": 1.0,
+            "threshold": 0.1602
+          },
+          {
+            "precision": 0.875,
+            "recall": 1.0,
+            "threshold": 0.2209
+          },
+          {
+            "precision": 0.9333,
+            "recall": 1.0,
+            "threshold": 0.5564
+          },
+          {
+            "precision": 0.9286,
+            "recall": 0.9286,
+            "threshold": 0.8592
+          },
+          {
+            "precision": 0.9231,
+            "recall": 0.8571,
+            "threshold": 0.8673
+          },
+          {
+            "precision": 0.9167,
+            "recall": 0.7857,
+            "threshold": 0.8779
+          },
+          {
+            "precision": 1.0,
+            "recall": 0.7857,
+            "threshold": 0.89
+          },
+          {
+            "precision": 1.0,
+            "recall": 0.7143,
+            "threshold": 0.8909
+          },
+          {
+            "precision": 1.0,
+            "recall": 0.6429,
+            "threshold": 0.9
+          },
+          {
+            "precision": 1.0,
+            "recall": 0.5714,
+            "threshold": 0.9192
+          },
+          {
+            "precision": 1.0,
+            "recall": 0.5,
+            "threshold": 0.9495
+          },
+          {
+            "precision": 1.0,
+            "recall": 0.4286,
+            "threshold": 0.95
+          },
+          {
+            "precision": 1.0,
+            "recall": 0.3571,
+            "threshold": 0.9689
+          },
+          {
+            "precision": 1.0,
+            "recall": 0.2857,
+            "threshold": 0.97
+          },
+          {
+            "precision": 1.0,
+            "recall": 0.0714,
+            "threshold": 0.99
+          }
+        ],
+        "calibration_curve": [
+          {
+            "mean_predicted_value": 0.0558,
+            "fraction_of_positives": 0.0
+          },
+          {
+            "mean_predicted_value": 0.2209,
+            "fraction_of_positives": 0.0
+          },
+          {
+            "mean_predicted_value": 0.5564,
+            "fraction_of_positives": 1.0
+          },
+          {
+            "mean_predicted_value": 0.9266,
+            "fraction_of_positives": 0.9286
+          }
+        ],
+        "parameters": {
+          "n_estimators": 100,
+          "max_depth": 6,
+          "class_weight": "balanced",
+          "random_state": 42
+        }
+      },
+      "svm": {
+        "model_id": "svm",
+        "model_name": "Support Vector Machine (SVM)",
+        "model_type": "classical",
+        "metrics": {
+          "accuracy": 1.0,
+          "precision": 1.0,
+          "sensitivity": 1.0,
+          "specificity": 1.0,
+          "f1_score": 1.0,
+          "roc_auc": 1.0,
+          "pr_auc": 1.0,
+          "brier_score": 0.0163,
+          "training_time_seconds": 0.028,
+          "inference_time_ms": 0.122
+        },
+        "mean_metrics": {
+          "accuracy": 1.0,
+          "precision": 1.0,
+          "sensitivity": 1.0,
+          "specificity": 1.0,
+          "f1_score": 1.0,
+          "roc_auc": 1.0,
+          "pr_auc": 1.0,
+          "brier_score": 0.0163,
+          "training_time_seconds": 0.028,
+          "inference_time_ms": 0.122
+        },
+        "std_metrics": {
+          "accuracy": 0.03615914822005629,
+          "precision": 0.0,
+          "sensitivity": 0.04613755953667249,
+          "specificity": 0.06802333129155023,
+          "f1_score": 0.033607225413592234,
+          "roc_auc": 0.018555063998811745,
+          "pr_auc": 0.0,
+          "brier_score": 0.025989644091445347,
+          "training_time_seconds": 0.0,
+          "inference_time_ms": 0.0
+        },
+        "fold_metrics": [
+          {
+            "fold_index": 1,
+            "train_samples": 87,
+            "val_samples": 22,
+            "metrics": {
+              "accuracy": 0.9545,
+              "precision": 1.0,
+              "sensitivity": 0.9091,
+              "specificity": 1.0,
+              "f1_score": 0.9524,
+              "roc_auc": 0.9917,
+              "pr_auc": 0.9921,
+              "brier_score": 0.0486,
+              "training_time_seconds": 0.029,
+              "inference_time_ms": 0.148
+            }
+          },
+          {
+            "fold_index": 2,
+            "train_samples": 87,
+            "val_samples": 22,
+            "metrics": {
+              "accuracy": 0.9545,
+              "precision": 0.9167,
+              "sensitivity": 1.0,
+              "specificity": 0.9091,
+              "f1_score": 0.9565,
+              "roc_auc": 1.0,
+              "pr_auc": 1.0,
+              "brier_score": 0.0571,
+              "training_time_seconds": 0.008,
+              "inference_time_ms": 0.077
+            }
+          },
+          {
+            "fold_index": 3,
+            "train_samples": 87,
+            "val_samples": 22,
+            "metrics": {
+              "accuracy": 0.8636,
+              "precision": 0.8333,
+              "sensitivity": 0.9091,
+              "specificity": 0.8182,
+              "f1_score": 0.8696,
+              "roc_auc": 0.9504,
+              "pr_auc": 0.9493,
+              "brier_score": 0.108,
+              "training_time_seconds": 0.009,
+              "inference_time_ms": 0.085
+            }
+          },
+          {
+            "fold_index": 4,
+            "train_samples": 87,
+            "val_samples": 22,
+            "metrics": {
+              "accuracy": 0.9545,
+              "precision": 0.9167,
+              "sensitivity": 1.0,
+              "specificity": 0.9091,
+              "f1_score": 0.9565,
+              "roc_auc": 0.9917,
+              "pr_auc": 0.9921,
+              "brier_score": 0.035,
+              "training_time_seconds": 0.015,
+              "inference_time_ms": 0.209
+            }
+          },
+          {
+            "fold_index": 5,
+            "train_samples": 88,
+            "val_samples": 21,
+            "metrics": {
+              "accuracy": 0.9524,
+              "precision": 1.0,
+              "sensitivity": 0.9,
+              "specificity": 1.0,
+              "f1_score": 0.9474,
+              "roc_auc": 1.0,
+              "pr_auc": 1.0,
+              "brier_score": 0.0419,
+              "training_time_seconds": 0.021,
+              "inference_time_ms": 0.143
+            }
+          }
+        ],
+        "confusion_matrix": {
+          "true_positive": 14,
+          "false_positive": 0,
+          "true_negative": 14,
+          "false_negative": 0,
+          "labels": [
+            "0",
+            "1"
+          ]
+        },
+        "roc_curve": [
+          {
+            "fpr": 0.0,
+            "tpr": 0.0,
+            "threshold": 1.0
+          },
+          {
+            "fpr": 0.0,
+            "tpr": 0.0714,
+            "threshold": 1.0
+          },
+          {
+            "fpr": 0.0,
+            "tpr": 1.0,
+            "threshold": 0.5246
+          },
+          {
+            "fpr": 1.0,
+            "tpr": 1.0,
+            "threshold": 0.001
+          }
+        ],
+        "pr_curve": [
+          {
+            "precision": 0.5,
+            "recall": 1.0,
+            "threshold": 0.001
+          },
+          {
+            "precision": 0.5185,
+            "recall": 1.0,
+            "threshold": 0.0023
+          },
+          {
+            "precision": 0.5385,
+            "recall": 1.0,
+            "threshold": 0.0035
+          },
+          {
+            "precision": 0.56,
+            "recall": 1.0,
+            "threshold": 0.0054
+          },
+          {
+            "precision": 0.5833,
+            "recall": 1.0,
+            "threshold": 0.0099
+          },
+          {
+            "precision": 0.6087,
+            "recall": 1.0,
+            "threshold": 0.01
+          },
+          {
+            "precision": 0.6364,
+            "recall": 1.0,
+            "threshold": 0.0133
+          },
+          {
+            "precision": 0.6667,
+            "recall": 1.0,
+            "threshold": 0.0165
+          },
+          {
+            "precision": 0.7,
+            "recall": 1.0,
+            "threshold": 0.0221
+          },
+          {
+            "precision": 0.7368,
+            "recall": 1.0,
+            "threshold": 0.0316
+          },
+          {
+            "precision": 0.7778,
+            "recall": 1.0,
+            "threshold": 0.0542
+          },
+          {
+            "precision": 0.8235,
+            "recall": 1.0,
+            "threshold": 0.0566
+          },
+          {
+            "precision": 0.875,
+            "recall": 1.0,
+            "threshold": 0.0729
+          },
+          {
+            "precision": 0.9333,
+            "recall": 1.0,
+            "threshold": 0.4654
+          },
+          {
+            "precision": 1.0,
+            "recall": 1.0,
+            "threshold": 0.5246
+          },
+          {
+            "precision": 1.0,
+            "recall": 0.9286,
+            "threshold": 0.986
+          },
+          {
+            "precision": 1.0,
+            "recall": 0.8571,
+            "threshold": 0.9939
+          },
+          {
+            "precision": 1.0,
+            "recall": 0.7857,
+            "threshold": 0.9971
+          },
+          {
+            "precision": 1.0,
+            "recall": 0.7143,
+            "threshold": 0.9974
+          },
+          {
+            "precision": 1.0,
+            "recall": 0.6429,
+            "threshold": 1.0
+          },
+          {
+            "precision": 1.0,
+            "recall": 0.5714,
+            "threshold": 1.0
+          },
+          {
+            "precision": 1.0,
+            "recall": 0.5,
+            "threshold": 1.0
+          },
+          {
+            "precision": 1.0,
+            "recall": 0.4286,
+            "threshold": 1.0
+          },
+          {
+            "precision": 1.0,
+            "recall": 0.3571,
+            "threshold": 1.0
+          },
+          {
+            "precision": 1.0,
+            "recall": 0.2857,
+            "threshold": 1.0
+          },
+          {
+            "precision": 1.0,
+            "recall": 0.2143,
+            "threshold": 1.0
+          },
+          {
+            "precision": 1.0,
+            "recall": 0.1429,
+            "threshold": 1.0
+          },
+          {
+            "precision": 1.0,
+            "recall": 0.0714,
+            "threshold": 1.0
+          }
+        ],
+        "calibration_curve": [
+          {
+            "mean_predicted_value": 0.023,
+            "fraction_of_positives": 0.0
+          },
+          {
+            "mean_predicted_value": 0.495,
+            "fraction_of_positives": 0.5
+          },
+          {
+            "mean_predicted_value": 0.998,
+            "fraction_of_positives": 1.0
+          }
+        ],
+        "parameters": {
+          "C": 1.0,
+          "kernel": "rbf",
+          "probability": true,
+          "class_weight": "balanced",
+          "random_state": 42
+        }
+      },
+      "vqc": {
+        "model_id": "vqc",
+        "model_name": "Variational Quantum Classifier (VQC)",
+        "model_type": "quantum",
+        "metrics": {
+          "accuracy": 0.3929,
+          "precision": 0.2857,
+          "sensitivity": 0.1429,
+          "specificity": 0.6429,
+          "f1_score": 0.1905,
+          "roc_auc": 0.6327,
+          "pr_auc": 0.5204,
+          "brier_score": 0.2408,
+          "training_time_seconds": 45.153,
+          "inference_time_ms": 37.747
+        },
+        "mean_metrics": {
+          "accuracy": 0.3929,
+          "precision": 0.2857,
+          "sensitivity": 0.1429,
+          "specificity": 0.6429,
+          "f1_score": 0.1905,
+          "roc_auc": 0.6327,
+          "pr_auc": 0.5204,
+          "brier_score": 0.2408,
+          "training_time_seconds": 45.153,
+          "inference_time_ms": 37.747
+        },
+        "std_metrics": {
+          "accuracy": 0.09688829857108647,
+          "precision": 0.0,
+          "sensitivity": 0.27536931274199744,
+          "specificity": 0.2696934303982951,
+          "f1_score": 0.18222633618662262,
+          "roc_auc": 0.13850505550340028,
+          "pr_auc": 0.0,
+          "brier_score": 0.039075588287318205,
+          "training_time_seconds": 0.0,
+          "inference_time_ms": 0.0
+        },
+        "fold_metrics": [
+          {
+            "fold_index": 1,
+            "train_samples": 87,
+            "val_samples": 22,
+            "metrics": {
+              "accuracy": 0.5,
+              "precision": 0.5,
+              "sensitivity": 0.9091,
+              "specificity": 0.0909,
+              "f1_score": 0.6452,
+              "roc_auc": 0.4959,
+              "pr_auc": 0.5565,
+              "brier_score": 0.3178,
+              "training_time_seconds": 8.906,
+              "inference_time_ms": 22.785
+            }
+          },
+          {
+            "fold_index": 2,
+            "train_samples": 87,
+            "val_samples": 22,
+            "metrics": {
+              "accuracy": 0.5,
+              "precision": 0.5,
+              "sensitivity": 0.1818,
+              "specificity": 0.8182,
+              "f1_score": 0.2667,
+              "roc_auc": 0.4298,
+              "pr_auc": 0.5548,
+              "brier_score": 0.2535,
+              "training_time_seconds": 6.867,
+              "inference_time_ms": 20.573
+            }
+          },
+          {
+            "fold_index": 3,
+            "train_samples": 87,
+            "val_samples": 22,
+            "metrics": {
+              "accuracy": 0.6818,
+              "precision": 0.75,
+              "sensitivity": 0.5455,
+              "specificity": 0.8182,
+              "f1_score": 0.6316,
+              "roc_auc": 0.719,
+              "pr_auc": 0.6105,
+              "brier_score": 0.2242,
+              "training_time_seconds": 9.577,
+              "inference_time_ms": 40.103
+            }
+          },
+          {
+            "fold_index": 4,
+            "train_samples": 87,
+            "val_samples": 22,
+            "metrics": {
+              "accuracy": 0.5455,
+              "precision": 0.5385,
+              "sensitivity": 0.6364,
+              "specificity": 0.4545,
+              "f1_score": 0.5833,
+              "roc_auc": 0.5041,
+              "pr_auc": 0.4694,
+              "brier_score": 0.2851,
+              "training_time_seconds": 11.722,
+              "inference_time_ms": 37.0
+            }
+          },
+          {
+            "fold_index": 5,
+            "train_samples": 88,
+            "val_samples": 21,
+            "metrics": {
+              "accuracy": 0.381,
+              "precision": 0.2857,
+              "sensitivity": 0.2,
+              "specificity": 0.5455,
+              "f1_score": 0.2353,
+              "roc_auc": 0.2909,
+              "pr_auc": 0.3573,
+              "brier_score": 0.3288,
+              "training_time_seconds": 11.737,
+              "inference_time_ms": 33.79
+            }
+          }
+        ],
+        "confusion_matrix": {
+          "true_positive": 2,
+          "false_positive": 5,
+          "true_negative": 9,
+          "false_negative": 12,
+          "labels": [
+            "0",
+            "1"
+          ]
+        },
+        "roc_curve": [
+          {
+            "fpr": 0.0,
+            "tpr": 0.0,
+            "threshold": 1.0
+          },
+          {
+            "fpr": 0.0714,
+            "tpr": 0.0,
+            "threshold": 0.5944
+          },
+          {
+            "fpr": 0.1429,
+            "tpr": 0.0,
+            "threshold": 0.5944
+          },
+          {
+            "fpr": 0.1429,
+            "tpr": 0.1429,
+            "threshold": 0.5522
+          },
+          {
+            "fpr": 0.3571,
+            "tpr": 0.1429,
+            "threshold": 0.5126
+          },
+          {
+            "fpr": 0.3571,
+            "tpr": 0.7143,
+            "threshold": 0.4167
+          },
+          {
+            "fpr": 0.5,
+            "tpr": 0.7143,
+            "threshold": 0.4096
+          },
+          {
+            "fpr": 0.5,
+            "tpr": 1.0,
+            "threshold": 0.3369
+          },
+          {
+            "fpr": 1.0,
+            "tpr": 1.0,
+            "threshold": 0.2224
+          }
+        ],
+        "pr_curve": [
+          {
+            "precision": 0.5,
+            "recall": 1.0,
+            "threshold": 0.2224
+          },
+          {
+            "precision": 0.5185,
+            "recall": 1.0,
+            "threshold": 0.2334
+          },
+          {
+            "precision": 0.5385,
+            "recall": 1.0,
+            "threshold": 0.2451
+          },
+          {
+            "precision": 0.56,
+            "recall": 1.0,
+            "threshold": 0.2495
+          },
+          {
+            "precision": 0.5833,
+            "recall": 1.0,
+            "threshold": 0.3125
+          },
+          {
+            "precision": 0.6087,
+            "recall": 1.0,
+            "threshold": 0.3148
+          },
+          {
+            "precision": 0.6364,
+            "recall": 1.0,
+            "threshold": 0.3151
+          },
+          {
+            "precision": 0.6667,
+            "recall": 1.0,
+            "threshold": 0.3369
+          },
+          {
+            "precision": 0.65,
+            "recall": 0.9286,
+            "threshold": 0.3763
+          },
+          {
+            "precision": 0.6316,
+            "recall": 0.8571,
+            "threshold": 0.3818
+          },
+          {
+            "precision": 0.6111,
+            "recall": 0.7857,
+            "threshold": 0.3832
+          },
+          {
+            "precision": 0.5882,
+            "recall": 0.7143,
+            "threshold": 0.4096
+          },
+          {
+            "precision": 0.625,
+            "recall": 0.7143,
+            "threshold": 0.4112
+          },
+          {
+            "precision": 0.6667,
+            "recall": 0.7143,
+            "threshold": 0.4167
+          },
+          {
+            "precision": 0.6429,
+            "recall": 0.6429,
+            "threshold": 0.4274
+          },
+          {
+            "precision": 0.6154,
+            "recall": 0.5714,
+            "threshold": 0.4422
+          },
+          {
+            "precision": 0.5833,
+            "recall": 0.5,
+            "threshold": 0.4575
+          },
+          {
+            "precision": 0.5455,
+            "recall": 0.4286,
+            "threshold": 0.4643
+          },
+          {
+            "precision": 0.5,
+            "recall": 0.3571,
+            "threshold": 0.4718
+          },
+          {
+            "precision": 0.4444,
+            "recall": 0.2857,
+            "threshold": 0.4809
+          },
+          {
+            "precision": 0.375,
+            "recall": 0.2143,
+            "threshold": 0.4844
+          },
+          {
+            "precision": 0.2857,
+            "recall": 0.1429,
+            "threshold": 0.5126
+          },
+          {
+            "precision": 0.3333,
+            "recall": 0.1429,
+            "threshold": 0.5231
+          },
+          {
+            "precision": 0.4,
+            "recall": 0.1429,
+            "threshold": 0.5359
+          },
+          {
+            "precision": 0.5,
+            "recall": 0.1429,
+            "threshold": 0.5522
+          },
+          {
+            "precision": 0.3333,
+            "recall": 0.0714,
+            "threshold": 0.5678
+          },
+          {
+            "precision": 0.0,
+            "recall": 0.0,
+            "threshold": 0.5944
+          },
+          {
+            "precision": 0.0,
+            "recall": 0.0,
+            "threshold": 0.5944
+          }
+        ],
+        "calibration_curve": [
+          {
+            "mean_predicted_value": 0.3065,
+            "fraction_of_positives": 0.3636
+          },
+          {
+            "mean_predicted_value": 0.491,
+            "fraction_of_positives": 0.5882
+          }
+        ],
+        "parameters": {
+          "n_qubits": 6,
+          "feature_map": "ZZFeatureMap",
+          "ansatz": "RealAmplitudes",
+          "ansatz_layers": 2,
+          "optimizer": "COBYLA",
+          "max_iterations": 25,
+          "fast_demo_mode": false,
+          "variational_parameter_count": 18,
+          "final_loss": 0.7062701322192381
+        }
+      }
+    },
+    "noisy_vqc_result": {
+      "model_id": "noisy_vqc",
+      "model_name": "Noisy VQC (Aer Depolarizing)",
+      "model_type": "quantum",
+      "metrics": {
+        "accuracy": 0.5,
+        "precision": 0.5,
+        "sensitivity": 0.1429,
+        "specificity": 0.8571,
+        "f1_score": 0.2222,
+        "roc_auc": 0.5816,
+        "pr_auc": 0.0,
+        "brier_score": 0.2418,
+        "training_time_seconds": 45.153,
+        "inference_time_ms": 37.747
+      },
+      "mean_metrics": null,
+      "std_metrics": null,
+      "fold_metrics": null,
+      "confusion_matrix": {
+        "true_positive": 2,
+        "false_positive": 2,
+        "true_negative": 12,
+        "false_negative": 12,
+        "labels": [
+          "0",
+          "1"
+        ]
+      },
+      "roc_curve": [],
+      "pr_curve": [],
+      "calibration_curve": [],
+      "parameters": {}
+    },
+    "noise_execution_info": null,
+    "evidence": {
+      "verdict": "CLASSICAL_PREFERRED",
+      "verdict_label": "Classical Preferred",
+      "verdict_explanation": "Under the selected experimental configuration, classical models show higher observed ROC-AUC than VQC (best classical 1.000 vs. VQC 0.633; delta: -0.367). This is an observational result on the evaluated dataset and configuration.",
+      "performance_evidence": {
+        "dimension": "Performance",
+        "status": "warning",
+        "quantum_metric": 0.6327,
+        "classical_metric": 1.0,
+        "delta": -0.3673,
+        "quantum_std": 0.1385,
+        "classical_std": 0.025,
+        "description": "Best classical baseline shows a higher observed ROC-AUC than VQC under the evaluation protocol (1.000 \u00b1 0.025 vs. VQC 0.633 \u00b1 0.139; delta: -0.367).",
+        "fold_values": [
+          0.4959,
+          0.4298,
+          0.719,
+          0.5041,
+          0.2909
+        ]
+      },
+      "generalization_evidence": {
+        "dimension": "Generalization",
+        "status": "warning",
+        "quantum_metric": 0.1385,
+        "classical_metric": 0.025,
+        "delta": 0.1135,
+        "quantum_std": 0.0,
+        "classical_std": 0.0,
+        "description": "VQC shows higher observed fold-to-fold variance than the classical baseline (VQC SD: \u00b10.139 vs. Classical SD: \u00b10.025). This may indicate higher sensitivity to data partitioning.",
+        "fold_values": [
+          0.4959,
+          0.4298,
+          0.719,
+          0.5041,
+          0.2909
+        ]
+      },
+      "calibration_evidence": {
+        "dimension": "Calibration",
+        "status": "warning",
+        "quantum_metric": 0.2408,
+        "classical_metric": 0.0248,
+        "delta": 0.216,
+        "quantum_std": 0.0391,
+        "classical_std": 0.0213,
+        "description": "Classical model shows better observed calibration accuracy (Classical Brier: 0.025 \u00b1 0.021 vs. VQC Brier: 0.241 \u00b1 0.039).",
+        "fold_values": null
+      },
+      "robustness_evidence": {
+        "dimension": "Noise Robustness",
+        "status": "passed",
+        "quantum_metric": 0.5816,
+        "classical_metric": 0.6327,
+        "delta": -0.0511,
+        "quantum_std": 0.0,
+        "classical_std": 0.0,
+        "description": "VQC retains 91.9% of ideal ROC-AUC under simulated noise (Noisy AUC: 0.582, Ideal AUC: 0.633). Noise simulation mode: UNKNOWN.",
+        "fold_values": null
+      },
+      "resource_evidence": {
+        "dimension": "Resource Cost",
+        "status": "warning",
+        "quantum_metric": 37.747,
+        "classical_metric": 0.079,
+        "delta": 37.668,
+        "quantum_std": 0.0,
+        "classical_std": 0.0,
+        "description": "Quantum simulation runtime is 477.8\u00d7 higher than classical inference (37.75 ms vs. 0.08 ms). This reflects classical simulation overhead, not future hardware timing.",
+        "fold_values": null
+      },
+      "rule_breakdown": [
+        "Classical baselines show higher observed ROC-AUC (delta: -0.367)",
+        "VQC shows higher fold-to-fold variance"
+      ],
+      "methodological_note": "Conclusions are observational and based on held-out test and cross-validation metrics. No formal statistical significance test has been applied. Do not interpret metric differences as statistically significant without appropriate hypothesis testing (e.g., DeLong test, bootstrap)."
+    },
+    "best_accuracy_model": "svm",
+    "best_sensitivity_model": "logistic_regression",
+    "best_auc_model": "logistic_regression",
+    "experiment_id": null,
+    "experiment_metadata": {
+      "experiment_id": "exp-e61168bd",
+      "timestamp": "2026-09-26T19:10:40.552405+00:00",
+      "dataset_name": "Breast Cancer Wisconsin (Diagnostic)",
+      "dataset_rows": 137,
+      "dataset_columns": 32,
+      "target_column": "diagnosis",
+      "positive_class": "M",
+      "train_samples": 109,
+      "test_samples": 28,
+      "test_split_ratio": 0.2,
+      "random_seed": 42,
+      "scaler_type": "standard",
+      "feature_selection_k": null,
+      "pca_components": 6,
+      "selected_feature_names": [
+        "radius_mean",
+        "texture_mean",
+        "perimeter_mean",
+        "area_mean",
+        "smoothness_mean",
+        "compactness_mean",
+        "concavity_mean",
+        "concave_points_mean",
+        "symmetry_mean",
+        "fractal_dimension_mean",
+        "radius_se",
+        "texture_se",
+        "perimeter_se",
+        "area_se",
+        "smoothness_se",
+        "compactness_se",
+        "concavity_se",
+        "concave_points_se",
+        "symmetry_se",
+        "fractal_dimension_se",
+        "radius_worst",
+        "texture_worst",
+        "perimeter_worst",
+        "area_worst",
+        "smoothness_worst",
+        "compactness_worst",
+        "concavity_worst",
+        "concave_points_worst",
+        "symmetry_worst",
+        "fractal_dimension_worst"
+      ],
+      "n_qubits": 6,
+      "feature_map": "ZZFeatureMap",
+      "ansatz": "RealAmplitudes",
+      "ansatz_layers": 2,
+      "optimizer": "COBYLA",
+      "max_iterations": 25,
+      "training_mode": "RESEARCH_MODE",
+      "vqc_training_samples_used": 109,
+      "vqc_iterations_used": 25,
+      "classical_models_enabled": [
+        "logistic_regression",
+        "random_forest",
+        "svm"
+      ],
+      "noise_one_qubit_error": 0.01,
+      "noise_two_qubit_error": 0.03,
+      "noise_readout_error": 0.02,
+      "noise_execution_mode": "AER_EXECUTION",
+      "benchmark_metrics": null,
+      "evidence_verdict": null
+    }
+  },
+  "noisy_vqc_result": {
+    "model_id": "noisy_vqc",
+    "model_name": "Noisy VQC (Aer Depolarizing)",
+    "model_type": "quantum",
+    "metrics": {
+      "accuracy": 0.5,
+      "precision": 0.5,
+      "sensitivity": 0.1429,
+      "specificity": 0.8571,
+      "f1_score": 0.2222,
+      "roc_auc": 0.5816,
+      "pr_auc": 0.0,
+      "brier_score": 0.2418,
+      "training_time_seconds": 45.153,
+      "inference_time_ms": 37.747
+    },
+    "mean_metrics": null,
+    "std_metrics": null,
+    "fold_metrics": null,
+    "confusion_matrix": {
+      "true_positive": 2,
+      "false_positive": 2,
+      "true_negative": 12,
+      "false_negative": 12,
+      "labels": [
+        "0",
+        "1"
+      ]
+    },
+    "roc_curve": [],
+    "pr_curve": [],
+    "calibration_curve": [],
+    "parameters": {}
+  },
+  "evidence": {
+    "verdict": "CLASSICAL_PREFERRED",
+    "verdict_label": "Classical Preferred",
+    "verdict_explanation": "Under the selected experimental configuration, classical models show higher observed ROC-AUC than VQC (best classical 1.000 vs. VQC 0.633; delta: -0.367). This is an observational result on the evaluated dataset and configuration.",
+    "performance_evidence": {
+      "dimension": "Performance",
+      "status": "warning",
+      "quantum_metric": 0.6327,
+      "classical_metric": 1.0,
+      "delta": -0.3673,
+      "quantum_std": 0.1385,
+      "classical_std": 0.025,
+      "description": "Best classical baseline shows a higher observed ROC-AUC than VQC under the evaluation protocol (1.000 \u00b1 0.025 vs. VQC 0.633 \u00b1 0.139; delta: -0.367).",
+      "fold_values": [
+        0.4959,
+        0.4298,
+        0.719,
+        0.5041,
+        0.2909
+      ]
+    },
+    "generalization_evidence": {
+      "dimension": "Generalization",
+      "status": "warning",
+      "quantum_metric": 0.1385,
+      "classical_metric": 0.025,
+      "delta": 0.1135,
+      "quantum_std": 0.0,
+      "classical_std": 0.0,
+      "description": "VQC shows higher observed fold-to-fold variance than the classical baseline (VQC SD: \u00b10.139 vs. Classical SD: \u00b10.025). This may indicate higher sensitivity to data partitioning.",
+      "fold_values": [
+        0.4959,
+        0.4298,
+        0.719,
+        0.5041,
+        0.2909
+      ]
+    },
+    "calibration_evidence": {
+      "dimension": "Calibration",
+      "status": "warning",
+      "quantum_metric": 0.2408,
+      "classical_metric": 0.0248,
+      "delta": 0.216,
+      "quantum_std": 0.0391,
+      "classical_std": 0.0213,
+      "description": "Classical model shows better observed calibration accuracy (Classical Brier: 0.025 \u00b1 0.021 vs. VQC Brier: 0.241 \u00b1 0.039).",
+      "fold_values": null
+    },
+    "robustness_evidence": {
+      "dimension": "Noise Robustness",
+      "status": "passed",
+      "quantum_metric": 0.5816,
+      "classical_metric": 0.6327,
+      "delta": -0.0511,
+      "quantum_std": 0.0,
+      "classical_std": 0.0,
+      "description": "VQC retains 91.9% of ideal ROC-AUC under simulated noise (Noisy AUC: 0.582, Ideal AUC: 0.633). Noise simulation mode: UNKNOWN.",
+      "fold_values": null
+    },
+    "resource_evidence": {
+      "dimension": "Resource Cost",
+      "status": "warning",
+      "quantum_metric": 37.747,
+      "classical_metric": 0.079,
+      "delta": 37.668,
+      "quantum_std": 0.0,
+      "classical_std": 0.0,
+      "description": "Quantum simulation runtime is 477.8\u00d7 higher than classical inference (37.75 ms vs. 0.08 ms). This reflects classical simulation overhead, not future hardware timing.",
+      "fold_values": null
+    },
+    "rule_breakdown": [
+      "Classical baselines show higher observed ROC-AUC (delta: -0.367)",
+      "VQC shows higher fold-to-fold variance"
+    ],
+    "methodological_note": "Conclusions are observational and based on held-out test and cross-validation metrics. No formal statistical significance test has been applied. Do not interpret metric differences as statistically significant without appropriate hypothesis testing (e.g., DeLong test, bootstrap)."
+  },
+  "explainability": {
+    "logistic_regression": {
+      "model_id": "logistic_regression",
+      "model_name": "Logistic Regression",
+      "model_type": "classical",
+      "method_name": "Coefficient Magnitude (Linear Weights)",
+      "method_description": "Logistic Regression coefficients represent the log-odds change per unit increase in each standardized input feature.  The absolute magnitude indicates relative influence on the linear decision boundary. Sign (positive/negative) indicates direction of association. This interpretation applies only to the fitted linear model.",
+      "features": [
+        {
+          "feature_name": "PC_1",
+          "importance_score": 3.4923,
+          "relative_percentage": 50.24,
+          "direction": "positive"
+        },
+        {
+          "feature_name": "PC_2",
+          "importance_score": 1.2784,
+          "relative_percentage": 18.39,
+          "direction": "negative"
+        },
+        {
+          "feature_name": "PC_3",
+          "importance_score": 1.1166,
+          "relative_percentage": 16.06,
+          "direction": "negative"
+        },
+        {
+          "feature_name": "PC_5",
+          "importance_score": 0.5402,
+          "relative_percentage": 7.77,
+          "direction": "positive"
+        },
+        {
+          "feature_name": "PC_6",
+          "importance_score": 0.3682,
+          "relative_percentage": 5.3,
+          "direction": "positive"
+        },
+        {
+          "feature_name": "PC_4",
+          "importance_score": 0.1554,
+          "relative_percentage": 2.24,
+          "direction": "negative"
+        }
+      ],
+      "quantum_sensitivity": null,
+      "interpretation_note": "Values are absolute coefficient magnitudes from the fitted Logistic Regression model on the PCA-compressed held-out feature space. They reflect the model's internal weighting, not causal clinical importance."
+    },
+    "random_forest": {
+      "model_id": "random_forest",
+      "model_name": "Random Forest",
+      "model_type": "classical",
+      "method_name": "Gini Impurity Feature Importance",
+      "method_description": "Random Forest impurity-based feature importance measures the mean decrease in Gini impurity weighted by the fraction of samples reaching each split node, averaged across all trees in the ensemble. Scores are normalized to sum to 1.0. This is a training-data measure and may over-weight high-cardinality or correlated features.",
+      "features": [
+        {
+          "feature_name": "PC_1",
+          "importance_score": 0.5751,
+          "relative_percentage": 57.51,
+          "direction": "positive"
+        },
+        {
+          "feature_name": "PC_3",
+          "importance_score": 0.1466,
+          "relative_percentage": 14.66,
+          "direction": "positive"
+        },
+        {
+          "feature_name": "PC_2",
+          "importance_score": 0.1051,
+          "relative_percentage": 10.51,
+          "direction": "positive"
+        },
+        {
+          "feature_name": "PC_6",
+          "importance_score": 0.0692,
+          "relative_percentage": 6.92,
+          "direction": "positive"
+        },
+        {
+          "feature_name": "PC_5",
+          "importance_score": 0.0539,
+          "relative_percentage": 5.39,
+          "direction": "positive"
+        },
+        {
+          "feature_name": "PC_4",
+          "importance_score": 0.0501,
+          "relative_percentage": 5.01,
+          "direction": "positive"
+        }
+      ],
+      "quantum_sensitivity": null,
+      "interpretation_note": "Impurity-based importance is computed from the fitted Random Forest on the PCA-compressed training data. It reflects tree-split utility, not causal clinical relevance."
+    },
+    "svm": {
+      "model_id": "svm",
+      "model_name": "Support Vector Machine (SVM)",
+      "model_type": "classical",
+      "method_name": "Permutation Importance (ROC-AUC Drop)",
+      "method_description": "Permutation importance is a model-agnostic method that measures the mean ROC-AUC decrease when each feature's values are randomly permuted across the held-out test set (5 repetitions, random seed 42). A larger drop indicates that the model relies more heavily on that feature for discrimination. Negative values are clipped to zero.",
+      "features": [
+        {
+          "feature_name": "PC_1",
+          "importance_score": 0.402,
+          "relative_percentage": 95.17,
+          "direction": "positive"
+        },
+        {
+          "feature_name": "PC_3",
+          "importance_score": 0.0163,
+          "relative_percentage": 3.86,
+          "direction": "positive"
+        },
+        {
+          "feature_name": "PC_2",
+          "importance_score": 0.002,
+          "relative_percentage": 0.48,
+          "direction": "positive"
+        },
+        {
+          "feature_name": "PC_4",
+          "importance_score": 0.002,
+          "relative_percentage": 0.48,
+          "direction": "positive"
+        },
+        {
+          "feature_name": "PC_5",
+          "importance_score": 0.0,
+          "relative_percentage": 0.0,
+          "direction": "neutral"
+        },
+        {
+          "feature_name": "PC_6",
+          "importance_score": 0.0,
+          "relative_percentage": 0.0,
+          "direction": "neutral"
+        }
+      ],
+      "quantum_sensitivity": null,
+      "interpretation_note": "Permutation importance is evaluated on the held-out test split. It reflects the model's dependence on each feature but is not a causal attribution."
+    },
+    "vqc": {
+      "model_id": "vqc",
+      "model_name": "Variational Quantum Classifier (VQC)",
+      "model_type": "quantum",
+      "method_name": "Finite-Difference Quantum Feature Sensitivity",
+      "method_description": "Measures the average rate of change in VQC positive-class probability with respect to \u00b10.05-step perturbations in each quantum-encoded feature (PCA component).  This is a local sensitivity measure, NOT a SHAP value, NOT a gradient, and NOT a causal attribution. Higher sensitivity means the circuit output is more responsive to changes in that encoded dimension.",
+      "features": [
+        {
+          "feature_name": "Qubit 1 (PC_2)",
+          "importance_score": 0.2942,
+          "relative_percentage": 42.27,
+          "direction": "positive"
+        },
+        {
+          "feature_name": "Qubit 2 (PC_3)",
+          "importance_score": 0.2044,
+          "relative_percentage": 29.37,
+          "direction": "positive"
+        },
+        {
+          "feature_name": "Qubit 0 (PC_1)",
+          "importance_score": 0.1652,
+          "relative_percentage": 23.74,
+          "direction": "positive"
+        },
+        {
+          "feature_name": "Qubit 3 (PC_4)",
+          "importance_score": 0.0322,
+          "relative_percentage": 4.62,
+          "direction": "positive"
+        },
+        {
+          "feature_name": "Qubit 4 (PC_5)",
+          "importance_score": 0.0,
+          "relative_percentage": 0.0,
+          "direction": "positive"
+        },
+        {
+          "feature_name": "Qubit 5 (PC_6)",
+          "importance_score": 0.0,
+          "relative_percentage": 0.0,
+          "direction": "positive"
+        }
+      ],
+      "quantum_sensitivity": {
+        "quantum_features": [
+          {
+            "feature_name": "Qubit 1 (PC_2)",
+            "importance_score": 0.2942,
+            "relative_percentage": 42.27,
+            "direction": "positive"
+          },
+          {
+            "feature_name": "Qubit 2 (PC_3)",
+            "importance_score": 0.2044,
+            "relative_percentage": 29.37,
+            "direction": "positive"
+          },
+          {
+            "feature_name": "Qubit 0 (PC_1)",
+            "importance_score": 0.1652,
+            "relative_percentage": 23.74,
+            "direction": "positive"
+          },
+          {
+            "feature_name": "Qubit 3 (PC_4)",
+            "importance_score": 0.0322,
+            "relative_percentage": 4.62,
+            "direction": "positive"
+          },
+          {
+            "feature_name": "Qubit 4 (PC_5)",
+            "importance_score": 0.0,
+            "relative_percentage": 0.0,
+            "direction": "positive"
+          },
+          {
+            "feature_name": "Qubit 5 (PC_6)",
+            "importance_score": 0.0,
+            "relative_percentage": 0.0,
+            "direction": "positive"
+          }
+        ],
+        "projected_original_features": [
+          {
+            "feature_name": "fractal_dimension_worst",
+            "importance_score": 0.1534,
+            "relative_percentage": 4.65,
+            "direction": "positive"
+          },
+          {
+            "feature_name": "smoothness_worst",
+            "importance_score": 0.1495,
+            "relative_percentage": 4.53,
+            "direction": "positive"
+          },
+          {
+            "feature_name": "symmetry_se",
+            "importance_score": 0.1423,
+            "relative_percentage": 4.31,
+            "direction": "positive"
+          },
+          {
+            "feature_name": "fractal_dimension_se",
+            "importance_score": 0.1384,
+            "relative_percentage": 4.19,
+            "direction": "positive"
+          },
+          {
+            "feature_name": "compactness_se",
+            "importance_score": 0.1273,
+            "relative_percentage": 3.85,
+            "direction": "positive"
+          },
+          {
+            "feature_name": "radius_se",
+            "importance_score": 0.1262,
+            "relative_percentage": 3.82,
+            "direction": "positive"
+          },
+          {
+            "feature_name": "compactness_worst",
+            "importance_score": 0.1262,
+            "relative_percentage": 3.82,
+            "direction": "positive"
+          },
+          {
+            "feature_name": "fractal_dimension_mean",
+            "importance_score": 0.123,
+            "relative_percentage": 3.72,
+            "direction": "positive"
+          },
+          {
+            "feature_name": "perimeter_se",
+            "importance_score": 0.1227,
+            "relative_percentage": 3.72,
+            "direction": "positive"
+          },
+          {
+            "feature_name": "radius_worst",
+            "importance_score": 0.1209,
+            "relative_percentage": 3.66,
+            "direction": "positive"
+          },
+          {
+            "feature_name": "symmetry_worst",
+            "importance_score": 0.1199,
+            "relative_percentage": 3.63,
+            "direction": "positive"
+          },
+          {
+            "feature_name": "area_se",
+            "importance_score": 0.1197,
+            "relative_percentage": 3.63,
+            "direction": "positive"
+          },
+          {
+            "feature_name": "area_worst",
+            "importance_score": 0.1178,
+            "relative_percentage": 3.57,
+            "direction": "positive"
+          },
+          {
+            "feature_name": "smoothness_se",
+            "importance_score": 0.1148,
+            "relative_percentage": 3.48,
+            "direction": "positive"
+          },
+          {
+            "feature_name": "perimeter_worst",
+            "importance_score": 0.1126,
+            "relative_percentage": 3.41,
+            "direction": "positive"
+          },
+          {
+            "feature_name": "concave_points_se",
+            "importance_score": 0.1123,
+            "relative_percentage": 3.4,
+            "direction": "positive"
+          },
+          {
+            "feature_name": "radius_mean",
+            "importance_score": 0.1109,
+            "relative_percentage": 3.36,
+            "direction": "positive"
+          },
+          {
+            "feature_name": "area_mean",
+            "importance_score": 0.1093,
+            "relative_percentage": 3.31,
+            "direction": "positive"
+          },
+          {
+            "feature_name": "concavity_se",
+            "importance_score": 0.1087,
+            "relative_percentage": 3.29,
+            "direction": "positive"
+          },
+          {
+            "feature_name": "smoothness_mean",
+            "importance_score": 0.1085,
+            "relative_percentage": 3.29,
+            "direction": "positive"
+          },
+          {
+            "feature_name": "concavity_worst",
+            "importance_score": 0.1081,
+            "relative_percentage": 3.28,
+            "direction": "positive"
+          },
+          {
+            "feature_name": "perimeter_mean",
+            "importance_score": 0.1053,
+            "relative_percentage": 3.19,
+            "direction": "positive"
+          },
+          {
+            "feature_name": "texture_worst",
+            "importance_score": 0.0937,
+            "relative_percentage": 2.84,
+            "direction": "positive"
+          },
+          {
+            "feature_name": "symmetry_mean",
+            "importance_score": 0.0897,
+            "relative_percentage": 2.72,
+            "direction": "positive"
+          },
+          {
+            "feature_name": "compactness_mean",
+            "importance_score": 0.084,
+            "relative_percentage": 2.54,
+            "direction": "positive"
+          },
+          {
+            "feature_name": "concave_points_worst",
+            "importance_score": 0.0837,
+            "relative_percentage": 2.53,
+            "direction": "positive"
+          },
+          {
+            "feature_name": "texture_se",
+            "importance_score": 0.0809,
+            "relative_percentage": 2.45,
+            "direction": "positive"
+          },
+          {
+            "feature_name": "texture_mean",
+            "importance_score": 0.0711,
+            "relative_percentage": 2.15,
+            "direction": "positive"
+          },
+          {
+            "feature_name": "concavity_mean",
+            "importance_score": 0.0608,
+            "relative_percentage": 1.84,
+            "direction": "positive"
+          },
+          {
+            "feature_name": "concave_points_mean",
+            "importance_score": 0.0597,
+            "relative_percentage": 1.81,
+            "direction": "positive"
+          }
+        ],
+        "perturbation_delta": 0.05,
+        "methodology": "Finite-difference sensitivity: sensitivity_j = mean_i |P(+|x+\u03b4ej) \u2212 P(+|x\u2212\u03b4ej)| / 2\u03b4 (\u03b4=0.05, 25 test samples). Back-projection to original features uses |PCA loading| weighted sum."
+      },
+      "interpretation_note": "Quantum Feature Sensitivity is computed via finite-difference perturbation of the parameterized quantum circuit inputs.  It reflects circuit-output sensitivity, not causal clinical feature importance."
+    }
+  },
+  "disagreement": null,
+  "utility_report": null,
+  "resource_profile": {
+    "experiment_id": "exp-e61168bd",
+    "experiment_name": "Benchmark (Breast Cancer Wisconsin (Diagnostic))",
+    "timestamp_utc": "2026-09-26T19:10:40.552719+00:00",
+    "quantum_resources": {
+      "qubit_count": 6,
+      "circuit_depth": 5,
+      "parameter_count": 18,
+      "optimization_iterations": 25,
+      "circuit_evaluations": 475,
+      "simulation_time_seconds": 45.153,
+      "inference_latency_ms": 37.75,
+      "simulator_backend": "Qiskit Aer Statevector / Depolarizing Noise Simulator"
+    },
+    "classical_resources": [
+      {
+        "model_id": "logistic_regression",
+        "model_name": "Logistic Regression",
+        "parameter_count_summary": "L2 Regularized Linear (6 weights + bias)",
+        "training_time_seconds": 0.049,
+        "inference_latency_ms": 0.079
+      },
+      {
+        "model_id": "random_forest",
+        "model_name": "Random Forest",
+        "parameter_count_summary": "100 Decision Trees (max_depth=5, feature_subsets)",
+        "training_time_seconds": 0.705,
+        "inference_latency_ms": 3.01
+      },
+      {
+        "model_id": "svm",
+        "model_name": "Support Vector Machine (SVM)",
+        "parameter_count_summary": "RBF Kernel Support Vectors (~24 support vectors)",
+        "training_time_seconds": 0.028,
+        "inference_latency_ms": 0.122
+      }
+    ],
+    "dataset_resources": {
+      "raw_rows": 137,
+      "raw_columns": 30,
+      "encoded_dimensions": 30,
+      "selected_dimensions": 30,
+      "pca_dimensions": 6,
+      "dimension_compression_ratio": 5.0
+    },
+    "measured_vs_configured_notes": "Circuit depth (5) and parameter count (18) are exact analytical circuit properties. Simulation time (45.153s) and latencies (37.75ms) are empirical CPU runtime measurements on local Python/Qiskit execution.",
+    "scalability_disclaimer": "Observed resource metrics are measured on local CPU statevector / Aer simulation. Physical quantum execution on fault-tolerant hardware exhibits distinct asymptotic scaling, circuit compilation overhead, and error mitigation budgets."
+  },
+  "metadata": {
+    "experiment_id": "exp-e61168bd",
+    "timestamp": "2026-09-26T19:10:40.552405+00:00",
+    "dataset_name": "Breast Cancer Wisconsin (Diagnostic)",
+    "dataset_rows": 137,
+    "dataset_columns": 32,
+    "target_column": "diagnosis",
+    "positive_class": "M",
+    "train_samples": 109,
+    "test_samples": 28,
+    "test_split_ratio": 0.2,
+    "random_seed": 42,
+    "scaler_type": "standard",
+    "feature_selection_k": null,
+    "pca_components": 6,
+    "selected_feature_names": [
+      "radius_mean",
+      "texture_mean",
+      "perimeter_mean",
+      "area_mean",
+      "smoothness_mean",
+      "compactness_mean",
+      "concavity_mean",
+      "concave_points_mean",
+      "symmetry_mean",
+      "fractal_dimension_mean",
+      "radius_se",
+      "texture_se",
+      "perimeter_se",
+      "area_se",
+      "smoothness_se",
+      "compactness_se",
+      "concavity_se",
+      "concave_points_se",
+      "symmetry_se",
+      "fractal_dimension_se",
+      "radius_worst",
+      "texture_worst",
+      "perimeter_worst",
+      "area_worst",
+      "smoothness_worst",
+      "compactness_worst",
+      "concavity_worst",
+      "concave_points_worst",
+      "symmetry_worst",
+      "fractal_dimension_worst"
+    ],
+    "n_qubits": 6,
+    "feature_map": "ZZFeatureMap",
+    "ansatz": "RealAmplitudes",
+    "ansatz_layers": 2,
+    "optimizer": "COBYLA",
+    "max_iterations": 25,
+    "training_mode": "RESEARCH_MODE",
+    "vqc_training_samples_used": 109,
+    "vqc_iterations_used": 25,
+    "classical_models_enabled": [
+      "logistic_regression",
+      "random_forest",
+      "svm"
+    ],
+    "noise_one_qubit_error": 0.01,
+    "noise_two_qubit_error": 0.03,
+    "noise_readout_error": 0.02,
+    "noise_execution_mode": "AER_EXECUTION",
+    "benchmark_metrics": null,
+    "evidence_verdict": null
+  }
+}

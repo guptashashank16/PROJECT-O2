@@ -4,7 +4,9 @@ import {
   Cpu,
   Database,
   Eye,
+  Gauge,
   GitBranch,
+  GitCompare,
   Stethoscope,
 } from 'lucide-react';
 import { useAppState } from './context/AppStateContext';
@@ -18,6 +20,7 @@ import { DatasetProfileCard } from './components/dataset/DatasetProfileCard';
 import { DatasetConfigCard } from './components/dataset/DatasetConfigCard';
 import { PreprocessingFlowView } from './components/preprocessing/PreprocessingFlowView';
 import { ModelConfigCard } from './components/models/ModelConfigCard';
+import { QuantumModelRegistryCard } from './components/models/QuantumModelRegistryCard';
 import { TrainingControlCard } from './components/models/TrainingControlCard';
 import { MetricsComparisonTable } from './components/benchmark/MetricsComparisonTable';
 import { MetricsRadarChart } from './components/benchmark/MetricsRadarChart';
@@ -26,6 +29,10 @@ import { ConfusionMatrixCard } from './components/benchmark/ConfusionMatrixCard'
 import { ExplainabilityView } from './components/explainability/ExplainabilityView';
 import { DynamicPatientForm } from './components/prediction/DynamicPatientForm';
 import { PredictionResultCard } from './components/prediction/PredictionResultCard';
+import { ExperimentRegistryCard } from './components/experiments/ExperimentRegistryCard';
+import { ResourceProfileCard } from './components/experiments/ResourceProfileCard';
+import { ExperimentComparisonView } from './components/experiments/ExperimentComparisonView';
+import { QuantumHardwareConnectorCard } from './components/quantum/QuantumHardwareConnectorCard';
 import { NotFoundPage } from './pages/NotFoundPage';
 import { ClassicalModelConfig, QuantumModelConfig } from './types';
 
@@ -49,12 +56,12 @@ export const App: React.FC = () => {
     svm: true,
   });
 
-  // Dynamic SEO Meta & Title Manager per Section 56
+  // Dynamic SEO Meta & Title Manager
   useEffect(() => {
     const metaTitles: Record<string, { title: string; desc: string }> = {
       dataset: {
-        title: 'Q-CARE — Dataset Analysis',
-        desc: 'Biomedical tabular dataset profiling, quality audit, and target configuration.',
+        title: 'Q-CARE — Dataset Analysis & Registry',
+        desc: 'Biomedical tabular dataset profiling, quality audit, and experiment registry.',
       },
       preprocessing: {
         title: 'Q-CARE — Preprocessing & PCA',
@@ -62,7 +69,7 @@ export const App: React.FC = () => {
       },
       training: {
         title: 'Q-CARE — Quantum & Classical Model Setup',
-        desc: 'Variational Quantum Classifier (VQC) circuit parameters and classical baselines.',
+        desc: 'Variational Quantum Classifier (VQC) parameterized circuits, model catalog, and classical baselines.',
       },
       benchmark: {
         title: 'Q-CARE — Model Benchmark & Evidence Engine',
@@ -73,8 +80,20 @@ export const App: React.FC = () => {
         desc: 'Quantum Model Feature Sensitivity analysis and classical feature importances.',
       },
       prediction: {
-        title: 'Q-CARE — Disease Risk Prediction',
-        desc: 'Real-time clinical inference and estimated disease risk prediction.',
+        title: 'Q-CARE — Patient Inference & What-If Lab',
+        desc: 'Real-time clinical inference and what-if sensitivity perturbation lab.',
+      },
+      resources: {
+        title: 'Q-CARE — Resource & Scalability Profile',
+        desc: 'Empirical quantum circuit dimensions, simulation latencies, and scalability profile.',
+      },
+      comparison: {
+        title: 'Q-CARE — Multi-Experiment Comparison',
+        desc: 'Empirical side-by-side benchmarking comparison across isolated parameter runs.',
+      },
+      hardware: {
+        title: 'Q-CARE — Hardware & Cloud Runtime (OpenQASM 3.0)',
+        desc: 'IBM Quantum cloud backend connection, QPU discovery, and OpenQASM 3.0 circuit export.',
       },
     };
 
@@ -114,7 +133,7 @@ export const App: React.FC = () => {
         <Sidebar />
 
         <main className="flex-1 overflow-y-auto p-6 md:p-8 space-y-8 max-w-7xl mx-auto w-full">
-          {/* TAB 1: DATASET & PROFILING */}
+          {/* TAB 1: DATASET & PROFILING + EXPERIMENT REGISTRY */}
           {activeTab === 'dataset' && (
             <div className="space-y-8 animate-in fade-in duration-200">
               <div>
@@ -124,6 +143,7 @@ export const App: React.FC = () => {
                 </p>
               </div>
 
+              <ExperimentRegistryCard />
               <DatasetUploadCard />
               <DatasetProfileCard />
               <DatasetConfigCard />
@@ -144,7 +164,7 @@ export const App: React.FC = () => {
             </div>
           )}
 
-          {/* TAB 3: QUANTUM & CLASSICAL MODEL SETUP */}
+          {/* TAB 3: QUANTUM & CLASSICAL MODEL SETUP + CATALOG */}
           {activeTab === 'training' && (
             <div className="space-y-8 animate-in fade-in duration-200">
               <div>
@@ -153,6 +173,8 @@ export const App: React.FC = () => {
                   Configure Variational Quantum Classifier (VQC) parameterized circuits and classical baseline models
                 </p>
               </div>
+
+              <QuantumModelRegistryCard />
 
               <ModelConfigCard
                 quantumConfig={quantumConfig}
@@ -169,7 +191,7 @@ export const App: React.FC = () => {
             </div>
           )}
 
-          {/* TAB 4: BENCHMARK & COMPARISON */}
+          {/* TAB 4: BENCHMARK & COMPARISON + EVIDENCE */}
           {activeTab === 'benchmark' && (
             <div className="space-y-8 animate-in fade-in duration-200">
               <div>
@@ -222,11 +244,11 @@ export const App: React.FC = () => {
             </div>
           )}
 
-          {/* TAB 6: DYNAMIC PATIENT PREDICTION LAB */}
+          {/* TAB 6: DYNAMIC PATIENT PREDICTION LAB & WHAT-IF */}
           {activeTab === 'prediction' && (
             <div className="space-y-8 animate-in fade-in duration-200">
               <div>
-                <h2 className="text-xl font-bold text-slate-900 tracking-tight">Dynamic Patient Inference Lab</h2>
+                <h2 className="text-xl font-bold text-slate-900 tracking-tight">Dynamic Patient Inference & What-If Lab</h2>
                 <p className="text-xs text-slate-500">
                   Real-time clinical inference through fitted preprocessing, PCA projection, and model prediction
                 </p>
@@ -247,6 +269,48 @@ export const App: React.FC = () => {
             </div>
           )}
 
+          {/* TAB 7: COMPUTATIONAL RESOURCE & SCALABILITY PROFILE */}
+          {activeTab === 'resources' && (
+            <div className="space-y-8 animate-in fade-in duration-200">
+              <div>
+                <h2 className="text-xl font-bold text-slate-900 tracking-tight">Computational Resource & Scalability Profile</h2>
+                <p className="text-xs text-slate-500">
+                  Circuit depth, parameter counts, optimization iteration budgets, and empirical runtime measurements
+                </p>
+              </div>
+
+              <ResourceProfileCard />
+            </div>
+          )}
+
+          {/* TAB 8: MULTI-EXPERIMENT COMPARISON */}
+          {activeTab === 'comparison' && (
+            <div className="space-y-8 animate-in fade-in duration-200">
+              <div>
+                <h2 className="text-xl font-bold text-slate-900 tracking-tight">Multi-Experiment Benchmarking Comparison</h2>
+                <p className="text-xs text-slate-500">
+                  Neutral empirical comparison across isolated parameter variations and quantum circuit architectures
+                </p>
+              </div>
+
+              <ExperimentComparisonView />
+            </div>
+          )}
+
+          {/* TAB 9: QUANTUM HARDWARE & CLOUD RUNTIME (OPENQASM 3.0) */}
+          {activeTab === 'hardware' && (
+            <div className="space-y-8 animate-in fade-in duration-200">
+              <QuantumHardwareConnectorCard
+                quantumConfig={{
+                  n_qubits: quantumConfig.n_qubits,
+                  feature_map: quantumConfig.feature_map,
+                  ansatz: quantumConfig.ansatz,
+                  ansatz_layers: quantumConfig.ansatz_layers,
+                }}
+              />
+            </div>
+          )}
+
           {/* Medical Research Disclaimer */}
           <div className="pt-6">
             <MedicalDisclaimer />
@@ -256,4 +320,3 @@ export const App: React.FC = () => {
     </div>
   );
 };
-

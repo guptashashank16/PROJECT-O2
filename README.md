@@ -8,94 +8,121 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.2-blue.svg)](https://www.typescriptlang.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-A general-purpose, evidence-driven hybrid quantum-classical machine learning platform for clinical and biomedical tabular data benchmarking.
+A rigorous, evidence-driven hybrid quantum-classical machine learning platform for biomedical tabular data benchmarking (SIH26139).
 
 ---
 
 ## 1. Core Research Purpose & Central Philosophy
 
-> **"Quantum ko prove nahi karna hai — quantum ki usefulness measure karni hai."**
+> **"We do not claim automated medical diagnosis or clinical deployment. We provide a controlled, leakage-free scientific benchmarking platform to measure whether quantum machine learning models offer empirical value over classical algorithms on biomedical tabular data."**
 
-The platform evaluates whether a **Variational Quantum Classifier (VQC)** provides genuine clinical utility compared to strong classical baselines (Logistic Regression, Random Forest, SVM) under leakage-safe, realistic evaluation conditions.
+The platform evaluates whether a **Variational Quantum Classifier (VQC)** provides genuine utility compared to strong classical baselines (Logistic Regression, Random Forest, Support Vector Machines) under rigorous, leakage-safe evaluation conditions.
 
-The platform outputs exactly one evidence-based verdict:
+The platform outputs neutral, evidence-based verdicts across 5 dimensions:
 - `QUANTUM_PREFERRED`: Quantum model shows statistically significant ROC-AUC advantage and noise robustness.
-- `QUANTUM_COMPETITIVE`: Quantum model achieves diagnostic parity with strong classical baselines.
+- `QUANTUM_COMPETITIVE`: Quantum model achieves diagnostic parity with classical baselines.
 - `CLASSICAL_PREFERRED`: Classical baselines exceed quantum performance with lower computational cost.
 - `INSUFFICIENT_EVIDENCE`: Fold variance or sample size is insufficient to make a scientific recommendation.
 
 ---
 
-## 2. Architecture & Data Flow
+## 2. Platform Architecture & Data Flow
 
 ```mermaid
 flowchart TD
-    UI["React Dashboard"] --> Auth["Argon2id + JWT Security Layer"]
-    Auth --> API["FastAPI Backend Services"]
-    API --> Profiler["Dataset Profiler & Heuristic Identifier Detector"]
-    Profiler --> Config["Target & Feature Configuration"]
-
-    subgraph LeakageFreeCV["Stratified 5-Fold Cross-Validation - Executed Per Fold"]
-        Config --> FoldSplit["5-Fold Stratified Split"]
-        FoldSplit --> Impute["Median/Mode Imputation"]
-        Impute --> Encode["One-Hot Categorical Encoding"]
-        Encode --> Scale["Standard / MinMaxScaler"]
-        Scale --> Select["ANOVA F-test Feature Selection"]
-        Select --> PCA["PCA Reduction to N Qubits"]
-        PCA --> Angle["Quantum Feature Normalization [0, π]"]
-    end
-
-    Angle --> ClassicalZoo["Classical Baselines: LR, RF, SVM"]
-    Angle --> QRegistry["Quantum Model Registry: VQC"]
-
-    QRegistry --> IdealSim["Ideal Statevector Simulation"]
-    QRegistry --> NoisySim["Qiskit Aer Noise Model Simulation (Depolarizing + Readout)"]
-
-    ClassicalZoo --> Eval["5-Fold CV Diagnostic Evaluator (ROC-AUC, PR-AUC, Sensitivity, Specificity, F1, Brier)"]
-    IdealSim --> Eval
-    NoisySim --> Eval
-
-    Eval --> Evidence["Quantum Evidence Engine (5 Dimensions: Performance, Generalization, Calibration, Robustness, Resource Cost)"]
-    Eval --> Expl["Explainability: Classical Feature Importance & Quantum Model Feature Sensitivity"]
+    UI["React Research Lab Dashboard"] --> Security["Argon2id + JWT + Role-Based Access Control"]
+    Security --> Router["FastAPI REST Services & Job Queue"]
     
-    Evidence --> UI
-    Expl --> UI
+    subgraph Registry["Experiment & Job Management"]
+        Router --> ExpService["Experiment Repository (Artifacts / JSON)"]
+        Router --> JobMgr["Job Concurrency Manager (Stages & Locking)"]
+    end
+    
+    subgraph Preprocessing["Leakage-Free Fold Pipeline"]
+        JobMgr --> Impute["Median / Mode Imputation"]
+        Impute --> Encode["One-Hot Categorical Encoding"]
+        Encode --> Scale["Standard / Robust Scaling"]
+        Scale --> Select["ANOVA F-test Feature Selection"]
+        Select --> PCA["PCA Dimensionality Reduction to N Qubits"]
+        PCA --> Angle["Quantum State Normalization [0, π]"]
+    end
+    
+    subgraph Benchmarking["Model Training & Evaluation Zoo"]
+        Angle --> ClassicalZoo["Classical Baselines: LR, RF, SVM"]
+        Angle --> QRegistry["Quantum Model Registry: VQC (ZZFeatureMap + RealAmplitudes/EfficientSU2)"]
+        
+        QRegistry --> IdealSim["Ideal Statevector Simulation"]
+        QRegistry --> NoisySim["Qiskit Aer Noise Model Simulation (Depolarizing + Readout)"]
+        
+        ClassicalZoo --> Eval["5-Fold Stratified CV Evaluator"]
+        IdealSim --> Eval
+        NoisySim --> Eval
+    end
+    
+    subgraph Analysis["Analytical & Diagnostic Modules"]
+        Eval --> Evidence["Quantum Evidence Engine (5 Dimensions)"]
+        Eval --> Profiler["Computational Resource & Scalability Profiler"]
+        Eval --> Expl["Perturbation-Based Quantum Feature Sensitivity"]
+        Eval --> WhatIf["What-If Scenario Sensitivity Grid"]
+        Eval --> Disagreement["Model Disagreement & Concordance Analysis"]
+        Eval --> Report["Comprehensive Research & Utility Report"]
+    end
+    
+    Evidence --> ExpService
+    Profiler --> ExpService
+    Expl --> ExpService
+    WhatIf --> ExpService
+    Disagreement --> ExpService
+    Report --> ExpService
+    ExpService --> UI
 ```
 
 ---
 
-## 3. Key Platform Features
+## 3. Phase 2 Capabilities
 
-- **Full UCI WDBC Benchmark & Generic CSV Support**: Pre-configured with the full 569-sample, 30-feature UCI Breast Cancer Wisconsin Diagnostic benchmark and supports any compatible tabular biomedical CSV.
-- **Leakage-Safe Stratified 5-Fold Cross-Validation**: Imputation, scaling, encoding, feature selection, and PCA dimensionality reduction are fitted strictly inside each cross-validation fold.
-- **Ideal vs. Noisy Quantum Simulation**: Compares ideal Qiskit statevector execution against a Qiskit Aer noise model simulating gate depolarizing noise and readout error.
-- **Quantum Evidence Engine**: Combines evidence across 5 dimensions (Performance, Generalization, Calibration, Robustness, Resource Cost) to synthesize a transparent verdict.
-- **Argon2id & JWT Authentication + RBAC**: Secure password hashing with Argon2id, JWT tokens, and 4 role tiers (`ADMIN`, `RESEARCHER`, `CLINICIAN`, `VIEWER`). Self-registration defaults to `VIEWER`.
-- **Quantum Model Feature Sensitivity**: Perturbation-based gradient analysis measuring output probability deltas per quantum feature (not falsely called "Quantum SHAP").
-- **Dynamic Patient Inference Lab**: Form fields dynamically adapt to whichever clinical dataset is loaded.
-- **Rate Limiting & Audit Logging**: Operational audit trail and endpoint rate throttling for system security.
-- **White + Soft Pink Glassmorphism Aesthetic**: Modern clinical research visual design.
-
----
-
-## 4. Technology Stack & Python Compatibility
-
-- **Python Version**: `3.11.x` (or 3.10+)
-- **Backend Stack**: FastAPI, Uvicorn, Pydantic v2, Scikit-Learn, Qiskit 1.0+, Qiskit Aer, Argon2-cffi, PyJWT, NumPy, SciPy, Pandas.
-- **Frontend Stack**: React 18, TypeScript, Vite, Tailwind CSS, Lucide Icons.
+- **Formal Experiment Registry**: Isolated, file-backed experiment repository preventing cross-session data overwriting and enabling multi-experiment comparison.
+- **Job Manager & Concurrency Control**: Explicit multi-stage training lifecycle (`QUEUED`, `PREPROCESSING`, `CLASSICAL_TRAINING`, `QUANTUM_TRAINING`, `CROSS_VALIDATION`, `NOISE_EVALUATION`, `EXPLAINABILITY`, `REPORT_GENERATION`, `COMPLETED`, `FAILED`) with 409 Conflict protection against concurrent runs.
+- **Computational Resource & Scalability Profile**: Tracks measured circuit depth, qubit count, parameter count, optimization iterations, simulation latency, and classical runtimes with honest scaling disclosures.
+- **Multi-Experiment Empirical Comparison**: Side-by-side comparison of distinct qubit counts, feature maps, ansatz layers, and metrics without subjective ranking bias.
+- **Quantum Model Registry Abstraction**: Clean interface defining implemented architectures (`VQC`) and planned research models (`QSVM`, `QNN`, `QuantumKernel`).
+- **Strict Role-Based Access Control (RBAC)**: Protected permissions (`dataset:upload`, `model:train`, `prediction:run`, `evidence:view`) with separate `RESEARCHER` and `VIEWER` tiers.
+- **Security Hardening**: Dynamic `JWT_SECRET_KEY` configuration, strict CORS origin whitelisting, upload size and format validation, zero hardcoded passwords in client code.
+- **Research Diagnostic Suite**: What-If interactive feature perturbations, Model Disagreement matrices, and Quantum Utility Reports.
 
 ---
 
-## 5. Quick Start & Setup
+## 4. Technology Stack
+
+- **Backend**: Python 3.11+, FastAPI, Uvicorn, Pydantic v2, Scikit-Learn, Qiskit 1.0+, Qiskit Aer, Argon2-cffi, PyJWT, NumPy, SciPy, Pandas.
+- **Frontend**: React 18, TypeScript 5.2, Vite, Vanilla/Tailwind CSS, Lucide Icons.
+
+---
+
+## 5. Getting Started & Configuration
+
+### Environment Variables
+
+Copy the sample environment file:
+```bash
+cp backend/.env.example backend/.env
+```
+
+Key environment settings in `.env`:
+```ini
+JWT_SECRET_KEY=generate-a-strong-secret-key-here-for-production
+ALLOWED_ORIGINS=http://localhost:5173,http://localhost:3000
+MAX_UPLOAD_SIZE_MB=10
+DEMO_MODE=false
+```
 
 ### Backend Setup
 ```bash
-# First change directory to the location where you have cloned the repo. 
 cd backend
 python -m venv venv
-# On Windows:
+# Windows:
 venv\Scripts\activate
-# On Linux/macOS:
+# Linux/macOS:
 source venv/bin/activate
 
 pip install -r requirements.txt
@@ -109,23 +136,30 @@ npm install
 npm run dev
 ```
 
-The application runs at `http://localhost:5173`.
-The backend Swagger documentation remains accessible directly at `http://localhost:8000/docs`.
+Application URL: `http://localhost:5173`
+Backend Swagger Docs: `http://localhost:8000/docs`
 
 ---
 
-## 6. Running Tests
+## 6. Running Automated Tests
 
-Run the full automated test suite:
 ```bash
 cd backend
 pytest -v
 ```
 
-Tests cover dataset profiling, leakage-free fold preprocessing, classical baselines, VQC SPSA optimization, ideal/noisy simulation, 5-fold CV metric aggregation, Quantum Evidence Engine verdicts, Argon2id security, JWT auth, RBAC permissions, and API endpoints.
+The test suite validates:
+- Experiment repository persistence and session isolation
+- Job manager stage transitions and duplicate run locks
+- RBAC permissions enforcement across roles
+- Data upload limits and CSV sanitization
+- Leakage-safe 5-fold cross-validation
+- VQC optimization and ideal/noisy simulation
+- Resource profiling and multi-experiment comparisons
 
 ---
 
-## 7. Medical Disclaimer
+## 7. Medical & Research Disclaimer
 
-> **This prototype is intended for research, experimentation, and demonstration purposes only. It is not a clinically validated diagnostic system and should not be used as a substitute for professional medical judgment.**
+> **This platform is an experimental research prototype for benchmarking quantum machine learning against classical machine learning algorithms. It is not a clinical diagnostic device, has not undergone regulatory clearance, and must NOT be used for direct patient diagnosis, treatment planning, or clinical decision-making.**
+

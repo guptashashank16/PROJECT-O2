@@ -8,6 +8,7 @@ from app.schemas import (
     BenchmarkSummary,
     DatasetConfigRequest,
     DatasetProfileResponse,
+    ExperimentMetadata,
     ExplainabilityResult,
     ModelEvaluationResult,
     PreprocessingSummary,
@@ -28,7 +29,7 @@ class AppState:
         # Preprocessing state
         self.preprocessor: Optional[ClinicalPreprocessor] = None
         self.preprocessing_summary: Optional[PreprocessingSummary] = None
-        
+
         self.X_train: Optional[np.ndarray] = None
         self.X_test: Optional[np.ndarray] = None
         self.y_train: Optional[np.ndarray] = None
@@ -36,11 +37,14 @@ class AppState:
 
         # Trained Models
         self.models: Dict[str, BaseDiseaseClassifier] = {}
-        
+
         # Benchmark results and explainability cache
         self.evaluation_results: Dict[str, ModelEvaluationResult] = {}
         self.explainability_cache: Dict[str, ExplainabilityResult] = {}
         self.benchmark_summary: Optional[BenchmarkSummary] = None
+
+        # Experiment-level metadata (Task Group 5)
+        self.experiment_metadata: Optional[ExperimentMetadata] = None
 
         # Training status
         self.is_training: bool = False
@@ -69,6 +73,7 @@ class AppState:
         self.evaluation_results.clear()
         self.explainability_cache.clear()
         self.benchmark_summary = None
+        self.experiment_metadata = None
         self.reset_training_status()
 
     def reset_training_status(self):

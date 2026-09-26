@@ -44,6 +44,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setToken(newToken);
     setUser(profile);
     localStorage.setItem('qcare_jwt_token', newToken);
+    localStorage.setItem('token', newToken);
     localStorage.setItem('qcare_user_profile', JSON.stringify(profile));
   };
 
@@ -57,6 +58,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       permissions: ['dataset:view', 'model:view', 'explainability:view', 'evidence:view'],
     });
     localStorage.removeItem('qcare_jwt_token');
+    localStorage.removeItem('token');
     localStorage.removeItem('qcare_user_profile');
   };
 

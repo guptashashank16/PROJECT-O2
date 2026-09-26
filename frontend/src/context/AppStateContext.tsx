@@ -4,6 +4,8 @@ import {
   BenchmarkSummary,
   DatasetConfigRequest,
   DatasetProfileResponse,
+  ExperimentDetail,
+  ExperimentSummary,
   ExplainabilityResult,
   PatientPredictionResponse,
   PreprocessingRequest,
@@ -13,7 +15,16 @@ import {
   TrainRequest,
 } from '../types';
 
-export type TabType = 'dataset' | 'preprocessing' | 'training' | 'benchmark' | 'explainability' | 'prediction';
+export type TabType =
+  | 'dataset'
+  | 'preprocessing'
+  | 'training'
+  | 'benchmark'
+  | 'explainability'
+  | 'prediction'
+  | 'resources'
+  | 'comparison'
+  | 'hardware';
 
 interface AppStateContextType {
   activeTab: TabType;
@@ -28,6 +39,8 @@ interface AppStateContextType {
   setSelectedModelId: (id: string) => void;
   explainability: ExplainabilityResult | null;
   patientPrediction: PatientPredictionResponse | null;
+  experiments: ExperimentSummary[];
+  activeExperiment: ExperimentDetail | null;
   isLoading: boolean;
   isBackendOnline: boolean;
   error: string | null;
@@ -43,6 +56,8 @@ interface AppStateContextType {
   fetchBenchmarkResults: () => Promise<void>;
   fetchExplainability: (modelId: string) => Promise<void>;
   runPrediction: (features: Record<string, any>, modelId?: string) => Promise<void>;
+  fetchExperiments: () => Promise<void>;
+  switchExperiment: (expId: string) => Promise<void>;
 }
 
 const AppStateContext = createContext<AppStateContextType | undefined>(undefined);
@@ -58,11 +73,41 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
   const [selectedModelId, setSelectedModelId] = useState<string>('vqc');
   const [explainability, setExplainability] = useState<ExplainabilityResult | null>(null);
   const [patientPrediction, setPatientPrediction] = useState<PatientPredictionResponse | null>(null);
+  const [experiments, setExperiments] = useState<ExperimentSummary[]>([]);
+  const [activeExperiment, setActiveExperiment] = useState<ExperimentDetail | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isBackendOnline, setIsBackendOnline] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   const clearError = () => setError(null);
+
+  const fetchExperiments = async () => {
+    try {
+      const list = await api.listExperiments();
+      setExperiments(list);
+      const active = await api.getActiveExperiment();
+      setActiveExperiment(active);
+    } catch (err: any) {
+      console.warn('Could not fetch experiments:', err);
+    }
+  };
+
+  const switchExperiment = async (expId: string) => {
+    try {
+      setIsLoading(true);
+      clearError();
+      const active = await api.setActiveExperiment(expId);
+      setActiveExperiment(active);
+      if (active.benchmark_summary) {
+        setBenchmarkSummary(active.benchmark_summary);
+      }
+      await fetchExperiments();
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   // Initial Load: Check backend and fetch initial dataset & samples
   useEffect(() => {
@@ -74,7 +119,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
         const sampleList = await api.getSamples();
         setSamples(sampleList);
 
-        // Get initial pre-loaded profile
+        // Fetch initial dataset profile
         const prof = await api.getProfile();
         setProfile(prof);
         if (prof) {
@@ -86,6 +131,8 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
             problem_type: 'binary_classification',
           });
         }
+
+        await fetchExperiments();
       } catch (err: any) {
         setIsBackendOnline(false);
         setError('Backend server offline. Please start the FastAPI backend service on port 8000.');
@@ -118,11 +165,11 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
         excluded_features: [],
         problem_type: 'binary_classification',
       });
-      // Reset downstream
       setPreprocessingSummary(null);
       setBenchmarkSummary(null);
       setExplainability(null);
       setPatientPrediction(null);
+      await fetchExperiments();
     } catch (err: any) {
       setError(err.message);
     } finally {
@@ -147,6 +194,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
       setBenchmarkSummary(null);
       setExplainability(null);
       setPatientPrediction(null);
+      await fetchExperiments();
     } catch (err: any) {
       setError(err.message);
     } finally {
@@ -160,9 +208,9 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
       clearError();
       const saved = await api.configureDataset(newConfig);
       setConfig(saved);
-      // Re-fetch profile to update target distribution
       const updatedProfile = await api.getProfile(newConfig.target_column);
       setProfile(updatedProfile);
+      await fetchExperiments();
     } catch (err: any) {
       setError(err.message);
     } finally {
@@ -177,6 +225,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
       const summary = await api.preprocess(params);
       setPreprocessingSummary(summary);
       setActiveTab('training');
+      await fetchExperiments();
     } catch (err: any) {
       setError(err.message);
     } finally {
@@ -191,7 +240,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
       const initialStatus = await api.train(request);
       setTrainingStatus(initialStatus);
 
-      // Start polling status
+      // Poll status until completion
       const pollInterval = setInterval(async () => {
         try {
           const status = await api.getTrainingStatus();
@@ -202,6 +251,7 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
             if (!status.error_message) {
               await fetchBenchmarkResults();
               await fetchExplainability(selectedModelId);
+              await fetchExperiments();
               setActiveTab('benchmark');
             } else {
               setError(status.error_message);
@@ -224,9 +274,20 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
       const results = await api.getBenchmarkSummary();
       setBenchmarkSummary(results);
     } catch (err: any) {
-      console.warn(err.message);
+      // Fallback: try to get benchmark from the active experiment
+      try {
+        const active = await api.getActiveExperiment();
+        if (active?.benchmark_summary) {
+          setBenchmarkSummary(active.benchmark_summary);
+        } else {
+          setError(`Benchmark results unavailable: ${err.message}`);
+        }
+      } catch {
+        setError(`Benchmark results unavailable: ${err.message}`);
+      }
     }
   };
+
 
   const fetchExplainability = async (modelId: string) => {
     try {
@@ -254,7 +315,6 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
     }
   };
 
-  // Sync explainability on model change
   useEffect(() => {
     if (benchmarkSummary && selectedModelId) {
       fetchExplainability(selectedModelId);
@@ -276,6 +336,8 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
         setSelectedModelId,
         explainability,
         patientPrediction,
+        experiments,
+        activeExperiment,
         isLoading,
         isBackendOnline,
         error,
@@ -289,6 +351,8 @@ export const AppStateProvider: React.FC<{ children: ReactNode }> = ({ children }
         fetchBenchmarkResults,
         fetchExplainability,
         runPrediction,
+        fetchExperiments,
+        switchExperiment,
       }}
     >
       {children}

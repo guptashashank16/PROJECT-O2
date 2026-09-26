@@ -26,6 +26,22 @@ from app.schemas import (
 )
 
 
+def evaluate_model(
+    model: BaseDiseaseClassifier,
+    X_test: np.ndarray,
+    y_test: np.ndarray,
+    class_labels: List[str] | None = None,
+    sample_names: List[str] | None = None,
+) -> ModelEvaluationResult:
+    """Compatibility wrapper used by the training pipeline.
+
+    The training pipeline still invokes the legacy keyword ``sample_names`` while newer code
+    passes ``class_labels``. Accept both to keep callers working across versions.
+    """
+    labels = class_labels or sample_names or ["0", "1"]
+    return calculate_medical_metrics(model, X_test, y_test, labels)
+
+
 def calculate_medical_metrics(
     model: BaseDiseaseClassifier,
     X_test: np.ndarray,

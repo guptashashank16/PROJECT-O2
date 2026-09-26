@@ -13,12 +13,9 @@ except Exception:
     HAS_ARGON2 = False
     ph = None
 
-logger = logging.getLogger("hybrid-quantum-medical-ai")
+from app.config import settings
 
-# Default secret key for local hackathon demo; override via ENV in production
-JWT_SECRET_KEY = "q-care-super-secret-jwt-key-2026-hackathon-demo-only"
-JWT_ALGORITHM = "HS256"
-DEFAULT_TOKEN_EXPIRE_MINUTES = 480  # 8 hours
+logger = logging.getLogger("hybrid-quantum-medical-ai")
 
 
 def hash_password(password: str) -> str:
@@ -50,18 +47,17 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
         expected = "sha256$" + hashlib.sha256((salt + plain_password).encode("utf-8")).hexdigest()
         return expected == hashed_password
     else:
-        # Fallback raw match check for legacy test users if any
         return plain_password == hashed_password
 
 
 def create_access_token(data: Dict[str, Any], expires_delta: Optional[datetime.timedelta] = None) -> str:
-    """Create a JWT access token containing standard subject and role claims."""
+    """Create a JWT access token containing standard subject and role claims using settings.JWT_SECRET_KEY."""
     to_encode = data.copy()
     now = datetime.datetime.now(datetime.timezone.utc)
     if expires_delta:
         expire = now + expires_delta
     else:
-        expire = now + datetime.timedelta(minutes=DEFAULT_TOKEN_EXPIRE_MINUTES)
+        expire = now + datetime.timedelta(minutes=settings.JWT_EXPIRE_MINUTES)
     
     to_encode.update({
         "iat": now,
@@ -72,15 +68,40 @@ def create_access_token(data: Dict[str, Any], expires_delta: Optional[datetime.t
     to_encode.pop("password", None)
     to_encode.pop("hashed_password", None)
     
-    token = jwt.encode(to_encode, JWT_SECRET_KEY, algorithm=JWT_ALGORITHM)
+    token = jwt.encode(to_encode, settings.JWT_SECRET_KEY, algorithm=settings.JWT_ALGORITHM)
     return token
 
 
 def decode_access_token(token: str) -> Optional[Dict[str, Any]]:
     """Decode and validate a JWT access token."""
     try:
-        payload = jwt.decode(token, JWT_SECRET_KEY, algorithms=[JWT_ALGORITHM])
+        payload = jwt.decode(token, settings.JWT_SECRET_KEY, algorithms=[settings.JWT_ALGORITHM])
         return payload
     except jwt.PyJWTError as e:
         logger.warning(f"Invalid JWT token: {e}")
         return None
+
+
+def get_current_user(credentials: Optional[Any] = None) -> Optional[Any]:
+    """Compatibility helper used by route dependencies for JWT-based auth."""
+    if credentials is None:
+        return None
+
+    if hasattr(credentials, "credentials"):
+        token = credentials.credentials
+    else:
+        token = credentials
+
+    if not token:
+        return None
+
+    payload = decode_access_token(token)
+    if not payload:
+        return None
+
+    username = payload.get("sub")
+    if not username:
+        return None
+
+    from app.auth.rbac import user_store
+    return user_store.get_user(username)
