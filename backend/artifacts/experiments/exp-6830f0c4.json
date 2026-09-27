@@ -1,8 +1,8 @@
 {
-  "experiment_id": "exp-e61168bd",
+  "experiment_id": "exp-6830f0c4",
   "experiment_name": "Benchmark (Breast Cancer Wisconsin (Diagnostic))",
-  "created_at_utc": "2026-09-26T19:08:04.226647+00:00",
-  "updated_at_utc": "2026-09-26T19:08:04.226647+00:00",
+  "created_at_utc": "2026-09-27T09:13:29.274618+00:00",
+  "updated_at_utc": "2026-09-27T09:13:29.274618+00:00",
   "user_id": "researcher",
   "description": "Loaded from bundled sample breast_cancer_wisconsin",
   "dataset_name": "Breast Cancer Wisconsin (Diagnostic)",
@@ -135,7 +135,7 @@
     "ansatz_layers": 2,
     "optimizer": "COBYLA",
     "max_iterations": 25,
-    "fast_demo_mode": false
+    "fast_demo_mode": true
   },
   "classical_config": {
     "logistic_regression": true,
@@ -147,7 +147,7 @@
   "current_stage": "Completed",
   "steps": [],
   "job_start_time": null,
-  "job_end_time": "2026-09-26T19:10:40.555014+00:00",
+  "job_end_time": "2026-09-27T09:14:47.794817+00:00",
   "error_message": null,
   "benchmark_summary": {
     "dataset_name": "Breast Cancer Wisconsin (Diagnostic)",
@@ -171,8 +171,8 @@
           "roc_auc": 1.0,
           "pr_auc": 1.0,
           "brier_score": 0.0248,
-          "training_time_seconds": 0.049,
-          "inference_time_ms": 0.079
+          "training_time_seconds": 0.047,
+          "inference_time_ms": 0.053
         },
         "mean_metrics": {
           "accuracy": 0.9643,
@@ -183,8 +183,8 @@
           "roc_auc": 1.0,
           "pr_auc": 1.0,
           "brier_score": 0.0248,
-          "training_time_seconds": 0.049,
-          "inference_time_ms": 0.079
+          "training_time_seconds": 0.047,
+          "inference_time_ms": 0.053
         },
         "std_metrics": {
           "accuracy": 0.04983558567931151,
@@ -212,8 +212,8 @@
               "roc_auc": 1.0,
               "pr_auc": 1.0,
               "brier_score": 0.0697,
-              "training_time_seconds": 0.032,
-              "inference_time_ms": 0.219
+              "training_time_seconds": 0.022,
+              "inference_time_ms": 1.991
             }
           },
           {
@@ -229,8 +229,8 @@
               "roc_auc": 0.9835,
               "pr_auc": 0.9854,
               "brier_score": 0.0868,
-              "training_time_seconds": 0.02,
-              "inference_time_ms": 0.061
+              "training_time_seconds": 0.028,
+              "inference_time_ms": 0.072
             }
           },
           {
@@ -246,8 +246,8 @@
               "roc_auc": 0.9339,
               "pr_auc": 0.9135,
               "brier_score": 0.1099,
-              "training_time_seconds": 0.017,
-              "inference_time_ms": 0.072
+              "training_time_seconds": 0.018,
+              "inference_time_ms": 0.138
             }
           },
           {
@@ -263,8 +263,8 @@
               "roc_auc": 1.0,
               "pr_auc": 1.0,
               "brier_score": 0.0448,
-              "training_time_seconds": 0.034,
-              "inference_time_ms": 0.116
+              "training_time_seconds": 0.02,
+              "inference_time_ms": 0.073
             }
           },
           {
@@ -280,8 +280,8 @@
               "roc_auc": 0.9636,
               "pr_auc": 0.9703,
               "brier_score": 0.0818,
-              "training_time_seconds": 0.028,
-              "inference_time_ms": 0.087
+              "training_time_seconds": 0.021,
+              "inference_time_ms": 0.066
             }
           }
         ],
@@ -502,8 +502,8 @@
           "roc_auc": 0.9847,
           "pr_auc": 0.984,
           "brier_score": 0.0417,
-          "training_time_seconds": 0.705,
-          "inference_time_ms": 3.01
+          "training_time_seconds": 0.361,
+          "inference_time_ms": 2.04
         },
         "mean_metrics": {
           "accuracy": 0.9643,
@@ -514,8 +514,8 @@
           "roc_auc": 0.9847,
           "pr_auc": 0.984,
           "brier_score": 0.0417,
-          "training_time_seconds": 0.705,
-          "inference_time_ms": 3.01
+          "training_time_seconds": 0.361,
+          "inference_time_ms": 2.04
         },
         "std_metrics": {
           "accuracy": 0.0445439737787279,
@@ -543,8 +543,8 @@
               "roc_auc": 1.0,
               "pr_auc": 1.0,
               "brier_score": 0.0473,
-              "training_time_seconds": 0.685,
-              "inference_time_ms": 3.98
+              "training_time_seconds": 0.5,
+              "inference_time_ms": 2.35
             }
           },
           {
@@ -560,8 +560,8 @@
               "roc_auc": 1.0,
               "pr_auc": 1.0,
               "brier_score": 0.0439,
-              "training_time_seconds": 0.413,
-              "inference_time_ms": 1.896
+              "training_time_seconds": 0.524,
+              "inference_time_ms": 2.199
             }
           },
           {
@@ -577,8 +577,8 @@
               "roc_auc": 0.9256,
               "pr_auc": 0.9298,
               "brier_score": 0.1184,
-              "training_time_seconds": 0.392,
-              "inference_time_ms": 1.943
+              "training_time_seconds": 0.526,
+              "inference_time_ms": 2.274
             }
           },
           {
@@ -594,8 +594,8 @@
               "roc_auc": 1.0,
               "pr_auc": 1.0,
               "brier_score": 0.0424,
-              "training_time_seconds": 0.737,
-              "inference_time_ms": 3.322
+              "training_time_seconds": 0.553,
+              "inference_time_ms": 2.423
             }
           },
           {
@@ -611,8 +611,8 @@
               "roc_auc": 1.0,
               "pr_auc": 1.0,
               "brier_score": 0.0511,
-              "training_time_seconds": 0.812,
-              "inference_time_ms": 3.993
+              "training_time_seconds": 0.475,
+              "inference_time_ms": 2.816
             }
           }
         ],
@@ -833,8 +833,8 @@
           "roc_auc": 1.0,
           "pr_auc": 1.0,
           "brier_score": 0.0163,
-          "training_time_seconds": 0.028,
-          "inference_time_ms": 0.122
+          "training_time_seconds": 0.049,
+          "inference_time_ms": 0.083
         },
         "mean_metrics": {
           "accuracy": 1.0,
@@ -845,8 +845,8 @@
           "roc_auc": 1.0,
           "pr_auc": 1.0,
           "brier_score": 0.0163,
-          "training_time_seconds": 0.028,
-          "inference_time_ms": 0.122
+          "training_time_seconds": 0.049,
+          "inference_time_ms": 0.083
         },
         "std_metrics": {
           "accuracy": 0.03615914822005629,
@@ -874,8 +874,8 @@
               "roc_auc": 0.9917,
               "pr_auc": 0.9921,
               "brier_score": 0.0486,
-              "training_time_seconds": 0.029,
-              "inference_time_ms": 0.148
+              "training_time_seconds": 0.013,
+              "inference_time_ms": 2.034
             }
           },
           {
@@ -891,8 +891,8 @@
               "roc_auc": 1.0,
               "pr_auc": 1.0,
               "brier_score": 0.0571,
-              "training_time_seconds": 0.008,
-              "inference_time_ms": 0.077
+              "training_time_seconds": 0.013,
+              "inference_time_ms": 0.115
             }
           },
           {
@@ -908,8 +908,8 @@
               "roc_auc": 0.9504,
               "pr_auc": 0.9493,
               "brier_score": 0.108,
-              "training_time_seconds": 0.009,
-              "inference_time_ms": 0.085
+              "training_time_seconds": 0.01,
+              "inference_time_ms": 0.094
             }
           },
           {
@@ -925,8 +925,8 @@
               "roc_auc": 0.9917,
               "pr_auc": 0.9921,
               "brier_score": 0.035,
-              "training_time_seconds": 0.015,
-              "inference_time_ms": 0.209
+              "training_time_seconds": 0.01,
+              "inference_time_ms": 0.093
             }
           },
           {
@@ -942,8 +942,8 @@
               "roc_auc": 1.0,
               "pr_auc": 1.0,
               "brier_score": 0.0419,
-              "training_time_seconds": 0.021,
-              "inference_time_ms": 0.143
+              "training_time_seconds": 0.011,
+              "inference_time_ms": 0.087
             }
           }
         ],
@@ -1148,28 +1148,28 @@
         "model_name": "Variational Quantum Classifier (VQC)",
         "model_type": "quantum",
         "metrics": {
-          "accuracy": 0.3929,
-          "precision": 0.2857,
-          "sensitivity": 0.1429,
+          "accuracy": 0.5714,
+          "precision": 0.5833,
+          "sensitivity": 0.5,
           "specificity": 0.6429,
-          "f1_score": 0.1905,
-          "roc_auc": 0.6327,
-          "pr_auc": 0.5204,
-          "brier_score": 0.2408,
-          "training_time_seconds": 45.153,
-          "inference_time_ms": 37.747
+          "f1_score": 0.5385,
+          "roc_auc": 0.5867,
+          "pr_auc": 0.5893,
+          "brier_score": 0.2452,
+          "training_time_seconds": 6.834,
+          "inference_time_ms": 28.321
         },
         "mean_metrics": {
-          "accuracy": 0.3929,
-          "precision": 0.2857,
-          "sensitivity": 0.1429,
+          "accuracy": 0.5714,
+          "precision": 0.5833,
+          "sensitivity": 0.5,
           "specificity": 0.6429,
-          "f1_score": 0.1905,
-          "roc_auc": 0.6327,
-          "pr_auc": 0.5204,
-          "brier_score": 0.2408,
-          "training_time_seconds": 45.153,
-          "inference_time_ms": 37.747
+          "f1_score": 0.5385,
+          "roc_auc": 0.5867,
+          "pr_auc": 0.5893,
+          "brier_score": 0.2452,
+          "training_time_seconds": 6.834,
+          "inference_time_ms": 28.321
         },
         "std_metrics": {
           "accuracy": 0.09688829857108647,
@@ -1197,8 +1197,8 @@
               "roc_auc": 0.4959,
               "pr_auc": 0.5565,
               "brier_score": 0.3178,
-              "training_time_seconds": 8.906,
-              "inference_time_ms": 22.785
+              "training_time_seconds": 8.221,
+              "inference_time_ms": 27.051
             }
           },
           {
@@ -1214,8 +1214,8 @@
               "roc_auc": 0.4298,
               "pr_auc": 0.5548,
               "brier_score": 0.2535,
-              "training_time_seconds": 6.867,
-              "inference_time_ms": 20.573
+              "training_time_seconds": 8.28,
+              "inference_time_ms": 24.386
             }
           },
           {
@@ -1231,8 +1231,8 @@
               "roc_auc": 0.719,
               "pr_auc": 0.6105,
               "brier_score": 0.2242,
-              "training_time_seconds": 9.577,
-              "inference_time_ms": 40.103
+              "training_time_seconds": 8.783,
+              "inference_time_ms": 26.229
             }
           },
           {
@@ -1248,8 +1248,8 @@
               "roc_auc": 0.5041,
               "pr_auc": 0.4694,
               "brier_score": 0.2851,
-              "training_time_seconds": 11.722,
-              "inference_time_ms": 37.0
+              "training_time_seconds": 8.2,
+              "inference_time_ms": 24.487
             }
           },
           {
@@ -1265,16 +1265,16 @@
               "roc_auc": 0.2909,
               "pr_auc": 0.3573,
               "brier_score": 0.3288,
-              "training_time_seconds": 11.737,
-              "inference_time_ms": 33.79
+              "training_time_seconds": 7.937,
+              "inference_time_ms": 26.237
             }
           }
         ],
         "confusion_matrix": {
-          "true_positive": 2,
+          "true_positive": 7,
           "false_positive": 5,
           "true_negative": 9,
-          "false_negative": 12,
+          "false_negative": 7,
           "labels": [
             "0",
             "1"
@@ -1287,196 +1287,245 @@
             "threshold": 1.0
           },
           {
+            "fpr": 0.0,
+            "tpr": 0.0714,
+            "threshold": 0.7527
+          },
+          {
             "fpr": 0.0714,
-            "tpr": 0.0,
-            "threshold": 0.5944
+            "tpr": 0.0714,
+            "threshold": 0.6937
           },
           {
-            "fpr": 0.1429,
-            "tpr": 0.0,
-            "threshold": 0.5944
+            "fpr": 0.0714,
+            "tpr": 0.2143,
+            "threshold": 0.6835
           },
           {
-            "fpr": 0.1429,
-            "tpr": 0.1429,
-            "threshold": 0.5522
+            "fpr": 0.2143,
+            "tpr": 0.2143,
+            "threshold": 0.6411
+          },
+          {
+            "fpr": 0.2143,
+            "tpr": 0.2857,
+            "threshold": 0.6285
           },
           {
             "fpr": 0.3571,
-            "tpr": 0.1429,
-            "threshold": 0.5126
+            "tpr": 0.2857,
+            "threshold": 0.6232
           },
           {
             "fpr": 0.3571,
-            "tpr": 0.7143,
-            "threshold": 0.4167
+            "tpr": 0.5,
+            "threshold": 0.5822
+          },
+          {
+            "fpr": 0.4286,
+            "tpr": 0.5,
+            "threshold": 0.4768
+          },
+          {
+            "fpr": 0.4286,
+            "tpr": 0.6429,
+            "threshold": 0.4633
+          },
+          {
+            "fpr": 0.5,
+            "tpr": 0.6429,
+            "threshold": 0.4598
           },
           {
             "fpr": 0.5,
             "tpr": 0.7143,
-            "threshold": 0.4096
+            "threshold": 0.4333
           },
           {
-            "fpr": 0.5,
-            "tpr": 1.0,
-            "threshold": 0.3369
+            "fpr": 0.5714,
+            "tpr": 0.7143,
+            "threshold": 0.4191
+          },
+          {
+            "fpr": 0.5714,
+            "tpr": 0.7857,
+            "threshold": 0.3847
+          },
+          {
+            "fpr": 0.7143,
+            "tpr": 0.7857,
+            "threshold": 0.3781
+          },
+          {
+            "fpr": 0.7143,
+            "tpr": 0.9286,
+            "threshold": 0.3731
+          },
+          {
+            "fpr": 1.0,
+            "tpr": 0.9286,
+            "threshold": 0.2894
           },
           {
             "fpr": 1.0,
             "tpr": 1.0,
-            "threshold": 0.2224
+            "threshold": 0.2642
           }
         ],
         "pr_curve": [
           {
             "precision": 0.5,
             "recall": 1.0,
-            "threshold": 0.2224
+            "threshold": 0.2642
           },
           {
-            "precision": 0.5185,
-            "recall": 1.0,
-            "threshold": 0.2334
-          },
-          {
-            "precision": 0.5385,
-            "recall": 1.0,
-            "threshold": 0.2451
-          },
-          {
-            "precision": 0.56,
-            "recall": 1.0,
-            "threshold": 0.2495
-          },
-          {
-            "precision": 0.5833,
-            "recall": 1.0,
-            "threshold": 0.3125
-          },
-          {
-            "precision": 0.6087,
-            "recall": 1.0,
-            "threshold": 0.3148
-          },
-          {
-            "precision": 0.6364,
-            "recall": 1.0,
-            "threshold": 0.3151
-          },
-          {
-            "precision": 0.6667,
-            "recall": 1.0,
-            "threshold": 0.3369
-          },
-          {
-            "precision": 0.65,
+            "precision": 0.4815,
             "recall": 0.9286,
-            "threshold": 0.3763
+            "threshold": 0.2894
           },
           {
-            "precision": 0.6316,
+            "precision": 0.5,
+            "recall": 0.9286,
+            "threshold": 0.3077
+          },
+          {
+            "precision": 0.52,
+            "recall": 0.9286,
+            "threshold": 0.3115
+          },
+          {
+            "precision": 0.5417,
+            "recall": 0.9286,
+            "threshold": 0.3372
+          },
+          {
+            "precision": 0.5652,
+            "recall": 0.9286,
+            "threshold": 0.3731
+          },
+          {
+            "precision": 0.5455,
             "recall": 0.8571,
-            "threshold": 0.3818
+            "threshold": 0.3766
           },
           {
-            "precision": 0.6111,
+            "precision": 0.5238,
             "recall": 0.7857,
-            "threshold": 0.3832
+            "threshold": 0.3781
+          },
+          {
+            "precision": 0.55,
+            "recall": 0.7857,
+            "threshold": 0.3781
+          },
+          {
+            "precision": 0.5789,
+            "recall": 0.7857,
+            "threshold": 0.3847
+          },
+          {
+            "precision": 0.5556,
+            "recall": 0.7143,
+            "threshold": 0.4191
           },
           {
             "precision": 0.5882,
             "recall": 0.7143,
-            "threshold": 0.4096
+            "threshold": 0.4333
           },
           {
-            "precision": 0.625,
-            "recall": 0.7143,
-            "threshold": 0.4112
-          },
-          {
-            "precision": 0.6667,
-            "recall": 0.7143,
-            "threshold": 0.4167
-          },
-          {
-            "precision": 0.6429,
+            "precision": 0.5625,
             "recall": 0.6429,
-            "threshold": 0.4274
+            "threshold": 0.4598
           },
           {
-            "precision": 0.6154,
+            "precision": 0.6,
+            "recall": 0.6429,
+            "threshold": 0.4633
+          },
+          {
+            "precision": 0.5714,
             "recall": 0.5714,
-            "threshold": 0.4422
+            "threshold": 0.4743
+          },
+          {
+            "precision": 0.5385,
+            "recall": 0.5,
+            "threshold": 0.4768
           },
           {
             "precision": 0.5833,
             "recall": 0.5,
-            "threshold": 0.4575
+            "threshold": 0.5822
           },
           {
             "precision": 0.5455,
             "recall": 0.4286,
-            "threshold": 0.4643
+            "threshold": 0.6087
           },
           {
             "precision": 0.5,
             "recall": 0.3571,
-            "threshold": 0.4718
+            "threshold": 0.6109
           },
           {
             "precision": 0.4444,
             "recall": 0.2857,
-            "threshold": 0.4809
-          },
-          {
-            "precision": 0.375,
-            "recall": 0.2143,
-            "threshold": 0.4844
-          },
-          {
-            "precision": 0.2857,
-            "recall": 0.1429,
-            "threshold": 0.5126
-          },
-          {
-            "precision": 0.3333,
-            "recall": 0.1429,
-            "threshold": 0.5231
-          },
-          {
-            "precision": 0.4,
-            "recall": 0.1429,
-            "threshold": 0.5359
+            "threshold": 0.6232
           },
           {
             "precision": 0.5,
+            "recall": 0.2857,
+            "threshold": 0.6275
+          },
+          {
+            "precision": 0.5714,
+            "recall": 0.2857,
+            "threshold": 0.6285
+          },
+          {
+            "precision": 0.5,
+            "recall": 0.2143,
+            "threshold": 0.6411
+          },
+          {
+            "precision": 0.6,
+            "recall": 0.2143,
+            "threshold": 0.6624
+          },
+          {
+            "precision": 0.75,
+            "recall": 0.2143,
+            "threshold": 0.6835
+          },
+          {
+            "precision": 0.6667,
             "recall": 0.1429,
-            "threshold": 0.5522
+            "threshold": 0.6863
           },
           {
-            "precision": 0.3333,
+            "precision": 0.5,
             "recall": 0.0714,
-            "threshold": 0.5678
+            "threshold": 0.6937
           },
           {
-            "precision": 0.0,
-            "recall": 0.0,
-            "threshold": 0.5944
-          },
-          {
-            "precision": 0.0,
-            "recall": 0.0,
-            "threshold": 0.5944
+            "precision": 1.0,
+            "recall": 0.0714,
+            "threshold": 0.7527
           }
         ],
         "calibration_curve": [
           {
-            "mean_predicted_value": 0.3065,
-            "fraction_of_positives": 0.3636
+            "mean_predicted_value": 0.34,
+            "fraction_of_positives": 0.4
           },
           {
-            "mean_predicted_value": 0.491,
-            "fraction_of_positives": 0.5882
+            "mean_predicted_value": 0.4727,
+            "fraction_of_positives": 0.5714
+          },
+          {
+            "mean_predicted_value": 0.6562,
+            "fraction_of_positives": 0.5455
           }
         ],
         "parameters": {
@@ -1486,9 +1535,9 @@
           "ansatz_layers": 2,
           "optimizer": "COBYLA",
           "max_iterations": 25,
-          "fast_demo_mode": false,
+          "fast_demo_mode": true,
           "variational_parameter_count": 18,
-          "final_loss": 0.7062701322192381
+          "final_loss": 0.650788957631179
         }
       }
     },
@@ -1497,25 +1546,25 @@
       "model_name": "Noisy VQC (Aer Depolarizing)",
       "model_type": "quantum",
       "metrics": {
-        "accuracy": 0.5,
-        "precision": 0.5,
-        "sensitivity": 0.1429,
-        "specificity": 0.8571,
-        "f1_score": 0.2222,
-        "roc_auc": 0.5816,
+        "accuracy": 0.5714,
+        "precision": 0.5833,
+        "sensitivity": 0.5,
+        "specificity": 0.6429,
+        "f1_score": 0.5385,
+        "roc_auc": 0.5969,
         "pr_auc": 0.0,
-        "brier_score": 0.2418,
-        "training_time_seconds": 45.153,
-        "inference_time_ms": 37.747
+        "brier_score": 0.2432,
+        "training_time_seconds": 6.834,
+        "inference_time_ms": 28.321
       },
       "mean_metrics": null,
       "std_metrics": null,
       "fold_metrics": null,
       "confusion_matrix": {
-        "true_positive": 2,
-        "false_positive": 2,
-        "true_negative": 12,
-        "false_negative": 12,
+        "true_positive": 7,
+        "false_positive": 5,
+        "true_negative": 9,
+        "false_negative": 7,
         "labels": [
           "0",
           "1"
@@ -1530,16 +1579,16 @@
     "evidence": {
       "verdict": "CLASSICAL_PREFERRED",
       "verdict_label": "Classical Preferred",
-      "verdict_explanation": "Under the selected experimental configuration, classical models show higher observed ROC-AUC than VQC (best classical 1.000 vs. VQC 0.633; delta: -0.367). This is an observational result on the evaluated dataset and configuration.",
+      "verdict_explanation": "Under the selected experimental configuration, classical models show higher observed ROC-AUC than VQC (best classical 1.000 vs. VQC 0.587; delta: -0.413). This is an observational result on the evaluated dataset and configuration.",
       "performance_evidence": {
         "dimension": "Performance",
         "status": "warning",
-        "quantum_metric": 0.6327,
+        "quantum_metric": 0.5867,
         "classical_metric": 1.0,
-        "delta": -0.3673,
+        "delta": -0.4133,
         "quantum_std": 0.1385,
         "classical_std": 0.025,
-        "description": "Best classical baseline shows a higher observed ROC-AUC than VQC under the evaluation protocol (1.000 \u00b1 0.025 vs. VQC 0.633 \u00b1 0.139; delta: -0.367).",
+        "description": "Best classical baseline shows a higher observed ROC-AUC than VQC under the evaluation protocol (1.000 \u00b1 0.025 vs. VQC 0.587 \u00b1 0.139; delta: -0.413).",
         "fold_values": [
           0.4959,
           0.4298,
@@ -1568,38 +1617,38 @@
       "calibration_evidence": {
         "dimension": "Calibration",
         "status": "warning",
-        "quantum_metric": 0.2408,
+        "quantum_metric": 0.2452,
         "classical_metric": 0.0248,
-        "delta": 0.216,
+        "delta": 0.2204,
         "quantum_std": 0.0391,
         "classical_std": 0.0213,
-        "description": "Classical model shows better observed calibration accuracy (Classical Brier: 0.025 \u00b1 0.021 vs. VQC Brier: 0.241 \u00b1 0.039).",
+        "description": "Classical model shows better observed calibration accuracy (Classical Brier: 0.025 \u00b1 0.021 vs. VQC Brier: 0.245 \u00b1 0.039).",
         "fold_values": null
       },
       "robustness_evidence": {
         "dimension": "Noise Robustness",
         "status": "passed",
-        "quantum_metric": 0.5816,
-        "classical_metric": 0.6327,
-        "delta": -0.0511,
+        "quantum_metric": 0.5969,
+        "classical_metric": 0.5867,
+        "delta": 0.0102,
         "quantum_std": 0.0,
         "classical_std": 0.0,
-        "description": "VQC retains 91.9% of ideal ROC-AUC under simulated noise (Noisy AUC: 0.582, Ideal AUC: 0.633). Noise simulation mode: UNKNOWN.",
+        "description": "VQC retains 101.7% of ideal ROC-AUC under simulated noise (Noisy AUC: 0.597, Ideal AUC: 0.587). Noise simulation mode: UNKNOWN.",
         "fold_values": null
       },
       "resource_evidence": {
         "dimension": "Resource Cost",
         "status": "warning",
-        "quantum_metric": 37.747,
-        "classical_metric": 0.079,
-        "delta": 37.668,
+        "quantum_metric": 28.321,
+        "classical_metric": 0.053,
+        "delta": 28.268,
         "quantum_std": 0.0,
         "classical_std": 0.0,
-        "description": "Quantum simulation runtime is 477.8\u00d7 higher than classical inference (37.75 ms vs. 0.08 ms). This reflects classical simulation overhead, not future hardware timing.",
+        "description": "Quantum simulation runtime is 534.4\u00d7 higher than classical inference (28.32 ms vs. 0.05 ms). This reflects classical simulation overhead, not future hardware timing.",
         "fold_values": null
       },
       "rule_breakdown": [
-        "Classical baselines show higher observed ROC-AUC (delta: -0.367)",
+        "Classical baselines show higher observed ROC-AUC (delta: -0.413)",
         "VQC shows higher fold-to-fold variance"
       ],
       "methodological_note": "Conclusions are observational and based on held-out test and cross-validation metrics. No formal statistical significance test has been applied. Do not interpret metric differences as statistically significant without appropriate hypothesis testing (e.g., DeLong test, bootstrap)."
@@ -1609,8 +1658,8 @@
     "best_auc_model": "logistic_regression",
     "experiment_id": null,
     "experiment_metadata": {
-      "experiment_id": "exp-e61168bd",
-      "timestamp": "2026-09-26T19:10:40.552405+00:00",
+      "experiment_id": "exp-6830f0c4",
+      "timestamp": "2026-09-27T09:14:47.790048+00:00",
       "dataset_name": "Breast Cancer Wisconsin (Diagnostic)",
       "dataset_rows": 137,
       "dataset_columns": 32,
@@ -1661,7 +1710,7 @@
       "ansatz_layers": 2,
       "optimizer": "COBYLA",
       "max_iterations": 25,
-      "training_mode": "RESEARCH_MODE",
+      "training_mode": "DEMO_MODE",
       "vqc_training_samples_used": 109,
       "vqc_iterations_used": 25,
       "classical_models_enabled": [
@@ -1682,25 +1731,25 @@
     "model_name": "Noisy VQC (Aer Depolarizing)",
     "model_type": "quantum",
     "metrics": {
-      "accuracy": 0.5,
-      "precision": 0.5,
-      "sensitivity": 0.1429,
-      "specificity": 0.8571,
-      "f1_score": 0.2222,
-      "roc_auc": 0.5816,
+      "accuracy": 0.5714,
+      "precision": 0.5833,
+      "sensitivity": 0.5,
+      "specificity": 0.6429,
+      "f1_score": 0.5385,
+      "roc_auc": 0.5969,
       "pr_auc": 0.0,
-      "brier_score": 0.2418,
-      "training_time_seconds": 45.153,
-      "inference_time_ms": 37.747
+      "brier_score": 0.2432,
+      "training_time_seconds": 6.834,
+      "inference_time_ms": 28.321
     },
     "mean_metrics": null,
     "std_metrics": null,
     "fold_metrics": null,
     "confusion_matrix": {
-      "true_positive": 2,
-      "false_positive": 2,
-      "true_negative": 12,
-      "false_negative": 12,
+      "true_positive": 7,
+      "false_positive": 5,
+      "true_negative": 9,
+      "false_negative": 7,
       "labels": [
         "0",
         "1"
@@ -1714,16 +1763,16 @@
   "evidence": {
     "verdict": "CLASSICAL_PREFERRED",
     "verdict_label": "Classical Preferred",
-    "verdict_explanation": "Under the selected experimental configuration, classical models show higher observed ROC-AUC than VQC (best classical 1.000 vs. VQC 0.633; delta: -0.367). This is an observational result on the evaluated dataset and configuration.",
+    "verdict_explanation": "Under the selected experimental configuration, classical models show higher observed ROC-AUC than VQC (best classical 1.000 vs. VQC 0.587; delta: -0.413). This is an observational result on the evaluated dataset and configuration.",
     "performance_evidence": {
       "dimension": "Performance",
       "status": "warning",
-      "quantum_metric": 0.6327,
+      "quantum_metric": 0.5867,
       "classical_metric": 1.0,
-      "delta": -0.3673,
+      "delta": -0.4133,
       "quantum_std": 0.1385,
       "classical_std": 0.025,
-      "description": "Best classical baseline shows a higher observed ROC-AUC than VQC under the evaluation protocol (1.000 \u00b1 0.025 vs. VQC 0.633 \u00b1 0.139; delta: -0.367).",
+      "description": "Best classical baseline shows a higher observed ROC-AUC than VQC under the evaluation protocol (1.000 \u00b1 0.025 vs. VQC 0.587 \u00b1 0.139; delta: -0.413).",
       "fold_values": [
         0.4959,
         0.4298,
@@ -1752,38 +1801,38 @@
     "calibration_evidence": {
       "dimension": "Calibration",
       "status": "warning",
-      "quantum_metric": 0.2408,
+      "quantum_metric": 0.2452,
       "classical_metric": 0.0248,
-      "delta": 0.216,
+      "delta": 0.2204,
       "quantum_std": 0.0391,
       "classical_std": 0.0213,
-      "description": "Classical model shows better observed calibration accuracy (Classical Brier: 0.025 \u00b1 0.021 vs. VQC Brier: 0.241 \u00b1 0.039).",
+      "description": "Classical model shows better observed calibration accuracy (Classical Brier: 0.025 \u00b1 0.021 vs. VQC Brier: 0.245 \u00b1 0.039).",
       "fold_values": null
     },
     "robustness_evidence": {
       "dimension": "Noise Robustness",
       "status": "passed",
-      "quantum_metric": 0.5816,
-      "classical_metric": 0.6327,
-      "delta": -0.0511,
+      "quantum_metric": 0.5969,
+      "classical_metric": 0.5867,
+      "delta": 0.0102,
       "quantum_std": 0.0,
       "classical_std": 0.0,
-      "description": "VQC retains 91.9% of ideal ROC-AUC under simulated noise (Noisy AUC: 0.582, Ideal AUC: 0.633). Noise simulation mode: UNKNOWN.",
+      "description": "VQC retains 101.7% of ideal ROC-AUC under simulated noise (Noisy AUC: 0.597, Ideal AUC: 0.587). Noise simulation mode: UNKNOWN.",
       "fold_values": null
     },
     "resource_evidence": {
       "dimension": "Resource Cost",
       "status": "warning",
-      "quantum_metric": 37.747,
-      "classical_metric": 0.079,
-      "delta": 37.668,
+      "quantum_metric": 28.321,
+      "classical_metric": 0.053,
+      "delta": 28.268,
       "quantum_std": 0.0,
       "classical_std": 0.0,
-      "description": "Quantum simulation runtime is 477.8\u00d7 higher than classical inference (37.75 ms vs. 0.08 ms). This reflects classical simulation overhead, not future hardware timing.",
+      "description": "Quantum simulation runtime is 534.4\u00d7 higher than classical inference (28.32 ms vs. 0.05 ms). This reflects classical simulation overhead, not future hardware timing.",
       "fold_values": null
     },
     "rule_breakdown": [
-      "Classical baselines show higher observed ROC-AUC (delta: -0.367)",
+      "Classical baselines show higher observed ROC-AUC (delta: -0.413)",
       "VQC shows higher fold-to-fold variance"
     ],
     "methodological_note": "Conclusions are observational and based on held-out test and cross-validation metrics. No formal statistical significance test has been applied. Do not interpret metric differences as statistically significant without appropriate hypothesis testing (e.g., DeLong test, bootstrap)."
@@ -1939,26 +1988,26 @@
       "features": [
         {
           "feature_name": "Qubit 1 (PC_2)",
-          "importance_score": 0.2942,
-          "relative_percentage": 42.27,
-          "direction": "positive"
-        },
-        {
-          "feature_name": "Qubit 2 (PC_3)",
-          "importance_score": 0.2044,
-          "relative_percentage": 29.37,
+          "importance_score": 0.4771,
+          "relative_percentage": 51.33,
           "direction": "positive"
         },
         {
           "feature_name": "Qubit 0 (PC_1)",
-          "importance_score": 0.1652,
-          "relative_percentage": 23.74,
+          "importance_score": 0.2687,
+          "relative_percentage": 28.91,
+          "direction": "positive"
+        },
+        {
+          "feature_name": "Qubit 2 (PC_3)",
+          "importance_score": 0.1631,
+          "relative_percentage": 17.55,
           "direction": "positive"
         },
         {
           "feature_name": "Qubit 3 (PC_4)",
-          "importance_score": 0.0322,
-          "relative_percentage": 4.62,
+          "importance_score": 0.0206,
+          "relative_percentage": 2.21,
           "direction": "positive"
         },
         {
@@ -1978,26 +2027,26 @@
         "quantum_features": [
           {
             "feature_name": "Qubit 1 (PC_2)",
-            "importance_score": 0.2942,
-            "relative_percentage": 42.27,
-            "direction": "positive"
-          },
-          {
-            "feature_name": "Qubit 2 (PC_3)",
-            "importance_score": 0.2044,
-            "relative_percentage": 29.37,
+            "importance_score": 0.4771,
+            "relative_percentage": 51.33,
             "direction": "positive"
           },
           {
             "feature_name": "Qubit 0 (PC_1)",
-            "importance_score": 0.1652,
-            "relative_percentage": 23.74,
+            "importance_score": 0.2687,
+            "relative_percentage": 28.91,
+            "direction": "positive"
+          },
+          {
+            "feature_name": "Qubit 2 (PC_3)",
+            "importance_score": 0.1631,
+            "relative_percentage": 17.55,
             "direction": "positive"
           },
           {
             "feature_name": "Qubit 3 (PC_4)",
-            "importance_score": 0.0322,
-            "relative_percentage": 4.62,
+            "importance_score": 0.0206,
+            "relative_percentage": 2.21,
             "direction": "positive"
           },
           {
@@ -2016,182 +2065,182 @@
         "projected_original_features": [
           {
             "feature_name": "fractal_dimension_worst",
-            "importance_score": 0.1534,
-            "relative_percentage": 4.65,
+            "importance_score": 0.2063,
+            "relative_percentage": 4.6,
             "direction": "positive"
           },
           {
-            "feature_name": "smoothness_worst",
-            "importance_score": 0.1495,
-            "relative_percentage": 4.53,
-            "direction": "positive"
-          },
-          {
-            "feature_name": "symmetry_se",
-            "importance_score": 0.1423,
+            "feature_name": "fractal_dimension_mean",
+            "importance_score": 0.1936,
             "relative_percentage": 4.31,
             "direction": "positive"
           },
           {
             "feature_name": "fractal_dimension_se",
-            "importance_score": 0.1384,
-            "relative_percentage": 4.19,
+            "importance_score": 0.1918,
+            "relative_percentage": 4.27,
             "direction": "positive"
           },
           {
-            "feature_name": "compactness_se",
-            "importance_score": 0.1273,
-            "relative_percentage": 3.85,
-            "direction": "positive"
-          },
-          {
-            "feature_name": "radius_se",
-            "importance_score": 0.1262,
-            "relative_percentage": 3.82,
-            "direction": "positive"
-          },
-          {
-            "feature_name": "compactness_worst",
-            "importance_score": 0.1262,
-            "relative_percentage": 3.82,
-            "direction": "positive"
-          },
-          {
-            "feature_name": "fractal_dimension_mean",
-            "importance_score": 0.123,
-            "relative_percentage": 3.72,
-            "direction": "positive"
-          },
-          {
-            "feature_name": "perimeter_se",
-            "importance_score": 0.1227,
-            "relative_percentage": 3.72,
+            "feature_name": "smoothness_worst",
+            "importance_score": 0.1877,
+            "relative_percentage": 4.18,
             "direction": "positive"
           },
           {
             "feature_name": "radius_worst",
-            "importance_score": 0.1209,
-            "relative_percentage": 3.66,
-            "direction": "positive"
-          },
-          {
-            "feature_name": "symmetry_worst",
-            "importance_score": 0.1199,
-            "relative_percentage": 3.63,
-            "direction": "positive"
-          },
-          {
-            "feature_name": "area_se",
-            "importance_score": 0.1197,
-            "relative_percentage": 3.63,
-            "direction": "positive"
-          },
-          {
-            "feature_name": "area_worst",
-            "importance_score": 0.1178,
-            "relative_percentage": 3.57,
-            "direction": "positive"
-          },
-          {
-            "feature_name": "smoothness_se",
-            "importance_score": 0.1148,
-            "relative_percentage": 3.48,
-            "direction": "positive"
-          },
-          {
-            "feature_name": "perimeter_worst",
-            "importance_score": 0.1126,
-            "relative_percentage": 3.41,
-            "direction": "positive"
-          },
-          {
-            "feature_name": "concave_points_se",
-            "importance_score": 0.1123,
-            "relative_percentage": 3.4,
+            "importance_score": 0.1809,
+            "relative_percentage": 4.03,
             "direction": "positive"
           },
           {
             "feature_name": "radius_mean",
-            "importance_score": 0.1109,
-            "relative_percentage": 3.36,
+            "importance_score": 0.1778,
+            "relative_percentage": 3.96,
+            "direction": "positive"
+          },
+          {
+            "feature_name": "area_worst",
+            "importance_score": 0.1777,
+            "relative_percentage": 3.96,
             "direction": "positive"
           },
           {
             "feature_name": "area_mean",
-            "importance_score": 0.1093,
-            "relative_percentage": 3.31,
+            "importance_score": 0.1754,
+            "relative_percentage": 3.91,
             "direction": "positive"
           },
           {
-            "feature_name": "concavity_se",
-            "importance_score": 0.1087,
-            "relative_percentage": 3.29,
+            "feature_name": "compactness_se",
+            "importance_score": 0.1754,
+            "relative_percentage": 3.91,
             "direction": "positive"
           },
           {
-            "feature_name": "smoothness_mean",
-            "importance_score": 0.1085,
-            "relative_percentage": 3.29,
+            "feature_name": "symmetry_se",
+            "importance_score": 0.1738,
+            "relative_percentage": 3.87,
             "direction": "positive"
           },
           {
-            "feature_name": "concavity_worst",
-            "importance_score": 0.1081,
-            "relative_percentage": 3.28,
+            "feature_name": "perimeter_worst",
+            "importance_score": 0.1711,
+            "relative_percentage": 3.81,
             "direction": "positive"
           },
           {
             "feature_name": "perimeter_mean",
-            "importance_score": 0.1053,
-            "relative_percentage": 3.19,
+            "importance_score": 0.1695,
+            "relative_percentage": 3.78,
             "direction": "positive"
           },
           {
-            "feature_name": "texture_worst",
-            "importance_score": 0.0937,
-            "relative_percentage": 2.84,
+            "feature_name": "compactness_worst",
+            "importance_score": 0.1682,
+            "relative_percentage": 3.75,
             "direction": "positive"
           },
           {
-            "feature_name": "symmetry_mean",
-            "importance_score": 0.0897,
-            "relative_percentage": 2.72,
+            "feature_name": "area_se",
+            "importance_score": 0.1649,
+            "relative_percentage": 3.67,
+            "direction": "positive"
+          },
+          {
+            "feature_name": "smoothness_mean",
+            "importance_score": 0.1578,
+            "relative_percentage": 3.52,
+            "direction": "positive"
+          },
+          {
+            "feature_name": "symmetry_worst",
+            "importance_score": 0.1571,
+            "relative_percentage": 3.5,
+            "direction": "positive"
+          },
+          {
+            "feature_name": "radius_se",
+            "importance_score": 0.1545,
+            "relative_percentage": 3.44,
+            "direction": "positive"
+          },
+          {
+            "feature_name": "perimeter_se",
+            "importance_score": 0.1492,
+            "relative_percentage": 3.32,
+            "direction": "positive"
+          },
+          {
+            "feature_name": "concavity_se",
+            "importance_score": 0.1453,
+            "relative_percentage": 3.24,
+            "direction": "positive"
+          },
+          {
+            "feature_name": "smoothness_se",
+            "importance_score": 0.1452,
+            "relative_percentage": 3.23,
+            "direction": "positive"
+          },
+          {
+            "feature_name": "concavity_worst",
+            "importance_score": 0.1378,
+            "relative_percentage": 3.07,
             "direction": "positive"
           },
           {
             "feature_name": "compactness_mean",
-            "importance_score": 0.084,
-            "relative_percentage": 2.54,
+            "importance_score": 0.1352,
+            "relative_percentage": 3.01,
+            "direction": "positive"
+          },
+          {
+            "feature_name": "symmetry_mean",
+            "importance_score": 0.13,
+            "relative_percentage": 2.9,
+            "direction": "positive"
+          },
+          {
+            "feature_name": "concave_points_se",
+            "importance_score": 0.1233,
+            "relative_percentage": 2.75,
             "direction": "positive"
           },
           {
             "feature_name": "concave_points_worst",
-            "importance_score": 0.0837,
-            "relative_percentage": 2.53,
+            "importance_score": 0.1022,
+            "relative_percentage": 2.28,
             "direction": "positive"
           },
           {
-            "feature_name": "texture_se",
-            "importance_score": 0.0809,
-            "relative_percentage": 2.45,
-            "direction": "positive"
-          },
-          {
-            "feature_name": "texture_mean",
-            "importance_score": 0.0711,
-            "relative_percentage": 2.15,
+            "feature_name": "texture_worst",
+            "importance_score": 0.095,
+            "relative_percentage": 2.12,
             "direction": "positive"
           },
           {
             "feature_name": "concavity_mean",
-            "importance_score": 0.0608,
-            "relative_percentage": 1.84,
+            "importance_score": 0.0928,
+            "relative_percentage": 2.07,
             "direction": "positive"
           },
           {
             "feature_name": "concave_points_mean",
-            "importance_score": 0.0597,
-            "relative_percentage": 1.81,
+            "importance_score": 0.0912,
+            "relative_percentage": 2.03,
+            "direction": "positive"
+          },
+          {
+            "feature_name": "texture_mean",
+            "importance_score": 0.0838,
+            "relative_percentage": 1.87,
+            "direction": "positive"
+          },
+          {
+            "feature_name": "texture_se",
+            "importance_score": 0.0745,
+            "relative_percentage": 1.66,
             "direction": "positive"
           }
         ],
@@ -2204,17 +2253,17 @@
   "disagreement": null,
   "utility_report": null,
   "resource_profile": {
-    "experiment_id": "exp-e61168bd",
+    "experiment_id": "exp-6830f0c4",
     "experiment_name": "Benchmark (Breast Cancer Wisconsin (Diagnostic))",
-    "timestamp_utc": "2026-09-26T19:10:40.552719+00:00",
+    "timestamp_utc": "2026-09-27T09:14:47.794457+00:00",
     "quantum_resources": {
       "qubit_count": 6,
       "circuit_depth": 5,
       "parameter_count": 18,
       "optimization_iterations": 25,
       "circuit_evaluations": 475,
-      "simulation_time_seconds": 45.153,
-      "inference_latency_ms": 37.75,
+      "simulation_time_seconds": 6.834,
+      "inference_latency_ms": 28.32,
       "simulator_backend": "Qiskit Aer Statevector / Depolarizing Noise Simulator"
     },
     "classical_resources": [
@@ -2222,22 +2271,22 @@
         "model_id": "logistic_regression",
         "model_name": "Logistic Regression",
         "parameter_count_summary": "L2 Regularized Linear (6 weights + bias)",
-        "training_time_seconds": 0.049,
-        "inference_latency_ms": 0.079
+        "training_time_seconds": 0.047,
+        "inference_latency_ms": 0.053
       },
       {
         "model_id": "random_forest",
         "model_name": "Random Forest",
         "parameter_count_summary": "100 Decision Trees (max_depth=5, feature_subsets)",
-        "training_time_seconds": 0.705,
-        "inference_latency_ms": 3.01
+        "training_time_seconds": 0.361,
+        "inference_latency_ms": 2.04
       },
       {
         "model_id": "svm",
         "model_name": "Support Vector Machine (SVM)",
         "parameter_count_summary": "RBF Kernel Support Vectors (~24 support vectors)",
-        "training_time_seconds": 0.028,
-        "inference_latency_ms": 0.122
+        "training_time_seconds": 0.049,
+        "inference_latency_ms": 0.083
       }
     ],
     "dataset_resources": {
@@ -2248,12 +2297,12 @@
       "pca_dimensions": 6,
       "dimension_compression_ratio": 5.0
     },
-    "measured_vs_configured_notes": "Circuit depth (5) and parameter count (18) are exact analytical circuit properties. Simulation time (45.153s) and latencies (37.75ms) are empirical CPU runtime measurements on local Python/Qiskit execution.",
+    "measured_vs_configured_notes": "Circuit depth (5) and parameter count (18) are exact analytical circuit properties. Simulation time (6.834s) and latencies (28.32ms) are empirical CPU runtime measurements on local Python/Qiskit execution.",
     "scalability_disclaimer": "Observed resource metrics are measured on local CPU statevector / Aer simulation. Physical quantum execution on fault-tolerant hardware exhibits distinct asymptotic scaling, circuit compilation overhead, and error mitigation budgets."
   },
   "metadata": {
-    "experiment_id": "exp-e61168bd",
-    "timestamp": "2026-09-26T19:10:40.552405+00:00",
+    "experiment_id": "exp-6830f0c4",
+    "timestamp": "2026-09-27T09:14:47.790048+00:00",
     "dataset_name": "Breast Cancer Wisconsin (Diagnostic)",
     "dataset_rows": 137,
     "dataset_columns": 32,
@@ -2304,7 +2353,7 @@
     "ansatz_layers": 2,
     "optimizer": "COBYLA",
     "max_iterations": 25,
-    "training_mode": "RESEARCH_MODE",
+    "training_mode": "DEMO_MODE",
     "vqc_training_samples_used": 109,
     "vqc_iterations_used": 25,
     "classical_models_enabled": [
