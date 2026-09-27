@@ -14,6 +14,8 @@ class ExperimentRepository:
     """Thread-safe file-backed repository for experiment storage and isolation."""
 
     def __init__(self, storage_dir: Optional[Path] = None):
+        # NOTE (Vercel): The local filesystem is ephemeral on Vercel serverless deployments.
+        # Experiments written here will NOT survive function restarts. Use an external DB for persistence.
         self.storage_dir = storage_dir or settings.EXPERIMENTS_DIR
         self.storage_dir.mkdir(parents=True, exist_ok=True)
         self._lock = threading.RLock()

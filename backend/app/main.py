@@ -42,12 +42,15 @@ async def lifespan(app: FastAPI):
     logger.info("Shutting down backend service.")
 
 
+_is_production = settings.ENVIRONMENT.lower() == "production"
+
 app = FastAPI(
     title="Hybrid Quantum-Classical Disease Detection API",
     description="Research prototype API for benchmarking Variational Quantum Classifiers (VQC) against Classical ML on clinical tabular data.",
     version="1.2.0",
-    docs_url="/docs",
-    redoc_url="/redoc",
+    # Disable interactive docs in production to reduce API surface exposure.
+    docs_url=None if _is_production else "/docs",
+    redoc_url=None if _is_production else "/redoc",
     lifespan=lifespan,
 )
 

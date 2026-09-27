@@ -1,3 +1,6 @@
+# Security note: All packages use minimum version constraints (>=).
+# Before production deployment, pin exact versions (==) and run `pip-audit` or `safety check`
+# to detect any known CVEs. Qiskit and PyJWT are security-critical — keep them updated.
 fastapi>=0.110.0
 uvicorn[standard]>=0.28.0
 pydantic>=2.6.0

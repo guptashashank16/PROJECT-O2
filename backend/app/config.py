@@ -8,7 +8,10 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
     """Application configuration loaded from environment or secure defaults."""
-    
+
+    # Set to 'production' in Vercel / Docker deployments to enable stricter checks.
+    ENVIRONMENT: str = "development"
+
     BACKEND_HOST: str = "0.0.0.0"
     BACKEND_PORT: int = 8000
     FRONTEND_URL: str = "http://localhost:5173"
@@ -55,6 +58,18 @@ class Settings(BaseSettings):
             return env_secret
         return "dev-ephemeral-secret-key-" + secrets.token_hex(32)
 
+    def check_production_secrets(self) -> None:
+        """Raise a clear startup error if running in production with a weak JWT secret."""
+        if self.ENVIRONMENT.lower() == "production":
+            if not self.JWT_SECRET_KEY or self.JWT_SECRET_KEY.startswith("dev-ephemeral"):
+                raise RuntimeError(
+                    "STARTUP ERROR: JWT_SECRET_KEY must be set via environment variable in production."
+                )
+            if len(self.JWT_SECRET_KEY) < 32:
+                raise RuntimeError(
+                    "STARTUP ERROR: JWT_SECRET_KEY must be at least 32 characters in production."
+                )
+
     model_config = SettingsConfigDict(
         env_file=".env",
         env_file_encoding="utf-8",
@@ -63,6 +78,9 @@ class Settings(BaseSettings):
 
 
 settings = Settings()
+
+# Enforce strong JWT secret in production — raises RuntimeError immediately if misconfigured.
+settings.check_production_secrets()
 
 # Ensure required runtime directories exist
 settings.ARTIFACTS_DIR.mkdir(parents=True, exist_ok=True)
