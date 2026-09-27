@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
-import { Activity, Database, LogIn, LogOut, User } from 'lucide-react';
+import { Activity, ArrowLeft, Database, Home, LogIn, LogOut, User } from 'lucide-react';
 import { useAppState } from '../../context/AppStateContext';
 import { useAuth } from '../../context/AuthContext';
 import { LoginPage } from '../../pages/LoginPage';
 
-export const Header: React.FC = () => {
-  const { profile, isBackendOnline } = useAppState();
+interface HeaderProps {
+  onNavigateHome?: () => void;
+}
+
+export const Header: React.FC<HeaderProps> = ({ onNavigateHome }) => {
+  const { profile } = useAppState();
   const { user, logout, isAuthenticated } = useAuth();
   const [showLoginModal, setShowLoginModal] = useState(false);
 
@@ -21,21 +25,37 @@ export const Header: React.FC = () => {
       <header className="border-b border-pink-200/80 bg-white/90 backdrop-blur-md sticky top-0 z-40 px-6 py-3 flex items-center justify-between shadow-sm shadow-pink-500/5">
         {/* Brand & Subtitle */}
         <div className="flex items-center gap-3.5">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-pink-500 to-rose-600 flex items-center justify-center shadow-md shadow-pink-500/20 ring-2 ring-pink-300/50">
-            <Activity className="w-5 h-5 text-white" />
-          </div>
-          <div>
-            <div className="flex items-center gap-2.5">
-              <h1 className="text-lg font-bold tracking-tight text-slate-900 flex items-center gap-2">
-                Q-CARE Clinical QML
-              </h1>
-              <span className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-pink-50 text-pink-600 border border-pink-200">
-                Hybrid VQC + Classical Benchmarking
-              </span>
+          {onNavigateHome && (
+            <button
+              onClick={onNavigateHome}
+              className="p-2 rounded-xl bg-pink-50 hover:bg-pink-100 text-pink-600 border border-pink-200 transition text-xs font-semibold flex items-center gap-1.5 shadow-sm"
+              title="Return to Home Page"
+            >
+              <Home className="w-4 h-4" />
+              <span className="hidden sm:inline">Home</span>
+            </button>
+          )}
+
+          <div
+            className={`flex items-center gap-3.5 ${onNavigateHome ? 'cursor-pointer group' : ''}`}
+            onClick={onNavigateHome}
+          >
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-pink-500 to-rose-600 flex items-center justify-center shadow-md shadow-pink-500/20 ring-2 ring-pink-300/50 group-hover:scale-105 transition-transform">
+              <Activity className="w-5 h-5 text-white" />
             </div>
-            <p className="text-xs text-slate-500">
-              Evidence-Driven Clinical Tabular AI & Feature Sensitivity
-            </p>
+            <div>
+              <div className="flex items-center gap-2.5">
+                <h1 className="text-lg font-bold tracking-tight text-slate-900 flex items-center gap-2">
+                  Q-CARE Clinical QML
+                </h1>
+                <span className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-pink-50 text-pink-600 border border-pink-200">
+                  Hybrid VQC + Classical Benchmarking
+                </span>
+              </div>
+              <p className="text-xs text-slate-500">
+                Evidence-Driven Clinical Tabular AI & Feature Sensitivity
+              </p>
+            </div>
           </div>
         </div>
 
@@ -49,18 +69,6 @@ export const Header: React.FC = () => {
               <span className="text-slate-500 font-mono">({profile.total_rows} rows)</span>
             </div>
           )}
-
-          {/* Backend Status */}
-          <div
-            className={`flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium border ${
-              isBackendOnline
-                ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
-                : 'bg-rose-50 text-rose-700 border-rose-200'
-            }`}
-          >
-            <span className={`w-1.5 h-1.5 rounded-full ${isBackendOnline ? 'bg-emerald-500 animate-ping' : 'bg-rose-500'}`} />
-            <span>{isBackendOnline ? 'Backend Online' : 'Backend Offline'}</span>
-          </div>
 
           {/* User Profile & Auth Button */}
           {user && (
@@ -100,3 +108,4 @@ export const Header: React.FC = () => {
     </>
   );
 };
+

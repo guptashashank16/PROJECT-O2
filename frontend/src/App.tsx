@@ -33,11 +33,12 @@ import { ExperimentRegistryCard } from './components/experiments/ExperimentRegis
 import { ResourceProfileCard } from './components/experiments/ResourceProfileCard';
 import { ExperimentComparisonView } from './components/experiments/ExperimentComparisonView';
 import { QuantumHardwareConnectorCard } from './components/quantum/QuantumHardwareConnectorCard';
-import { NotFoundPage } from './pages/NotFoundPage';
 import { ClassicalModelConfig, QuantumModelConfig } from './types';
+import { HomePage } from './pages/HomePage';
 
 export const App: React.FC = () => {
   const { activeTab, setActiveTab, trainingStatus, benchmarkSummary } = useAppState();
+  const [currentView, setCurrentView] = useState<'home' | 'app'>('home');
   const [show404, setShow404] = useState(false);
 
   const [quantumConfig, setQuantumConfig] = useState<QuantumModelConfig>({
@@ -113,6 +114,17 @@ export const App: React.FC = () => {
     metaDesc.setAttribute('content', currentMeta.desc);
   }, [activeTab]);
 
+  if (currentView === 'home') {
+    return (
+      <HomePage
+        onGetStarted={() => {
+          setCurrentView('app');
+          setActiveTab('dataset');
+        }}
+      />
+    );
+  }
+
   if (show404) {
     return (
       <NotFoundPage
@@ -126,7 +138,7 @@ export const App: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-rose-50 via-pink-50/40 to-slate-50 flex flex-col font-sans text-slate-800">
-      <Header />
+      <Header onNavigateHome={() => setCurrentView('home')} />
       <StatusBanner />
 
       <div className="flex-1 flex overflow-hidden">
