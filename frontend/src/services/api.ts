@@ -22,7 +22,7 @@ import {
   WhatIfResponse,
 } from '../types';
 
-const API_BASE = '/api';
+const API_BASE = (import.meta.env.VITE_API_BASE_URL as string | undefined)?.replace(/\/+$/, '') || '/api';
 
 function getAuthHeaders(): Record<string, string> {
   const token = localStorage.getItem('qcare_jwt_token') ?? localStorage.getItem('token');

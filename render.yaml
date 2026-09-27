@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: hybrid-quantum-backend
+    env: docker
+    dockerfilePath: backend/Dockerfile
+    dockerContext: backend
+    plan: free
+    healthCheckPath: /api/health
+    envVars:
+      - key: FAST_DEMO_MODE
+        value: "true"
+      - key: DEFAULT_QUANTUM_QUBITS
+        value: "6"
+      - key: DEFAULT_VQC_LAYERS
+        value: "2"
+      - key: DEFAULT_VQC_MAX_ITER
+        value: "25"
+      - key: RANDOM_SEED
+        value: "42"
+      - key: CORS_ORIGINS_EXTRA
+        sync: false
+      - key: JWT_SECRET_KEY
+        generateValue: true
