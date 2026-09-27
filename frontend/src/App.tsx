@@ -9,6 +9,7 @@ import {
   GitCompare,
   Stethoscope,
 } from 'lucide-react';
+import { NotFoundPage } from './pages/NotFoundPage';
 import { useAppState } from './context/AppStateContext';
 import { Header } from './components/layout/Header';
 import { Sidebar } from './components/layout/Sidebar';
