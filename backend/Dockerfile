@@ -19,7 +19,7 @@ COPY samples/ ./samples/
 # Create artifacts directory
 RUN mkdir -p /app/artifacts
 
-# Railway provides PORT dynamically; fallback to 8000 for local docker-compose
+# Use the standard local Docker API port.
 ENV PORT=8000
 
 EXPOSE $PORT

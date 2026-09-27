@@ -2,14 +2,14 @@ import os
 import secrets
 from pathlib import Path
 from typing import List, Optional, Union
-from pydantic import field_validator, model_validator
+from pydantic import field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
     """Application configuration loaded from environment or secure defaults."""
 
-    # Set to 'production' in Vercel / Docker deployments to enable stricter checks.
+    # Set to 'production' to enable stricter security checks.
     ENVIRONMENT: str = "development"
 
     BACKEND_HOST: str = "0.0.0.0"
@@ -24,18 +24,7 @@ class Settings(BaseSettings):
         "http://localhost:3000",
         "http://127.0.0.1:3000",
     ]
-    # Extra origins injected at runtime via env var (comma-separated)
-    # Example: CORS_ORIGINS_EXTRA=https://my-app.vercel.app,https://custom-domain.com
-    CORS_ORIGINS_EXTRA: str = ""
 
-    @model_validator(mode="after")
-    def merge_cors_origins(self) -> "Settings":
-        """Merge CORS_ORIGINS_EXTRA into ALLOWED_ORIGINS at startup."""
-        if self.CORS_ORIGINS_EXTRA:
-            extra = [o.strip() for o in self.CORS_ORIGINS_EXTRA.split(",") if o.strip()]
-            self.ALLOWED_ORIGINS = list(set(self.ALLOWED_ORIGINS + extra))
-        return self
-    
     # Security & JWT Configuration
     JWT_SECRET_KEY: str = ""
     JWT_ALGORITHM: str = "HS256"

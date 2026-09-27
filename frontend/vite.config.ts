@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react';
 
 export default defineConfig({
   plugins: [react()],
-  // Dev-only proxy — in production, VITE_API_BASE_URL points to Railway backend
+  // Local development proxy for the FastAPI service.
   server: {
     port: 5173,
     host: true,

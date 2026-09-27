@@ -101,19 +101,31 @@ flowchart TD
 
 ## 5. Getting Started & Configuration
 
+### Run locally with Docker
+
+From the repository root, start both the API and frontend:
+
+```bash
+docker compose up --build
+```
+
+Open `http://localhost:5173`. The API is available at `http://localhost:8000`, and its interactive documentation is at `http://localhost:8000/docs`. Uploaded files and experiment artifacts are stored in `backend/artifacts` on your computer.
+
+To stop the containers, press `Ctrl+C`, then run `docker compose down`.
+
 ### Environment Variables
 
-Copy the sample environment file:
+For local backend development, copy the sample environment file:
 ```bash
 cp backend/.env.example backend/.env
 ```
 
 Key environment settings in `.env`:
 ```ini
-JWT_SECRET_KEY=generate-a-strong-secret-key-here-for-production
-ALLOWED_ORIGINS=http://localhost:5173,http://localhost:3000
+JWT_SECRET_KEY=local-development-secret
+ALLOWED_ORIGINS=["http://localhost:5173","http://127.0.0.1:5173","http://localhost:3000"]
 MAX_UPLOAD_SIZE_MB=10
-DEMO_MODE=false
+FAST_DEMO_MODE=true
 ```
 
 ### Backend Setup
